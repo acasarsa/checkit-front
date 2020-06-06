@@ -8,10 +8,13 @@ import {url} from '../requests'
 const ListContainer = () => {
 
     // const [userID, setUserID] = useContext(UserContext)
+    const [currentUser, setCurrentUser] = useContext(UserContext)
+
     const [lists, setLists] = useState([])
 
-    const fetchCurrentUserLists = (userID) => {
-    fetch(`${url}/users/${userID}/lists`)
+
+    const fetchCurrentUserLists = () => {
+    fetch(`${url}/users/${currentUser.id}/lists`)
         .then(r => r.json())
         .then(lists => setLists(lists))
     }

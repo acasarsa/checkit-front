@@ -1,20 +1,19 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState, useHistory} from 'react'
 import LoginForm from './LoginForm'
 import { UserContext } from '../UserContext'
 import {url} from '../requests'
 
 const LoginPage = (props) => {
 
+    console.log("login page props",props)
     const [userID, setUserID] = useContext(UserContext)
-    const [username, setUsername] = useContext(UserContext)
+    // const [username, setUsername] = useContext(UserContext)
     const [currentUser, setCurrentUser] = useContext(UserContext)
 
-    const handleLogin = (event) => {
-        setUsername(event.target.value)
-    }
 
 
-    const findOrCreateUser = (event) => {
+
+    const findOrCreateUser = (event, username) => {
         event.preventDefault()
         // const {username} = this.state
 
@@ -31,16 +30,18 @@ const LoginPage = (props) => {
             .then(r => r.json())
             .then(userObj => {
                 setCurrentUser(userObj)
-                setUsername('')
-                setUserID(userObj.id)
-                history.push('/home') 
+                props.history.push('/home') 
+
             } )
     }
 
     
     return (
         <div>
-            <LoginForm {...props} />
+            <LoginForm
+                findOrCreateUser={findOrCreateUser}
+                
+                />
         </div>
     )
 }
