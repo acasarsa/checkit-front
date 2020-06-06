@@ -10,34 +10,36 @@ class App extends Component {
     
     state = {
         currentUser: '',
-        loggedIn: false,
+        loggedIn: false, //may not need this actually 
         username: '',
         lists: [],
-        tasks: [],
+        // tasks: [],
+        // user_id: '',
+        // list_id: '',
+
     }
     // get the value of the username from the login form 
     // do a post with that value 
 
-    componentDidMount() {
-        this.fetchLists()
-        this.fetchTasks()
-    }
+    // componentDidMount() {
 
-    fetchLists = () => {
-        fetch(`${url}/lists`)
+    // }
+
+    fetchCurrentUserLists = (user_id) => {
+        fetch(`${url}/users/${user_id}/lists`)
             .then(r => r.json())
             .then(lists => this.setState({
                 lists
             }))
     }
 
-    fetchTasks = () => {
-        fetch(`${url}/tasks`)
-            .then(r => r.json())
-            .then(tasks => this.setState({
-                tasks
-            }))
-    }
+    // fetchCurrentUserTasks = () => {
+    //     fetch(`${url}/tasks`)
+    //         .then(r => r.json())
+    //         .then(tasks => this.setState({
+    //             tasks
+    //         }))
+    // }
 
 
     handleLogin = (event) => {
@@ -49,7 +51,7 @@ class App extends Component {
     findOrCreateUser = (event) => {
         event.preventDefault()
         const {username} = this.state
-        let newUser = {username}
+        let newUser = { username }
 
         let options = {
             method: 'POST',
@@ -67,30 +69,39 @@ class App extends Component {
                 loggedIn: true,
                 username: ''
             }, () => {
-                console.log('hit')
-                this.props.history.push('/home')
+                    let userID = userObj.id
+
+                    this.props.history.push('/home')
+                    this.fetchCurrentUserLists(userID)
+
+                    console.log('lists state', this.state.lists)
+                    
             }))
+
     }
 
     render() {
-        const {currentUser} = this.state
+        const {currentUser, lists, loggedIn, username} = this.state
         console.log('props', this.props)
         console.log('state', this.state)
         return (
             <div>
                 <h1>App</h1>
-                {!currentUser 
+                {!loggedIn 
 
                 ? <LoginPage 
                     findOrCreateUser={this.findOrCreateUser} 
                     handleLogin={this.handleLogin}
-                    username={this.state.username}
+                    username={username}
                 />
                 :
                 <Switch>
                     <Route path='/home' 
                         render={(routerProps) => <ListContainer 
                             {...routerProps}
+                            lists={lists}
+                            currentUser={currentUser}
+                            loggedIn={loggedIn}
                             {...this.state}
                         /> }
                     />
@@ -112,3 +123,12 @@ class App extends Component {
 
 
 export default withRouter(App);
+
+
+// index route for lists 
+// just want users lists 
+// 1. pass in user id as a param to get 
+// 2. use nested routes set that up /users/12/lists
+// nested routes users do lists
+// may only need nested routes 
+// local storage 
