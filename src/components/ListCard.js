@@ -3,12 +3,12 @@ import TaskCard from './TaskCard'
 import LoginPage from './LoginPage'
 
 
-const ListCard = ({title, tasks, loggedIn, id}) => {
+const ListCard = ({title, tasks, currentUser, id}) => {
     return (
         <>
         <div style={styles.container} >
             
-            {!loggedIn ? <LoginPage /> :
+            {!currentUser ? <LoginPage /> :
             <>
             <h4>{title}</h4>
                 {tasks.map(card => <TaskCard key={card.id} {...card} />)}

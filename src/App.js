@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {useState, useEffect } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import LoginPage from './components/LoginPage'
 import ListContainer from './containers/ListContainer'
@@ -6,52 +6,23 @@ import ListContainer from './containers/ListContainer'
 
 const url = 'http://localhost:3000/api/v1'
 
-class App extends Component {
+const App = ({history}) => {
     
-    state = {
-        currentUser: '',
-        loggedIn: false, //may not need this actually 
-        username: '',
-        lists: [],
-        // tasks: [],
-        // user_id: '',
-        // list_id: '',
-
-    }
+    const [currentUser, setCurrentUser] = useState('') // [this.state.currentUser, this.setState({currentUser: ...})]
+    const [username, setUsername] = useState('')
+    const [lists, setLists] = useState([])
     // get the value of the username from the login form 
     // do a post with that value 
 
-    // componentDidMount() {
 
-    // }
-
-    fetchCurrentUserLists = (user_id) => {
-        fetch(`${url}/users/${user_id}/lists`)
-            .then(r => r.json())
-            .then(lists => this.setState({
-                lists
-            }))
+    const handleLogin = (event) => {
+        setUsername(event.target.value)
     }
 
-    // fetchCurrentUserTasks = () => {
-    //     fetch(`${url}/tasks`)
-    //         .then(r => r.json())
-    //         .then(tasks => this.setState({
-    //             tasks
-    //         }))
-    // }
 
-
-    handleLogin = (event) => {
-        this.setState({
-            username: event.target.value
-        })
-    }
-
-    findOrCreateUser = (event) => {
+    const findOrCreateUser = (event) => {
         event.preventDefault()
-        const {username} = this.state
-        let newUser = { username }
+        // const {username} = this.state
 
         let options = {
             method: 'POST',
@@ -59,66 +30,59 @@ class App extends Component {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify(newUser)
+            body: JSON.stringify({ username })
         }
-
+        
         fetch(`${url}/users`, options)
             .then(r => r.json())
-            .then(userObj => this.setState({
-                currentUser: userObj,
-                loggedIn: true,
-                username: ''
-            }, () => {
-                    let userID = userObj.id
+            .then(userObj => {
+                setCurrentUser(userObj)
+                setUsername('')
 
-                    this.props.history.push('/home')
-                    this.fetchCurrentUserLists(userID)
-
-                    console.log('lists state', this.state.lists)
-                    
-            }))
-
+                history.push('/home') 
+                fetchCurrentUserLists(userObj.id)
+            } )
     }
 
-    render() {
-        const {currentUser, lists, loggedIn, username} = this.state
-        console.log('props', this.props)
-        console.log('state', this.state)
-        return (
-            <div>
-                <h1>App</h1>
-                {!loggedIn 
+    const fetchCurrentUserLists = (userID) => {
+        fetch(`${url}/users/${userID}/lists`)
+            .then(r => r.json())
+            .then(lists => setLists(lists))
+    }
+    
+    return (
+        <div>
+            <h1>App</h1>
+            {!currentUser 
 
-                ? <LoginPage 
-                    findOrCreateUser={this.findOrCreateUser} 
-                    handleLogin={this.handleLogin}
-                    username={username}
+            ? <LoginPage 
+                findOrCreateUser={findOrCreateUser} 
+                handleLogin={handleLogin}
+                username={username}
+            />
+            :
+            <Switch>
+                <Route path='/home' 
+                    render={(routerProps) => <ListContainer 
+                        {...routerProps}
+                        lists={lists}
+                        currentUser={currentUser}
+                    /> }
                 />
-                :
-                <Switch>
-                    <Route path='/home' 
-                        render={(routerProps) => <ListContainer 
-                            {...routerProps}
-                            lists={lists}
-                            currentUser={currentUser}
-                            loggedIn={loggedIn}
-                            {...this.state}
-                        /> }
-                    />
 
-                    <Route exact path='/login'
-                    render={(routerProps) =>
-                        <LoginPage
-                            {...routerProps}
-                            findOrCreateUser={this.findOrCreateUser} 
-                            handleLogin={this.handleLogin}
-                            username={this.state.username}
-                            />} />
-                </Switch>
-                }
-            </div>
-        )
-    }
+                <Route exact path='/login'
+                render={(routerProps) =>
+                    <LoginPage
+                        {...routerProps}
+                        findOrCreateUser={findOrCreateUser} 
+                        handleLogin={handleLogin}
+                        username={username}
+                        />} />
+            </Switch>
+            }
+        </div>
+    )
+    
 }
 
 
@@ -132,3 +96,18 @@ export default withRouter(App);
 // nested routes users do lists
 // may only need nested routes 
 // local storage 
+
+        // fetch(`${url}/users`, options)
+        //     .then(r => r.json())
+        //     .then(userObj => this.setState({
+        //         currentUser: userObj,
+        //         username: ''
+        //     }, () => {
+        //             let userID = userObj.id
+
+        //             history.push('/home') 
+        //             fetchCurrentUserLists(userID)
+
+        //             // console.log('lists state', this.state.lists)
+                    
+        //     }))

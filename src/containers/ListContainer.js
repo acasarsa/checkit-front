@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ListCard from '../components/ListCard';
 
 
-const ListContainer = ({loggedIn, currentUser, lists}) => {
+const ListContainer = ({currentUser, lists}) => {
 
     const GridContainer = styled.div ` 
     display: flex;
@@ -32,7 +32,7 @@ const ListContainer = ({loggedIn, currentUser, lists}) => {
     return (
         <>
         <div>
-            {!loggedIn ? <LoginPage /> :
+            {!currentUser ? <LoginPage /> :
             <>
                 <h1>WELCOME {currentUser.username.toUpperCase()}</h1>
                 <GridContainer>
@@ -41,7 +41,6 @@ const ListContainer = ({loggedIn, currentUser, lists}) => {
                             key={list.id}
                             {...list}
                             currentUser={currentUser}
-                            loggedIn={loggedIn}
                             />)}
                 </GridContainer>
 

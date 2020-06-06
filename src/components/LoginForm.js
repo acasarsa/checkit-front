@@ -14,7 +14,7 @@ const LoginForm = ({ findOrCreateUser, handleLogin, username }) => {
                     value={username}
                     placeholder="Enter Username"
                 />
-                <button  >Login</button>
+                <button >Login</button>
         </form>
         </>
     )
