@@ -1,86 +1,56 @@
-import React, {useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import LoginPage from './components/LoginPage'
 import ListContainer from './containers/ListContainer'
+import { UserProvider, UserContext } from './UserContext'
 
 
 const url = 'http://localhost:3000/api/v1'
 
 const App = ({history}) => {
-    
-    const [currentUser, setCurrentUser] = useState('') // [this.state.currentUser, this.setState({currentUser: ...})]
-    const [username, setUsername] = useState('')
-    const [lists, setLists] = useState([])
+
     // get the value of the username from the login form 
     // do a post with that value 
 
+    const [currentUser, setCurrentUser] = useContext(UserContext)
 
-    const handleLogin = (event) => {
-        setUsername(event.target.value)
-    }
+    
 
 
-    const findOrCreateUser = (event) => {
-        event.preventDefault()
-        // const {username} = this.state
-
-        let options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json'
-            },
-            body: JSON.stringify({ username })
-        }
-        
-        fetch(`${url}/users`, options)
-            .then(r => r.json())
-            .then(userObj => {
-                setCurrentUser(userObj)
-                setUsername('')
-
-                history.push('/home') 
-                fetchCurrentUserLists(userObj.id)
-            } )
-    }
-
-    const fetchCurrentUserLists = (userID) => {
-        fetch(`${url}/users/${userID}/lists`)
-            .then(r => r.json())
-            .then(lists => setLists(lists))
-    }
     
     return (
-        <div>
-            <h1>App</h1>
-            {!currentUser 
+        <UserProvider>
+            <div>
+                <h1>App</h1>
+                {!currentUser 
 
-            ? <LoginPage 
-                findOrCreateUser={findOrCreateUser} 
-                handleLogin={handleLogin}
-                username={username}
-            />
-            :
-            <Switch>
-                <Route path='/home' 
-                    render={(routerProps) => <ListContainer 
-                        {...routerProps}
-                        lists={lists}
-                        currentUser={currentUser}
-                    /> }
+                ? <LoginPage 
+                    // findOrCreateUser={findOrCreateUser} 
+                    // handleLogin={handleLogin}
+                    // username={username}
                 />
+                :
+                <Switch>
+                    <Route path='/home' 
+                        render={(routerProps) => <ListContainer 
+                            {...routerProps}
+                            // lists={lists}
+                            // currentUser={currentUser}
+                        /> }
+                    />
 
-                <Route exact path='/login'
-                render={(routerProps) =>
-                    <LoginPage
-                        {...routerProps}
-                        findOrCreateUser={findOrCreateUser} 
-                        handleLogin={handleLogin}
-                        username={username}
-                        />} />
-            </Switch>
-            }
-        </div>
+                    <Route exact path='/login'
+                    render={(routerProps) =>
+                        <LoginPage
+                            {...routerProps}
+                            // findOrCreateUser={findOrCreateUser} 
+                            // handleLogin={handleLogin}
+                            // username={username}
+                            />} />
+                </Switch>
+                }
+            </div>
+        </UserProvider>
     )
     
 }
