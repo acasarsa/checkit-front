@@ -7,11 +7,9 @@ import {url} from '../requests'
 
 const ListContainer = () => {
 
-    // const [userID, setUserID] = useContext(UserContext)
-    const [currentUser, setCurrentUser] = useContext(UserContext)
-
     const [lists, setLists] = useState([])
-
+    
+    const [currentUser] = useContext(UserContext)
 
     const fetchCurrentUserLists = () => {
     fetch(`${url}/users/${currentUser.id}/lists`)
@@ -27,26 +25,8 @@ const ListContainer = () => {
     const GridContainer = styled.div ` 
     display: flex;
     flex-direction: row;
-    ${'' /* align-items: center; */}
-    ${'' /* box-sizing: border-box; */}
-    ${'' /* display: grid;
-    grid-template-columns: auto auto auto;
-    align-content: flex-start;
-    justify-content: center;
-    min-height: 1150px;
-    min-width: auto;
-    margin-top: 50px; */}
 `
-// const GridItem = styled.div ` 
-//     padding: 5px;
-//     width: auto;
-//     max-height: auto;
-//     max-width: auto;
-//     min-width: 500px;
-//     margin: 10px;
-//     line-height: auto;
-//     font-weight: bold;
-// `
+
     return (
         <>
         <div>

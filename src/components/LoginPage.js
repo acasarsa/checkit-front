@@ -1,4 +1,4 @@
-import React, {useContext, useState, useHistory} from 'react'
+import React, {useContext} from 'react'
 import LoginForm from './LoginForm'
 import { UserContext } from '../UserContext'
 import {url} from '../requests'
@@ -6,11 +6,7 @@ import {url} from '../requests'
 const LoginPage = (props) => {
 
     console.log("login page props",props)
-    const [userID, setUserID] = useContext(UserContext)
-    // const [username, setUsername] = useContext(UserContext)
-    const [currentUser, setCurrentUser] = useContext(UserContext)
-
-
+    const [setCurrentUser] = useContext(UserContext)
 
 
     const findOrCreateUser = (event, username) => {

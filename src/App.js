@@ -1,21 +1,16 @@
 import React, { useContext } from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import LoginPage from './components/LoginPage'
 import ListContainer from './containers/ListContainer'
 import { UserContext } from './UserContext'
 
-
-const url = 'http://localhost:3000/api/v1'
 
 const App = () => {
 
     // get the value of the username from the login form 
     // do a post with that value 
 
-    const [currentUser, setCurrentUser] = useContext(UserContext)
-
-    
-
+    const [currentUser] = useContext(UserContext)
 
     
     return (
@@ -26,31 +21,15 @@ const App = () => {
 
                 ?
                 <Switch>
-                    <Route 
-                        render={(routerProps) => 
-                        <LoginPage
-                            {...routerProps}
-                            />} 
-                        />
+                    <Route component={LoginPage} />
                 </Switch>
 
                 :
 
                 <Switch>
-                    <Route path='/home' 
-                        render={(routerProps) => <ListContainer 
-                            {...routerProps}
-                        /> }
-                    />
+                    <Route path='/home' component={ListContainer} />
 
-                    <Route exact path='/login'
-                    render={(routerProps) =>
-                        <LoginPage
-                            {...routerProps}
-                            // findOrCreateUser={findOrCreateUser} 
-                            // handleLogin={handleLogin}
-                            // username={username}
-                            />} />
+                    <Route exact path='/login' component={LoginPage} />
                 </Switch>
                 }
             </div>

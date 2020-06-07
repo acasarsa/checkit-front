@@ -4,5 +4,6 @@ let initialState = {
     tasks: [],
 }
 
+    const [lists, setLists] = useState([])
 
 
