@@ -1,10 +1,16 @@
 
 let initialState = {
-    currentUser: {},
     lists: [],
-    tasks: [],
+    isDone: false,
+    isPinned: false,
 }
 
-    // const [lists, setLists] = useState([])
+export const reducer = (prevState = initialState, action) => {
+    switch (action.type) {
+        
+        default:
+            return { ...prevState }
+    }
+}
 
 
