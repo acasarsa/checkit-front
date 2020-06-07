@@ -6,7 +6,7 @@ import {url} from '../requests'
 const LoginPage = (props) => {
 
     console.log("login page props",props)
-    const [setCurrentUser] = useContext(UserContext)
+    const [currentUser, setCurrentUser] = useContext(UserContext)
 
 
     const findOrCreateUser = (event, username) => {

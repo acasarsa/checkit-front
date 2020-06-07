@@ -3,11 +3,17 @@ import LoginPage from '../components/LoginPage'
 import styled from 'styled-components';
 import ListCard from '../components/ListCard';
 import { UserContext } from '../UserContext'
-import {url} from '../requests'
-
+import { url } from '../requests'
+import { connect } from 'react-redux'
+    
+const GridContainer = styled.div ` 
+    display: flex;
+    flex-direction: row;
+`
 const ListContainer = () => {
 
     const [lists, setLists] = useState([])
+    // u can delete this once you know how to do the fetch. you will need to do a dispatch
     
     const [currentUser] = useContext(UserContext)
 
@@ -17,15 +23,18 @@ const ListContainer = () => {
         .then(lists => setLists(lists))
     }
 
-    // do i need this? do i need to pass something into it like i did in the fetch?
     useEffect(() => {
         fetchCurrentUserLists()
     }, [])
 
-    const GridContainer = styled.div ` 
-    display: flex;
-    flex-direction: row;
-`
+//////////////////////////////////////////////////////////////////
+////// this crud can go into createCard once redux is working ////
+//////////////////////////////////////////////////////////////////
+
+    
+
+
+
 
     return (
         <>
@@ -50,4 +59,10 @@ const ListContainer = () => {
     )
 }
 
-export default ListContainer
+const msp = state => {
+    return {
+        lists: state.sushis
+    }
+}
+
+export default connect(msp)(ListContainer)

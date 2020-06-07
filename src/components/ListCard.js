@@ -1,6 +1,7 @@
 import React from 'react'
 import TaskCard from './TaskCard'
 import LoginPage from './LoginPage'
+import ActionButton from './ActionButton'
 
 
 const ListCard = ({title, tasks, currentUser, id}) => {
@@ -12,6 +13,7 @@ const ListCard = ({title, tasks, currentUser, id}) => {
             <>
             <h4>{title}</h4>
                 {tasks.map(card => <TaskCard key={card.id} {...card} />)}
+                <ActionButton  />
             </>
             }
         </div>
