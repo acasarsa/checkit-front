@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import LoginPage from './components/LoginPage'
 import ListContainer from './containers/ListContainer'
 import { UserContext } from './UserContext'
+import { ListProvider} from './ListContext'
 
 
 const App = () => {
@@ -27,7 +28,9 @@ const App = () => {
                 :
 
                 <Switch>
-                    <Route path='/home' component={ListContainer} />
+                    <ListProvider>
+                        <Route path='/home' component={ListContainer} />
+                    </ListProvider>
 
                     <Route exact path='/login' component={LoginPage} />
                 </Switch>
