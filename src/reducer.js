@@ -8,7 +8,12 @@ let initialState = {
 export const reducer = (prevState = initialState, action) => {
     switch (action.type) {
         case 'CREATE_LIST':
-            return { ...prevState }
+            // on click of a button take in the state of title gathered from onChange 
+            // then make a post passing newList into body and return a copy of the prevState, newList
+            // anything that would have been this.state would be prevState
+            const newList = ""
+            
+            return { lists: [...prevState,  newList] }
         
         case 'UPDATE_LIST':
             return { ...prevState }
@@ -18,6 +23,7 @@ export const reducer = (prevState = initialState, action) => {
         
         case 'FETCH_LISTS':
             return { ...prevState }
+        // return { ...prevState, lists: payload.lists } 
         
         case 'CREATE_TASK':
             return { ...prevState }
