@@ -9,17 +9,17 @@ import { reducer } from './reducer';
 import thunk from 'redux-thunk'
 
 // const store = createStore(reducer, applyMiddleware(thunk))
-const store = createStore(rootReducer)
+// const store = createStore(rootReducer)
 
 
 ReactDOM.render(
 
   <UserProvider>
-    <Provider store={store} >
+    {/* <Provider store={store} > */}
       <Router>
         <App />
       </Router>
-    </Provider>
+    {/* </Provider> */}
   </UserProvider>
 
   , document.getElementById('root'));
