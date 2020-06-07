@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Icon, Button} from '@material-ui/core'
+import { Button} from '@material-ui/core'
 import { GiPin } from 'react-icons/gi'
 
 const TaskCard = ({text}) => {

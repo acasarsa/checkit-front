@@ -1,11 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-const LoginForm = ({ findOrCreateUser, handleLogin, username }) => {
+const LoginForm = ({ findOrCreateUser }) => {
+
+    const [username, setUsername] = useState('')
+
+    const handleLogin = (event) => {
+        setUsername(event.target.value)
+    }
     
     return (
         <>
         <h1>Login</h1>
-        <form  onSubmit={findOrCreateUser}>
+        <form  onSubmit={(event) => findOrCreateUser(event, username)}>
             <label>Username:</label>
                 <input
                     onChange={handleLogin}
