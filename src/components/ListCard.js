@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import TaskCard from './TaskCard'
 import LoginPage from './LoginPage'
-import ActionButton from './ActionButton'
+import { UserContext } from '../UserContext'
+import CreateTaskForm from './CreateTaskForm'
 
 
-const ListCard = ({title, tasks, currentUser, id}) => {
+const ListCard = ({title, tasks, id, handleAddList, handleAddTask}) => {
+    
+    const [currentUser] = useContext(UserContext)
+    
     return (
         <>
         <div style={styles.container} >
@@ -12,9 +16,12 @@ const ListCard = ({title, tasks, currentUser, id}) => {
             {!currentUser ? <LoginPage /> :
             <>
             <h4>{title}</h4>
-                {tasks.map(card => <TaskCard key={card.id} {...card} />)}
-                <ActionButton  />
-            </>
+                {tasks.map(task => <TaskCard key={task.id} {...task} />)}
+                <CreateTaskForm
+                    listID={id}
+                    handleAddTask={handleAddTask}
+                />
+        </>
             }
         </div>
         </>

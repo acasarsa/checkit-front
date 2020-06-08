@@ -5,6 +5,8 @@ import ListCard from '../components/ListCard';
 import { UserContext } from '../UserContext'
 import { url } from '../requests'
 import { connect } from 'react-redux'
+import { ListContext } from '../ListContext'
+import CreateListForm from '../components/CreateListForm';
     
 const GridContainer = styled.div ` 
     display: flex;
@@ -12,7 +14,7 @@ const GridContainer = styled.div `
 `
 const ListContainer = () => {
 
-    const [lists, setLists] = useState([])
+    const [lists, setLists] = useContext(ListContext)
     // u can delete this once you know how to do the fetch. you will need to do a dispatch
     
     const [currentUser] = useContext(UserContext)
@@ -31,7 +33,53 @@ const ListContainer = () => {
 ////// this crud can go into createCard once redux is working ////
 //////////////////////////////////////////////////////////////////
 
-    
+    // need an on submit to pass down and pass in the title, and currentUser from context 
+
+    const handleAddList = (e, title) => {
+        e.preventDefault()
+
+        let options = {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({title, user_id: currentUser.id})
+        }
+
+        fetch(`${url}/users/${currentUser.id}/lists/`, options)
+            .then(r => r.json())
+            .then(newList => {
+                console.log(newList)
+                setLists([ ...lists, newList ])
+            })
+        
+    }
+
+    const handleAddTask = (e, text, listID) => {
+        // get text and listID pass up 
+        e.preventDefault()
+
+        let options = {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({text, list_id: listID})
+        }
+
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks`, options)
+            .then(r => r.json())
+            .then(newTask => {
+                console.log(newTask)
+                setLists( lists.map(list => list.id === listID ? {...list, tasks: [...list.tasks, newTask]} : list) )
+            })
+            
+        
+    }
+
+
 
 
 
@@ -42,13 +90,14 @@ const ListContainer = () => {
             {!currentUser ? <LoginPage /> :
             <>
                 <h1>WELCOME {currentUser.username.toUpperCase()}</h1>
+                    {console.log(lists)}
                 <GridContainer>
                     {lists.map(list =>
-                        <ListCard
-                            key={list.id}
+                        <ListCard key={list.id}
                             {...list}
-                            currentUser={currentUser}
-                            />)}
+                            handleAddTask={handleAddTask}
+                        />)} 
+                    <CreateListForm handleAddList={handleAddList} />
                 </GridContainer>
 
             </>
@@ -61,7 +110,7 @@ const ListContainer = () => {
 
 const msp = state => {
     return {
-        lists: state.sushis
+        lists: state.lists
     }
 }
 
