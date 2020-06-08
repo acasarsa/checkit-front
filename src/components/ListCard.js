@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
 import TaskCard from './TaskCard'
 import LoginPage from './LoginPage'
-import CreateCard from './CreateCard'
+// import CreateCard from './CreateCard'
 import { UserContext } from '../UserContext'
+import CreateTaskForm from './CreateTaskForm'
 
 
 const ListCard = ({title, tasks, id, handleAddList, handleAddTask}) => {
@@ -16,10 +17,9 @@ const ListCard = ({title, tasks, id, handleAddList, handleAddTask}) => {
             {!currentUser ? <LoginPage /> :
             <>
             <h4>{title}</h4>
-                {tasks.map(card => <TaskCard key={card.id} {...card} />)}
-                <CreateCard
+                {tasks.map(task => <TaskCard key={task.id} {...task} />)}
+                <CreateTaskForm
                     listID={id}
-                    handleAddList={handleAddList}
                     handleAddTask={handleAddTask}
                 />
         </>

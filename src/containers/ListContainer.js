@@ -6,6 +6,7 @@ import { UserContext } from '../UserContext'
 import { url } from '../requests'
 import { connect } from 'react-redux'
 import { ListContext } from '../ListContext'
+import CreateListForm from '../components/CreateTaskForm';
     
 const GridContainer = styled.div ` 
     display: flex;
@@ -65,17 +66,20 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({text})
+            body: JSON.stringify({text, list_id: listID})
         }
 
-        fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks`, options)
             .then(r => r.json())
-            .then(newList => {
-                console.log(newList)
-                setLists([ ...lists, newList ])
+            .then(newTask => {
+                console.log(newTask)
+                setLists( lists.map(list => list.id === listID ? {...list, tasks: [...list.tasks, newTask]} : list) )
             })
+            
         
     }
+
+
 
 
 
@@ -86,13 +90,14 @@ const ListContainer = () => {
             {!currentUser ? <LoginPage /> :
             <>
                 <h1>WELCOME {currentUser.username.toUpperCase()}</h1>
+                    {console.log(lists)}
                 <GridContainer>
                     {lists.map(list =>
                         <ListCard key={list.id}
                             {...list}
-                            handleAddList={handleAddList}
                             handleAddTask={handleAddTask}
-                            />)}
+                        />)} 
+                    <CreateListForm handleAddList={handleAddList} />
                 </GridContainer>
 
             </>
@@ -105,7 +110,7 @@ const ListContainer = () => {
 
 const msp = state => {
     return {
-        lists: state.sushis
+        lists: state.lists
     }
 }
 
