@@ -47,12 +47,12 @@ const CreateTaskForm = ({handleAddTask, listID}) => {
     const renderOpenFormButton = () => {
 // onClick should open the form and a textArea will appear. 
         /// inside the form itself you will have an onBlur that uses handleCloseForm
-        if (lists) {
+    
 
         return <button onClick={openForm} >
                 Add Task
             </button>
-        } 
+    
 
 
     }
@@ -92,14 +92,15 @@ const CreateTaskForm = ({handleAddTask, listID}) => {
     return !formOpen ? (
         <div>
             {renderOpenFormButton()}
-            {console.log(formOpen)}
         </div>
     ) : (
-        <div>
+        
                 
-            {renderForm()}
-        </div>
-    )
+            renderForm()
+        
+        )
+    
+
         
 }
 

@@ -6,7 +6,7 @@ import { UserContext } from '../UserContext'
 import { url } from '../requests'
 import { connect } from 'react-redux'
 import { ListContext } from '../ListContext'
-import CreateListForm from '../components/CreateTaskForm';
+import CreateListForm from '../components/CreateListForm';
     
 const GridContainer = styled.div ` 
     display: flex;
@@ -44,7 +44,7 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({title})
+            body: JSON.stringify({title, user_id: currentUser.id})
         }
 
         fetch(`${url}/users/${currentUser.id}/lists/`, options)
