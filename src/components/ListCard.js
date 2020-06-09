@@ -8,8 +8,8 @@ import { TaskTextContext } from '../TaskTextContext'
 
 
 
-const ListCard = ({title, tasks, id, handleAddTask, handleEditTask, taskText, setTaskText, created_at}) => {
-    
+const ListCard = (props) => {
+    const {title, tasks, id, handleAddTask, handleEditTask, taskText, setTaskText, created_at, handleDeleteTask} = props
     const [currentUser] = useContext(UserContext)
     console.log(tasks)
     // const [taskText, setTaskText] = useContext(TaskTextContext)
@@ -30,6 +30,7 @@ const ListCard = ({title, tasks, id, handleAddTask, handleEditTask, taskText, se
                         handleEditTask={handleEditTask}
                         taskText={taskText}
                         setTaskText={setTaskText}
+                        handleDeleteTask={handleDeleteTask}
                     />)}
                 </> 
                 <CreateTaskForm
