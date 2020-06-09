@@ -8,12 +8,13 @@ import { TaskTextContext } from '../TaskTextContext'
 
 
 
-const ListCard = ({title, tasks, id, handleAddTask, handleEditTask}) => {
+const ListCard = ({title, tasks, id, handleAddTask, handleEditTask, taskText, setTaskText, created_at}) => {
     
     const [currentUser] = useContext(UserContext)
-    const [taskText, setTaskText] = useContext(TaskTextContext)
+    console.log(tasks)
+    // const [taskText, setTaskText] = useContext(TaskTextContext)
 
-    
+    let sortedTasks = tasks.sort((a, b) =>  (a.created_at > b.created_at) ? 1 : -1)
     return (
         <>
         <div style={styles.container} >
@@ -22,16 +23,21 @@ const ListCard = ({title, tasks, id, handleAddTask, handleEditTask}) => {
             <>
                 <h4>{title}</h4>
                 <>       
-                    {tasks.map(task => <TaskCard
+                    {sortedTasks.map(task => <TaskCard
                         key={task.id}
                         {...task} 
                         listID={id}
                         handleEditTask={handleEditTask}
+                        taskText={taskText}
+                        setTaskText={setTaskText}
                     />)}
                 </> 
                 <CreateTaskForm
                     listID={id}
                     handleAddTask={handleAddTask}
+                    taskText={taskText}
+                    setTaskText={setTaskText}
+
                 />
 
             </>

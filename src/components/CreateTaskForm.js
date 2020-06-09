@@ -22,9 +22,9 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const CreateTaskForm = ({ handleAddTask, listID }) => {
+const CreateTaskForm = ({ handleAddTask, listID, setTaskText, taskText }) => {
     
-    const [taskText, setTaskText] = useContext(TaskTextContext)
+    // const [taskText, setTaskText] = useContext(TaskTextContext)
     // const [text, setText] = useState('')
 
     /// if this fucks up switch it all to title instead of text // i think it shouldn't matter though. 

@@ -4,7 +4,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit';
-import { TaskTextContext } from '../TaskTextContext'
 import TextArea from 'react-textarea-autosize'
 import Button from '@material-ui/core/Button';
 import styled from "styled-components";
@@ -28,15 +27,17 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const TaskCard = ({ text, listID, handleEditTask, id }) => {
+const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText}) => {
     
-    const [taskText, setTaskText] = useContext(TaskTextContext)
+    // const [taskText, setTaskText] = useContext(TaskTextContext)
     const [isEditing, setIsEditing] = useState(false)
     // const [editedText, setEditedText] = useState(text)
 
-    const openEditForm = () => {
+    const openEditForm = (e) => {
         setTaskText(text)
         setIsEditing(!isEditing)
+        
+
     }
 
     const closeEditForm = () => {
@@ -52,7 +53,7 @@ const TaskCard = ({ text, listID, handleEditTask, id }) => {
 
         return (
             <Card style={styles.cardContainter} >
-            
+
                 <CardContent style={{textAlign: 'center'}} >
                     <Typography gutterBottom style={{ fontSize: 18 }}
                     >{text}
@@ -66,6 +67,8 @@ const TaskCard = ({ text, listID, handleEditTask, id }) => {
             </Card>
         )
     }
+    
+
 
     const renderEditForm = () => {
 
@@ -74,11 +77,13 @@ const TaskCard = ({ text, listID, handleEditTask, id }) => {
                 <StyledCard>
                     <form  >
                     <StyledTextArea  
+                        type="text"
                         onChange={handleChange}
                         autoFocus
                         value={taskText}
                         onBlur={closeEditForm}
                     />
+                        {console.log(taskText)}
                     </form>
                 </StyledCard>
                     <Button
