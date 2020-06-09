@@ -38,7 +38,6 @@ const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText, han
         setTaskText(text)
         setIsEditing(!isEditing)
         
-
     }
 
     const closeEditForm = () => {
