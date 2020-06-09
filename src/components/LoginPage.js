@@ -13,6 +13,7 @@ const LoginPage = (props) => {
         event.preventDefault()
         // const {username} = this.state
 
+
         let options = {
             method: 'POST',
             headers: {
@@ -21,14 +22,18 @@ const LoginPage = (props) => {
             },
             body: JSON.stringify({ username })
         }
-        
-        fetch(`${url}/users`, options)
-            .then(r => r.json())
-            .then(userObj => {
-                setCurrentUser(userObj)
-                props.history.push('/home') 
+        if (username === "") {
+            alert("Username must not be blank")
+        } else {
 
-            } )
+            fetch(`${url}/users`, options)
+                .then(r => r.json())
+                .then(userObj => {
+                    setCurrentUser(userObj)
+                    props.history.push('/home') 
+    
+                } )
+        }
     }
 
     

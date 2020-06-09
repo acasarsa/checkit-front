@@ -7,6 +7,7 @@ import { url } from '../requests'
 import { connect } from 'react-redux'
 import { ListContext } from '../ListContext'
 import CreateListForm from '../components/CreateListForm';
+import { TaskTextProvider} from '../TaskTextContext'
     
 const GridContainer = styled.div ` 
     display: flex;
@@ -18,6 +19,8 @@ const ListContainer = () => {
     // u can delete this once you know how to do the fetch. you will need to do a dispatch
     
     const [currentUser] = useContext(UserContext)
+
+    const [taskText, setTaskText] = useState('')
 
     const fetchCurrentUserLists = () => {
     fetch(`${url}/users/${currentUser.id}/lists`)
@@ -79,30 +82,62 @@ const ListContainer = () => {
         
     }
 
+    const handleEditTask = (taskText, listID, id) => {
+        console.log('taskText', taskText)
+
+
+        let options = {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+            },
+        body: JSON.stringify({text: taskText, list_id: listID})
+        }
+        
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
+            .then(r => r.json())
+            .then(updatedTask => {
+                console.log('updatedTask', updatedTask)
+
+                setLists(lists.map(list => list.id === listID ?
+                    {
+                        ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task)
+                    }
+                        : list
+                ))
+            })
+    }
 
 
 
-
-
+    
+    
     return (
+        
         <>
         <div>
             {!currentUser ? <LoginPage /> :
             <>
-                <h1>WELCOME {currentUser.username.toUpperCase()}</h1>
-                    {console.log(lists)}
-                <GridContainer>
+            <h1>WELCOME {currentUser.username.toUpperCase()}</h1>
+            <GridContainer>
+                {/* <TaskTextProvider> */}
                     {lists.map(list =>
                         <ListCard key={list.id}
                             {...list}
                             handleAddTask={handleAddTask}
+                            handleEditTask={handleEditTask}
+                            taskText={taskText}
+                            setTaskText={setTaskText}
+                            
                         />)} 
-                    <CreateListForm handleAddList={handleAddList} />
-                </GridContainer>
-
+                {/* </TaskTextProvider> */}
+                    <CreateListForm
+                        handleAddList={handleAddList}
+                    />
+            </GridContainer>
             </>
             }
-            
         </div>
         </>
     )
