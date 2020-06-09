@@ -117,19 +117,21 @@ const ListContainer = () => {
         }
         
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
-            .then(r => r.json())
-            .then(() => {
+            .then(
                 setLists(
-                    lists.map(lists.map(list => list.id === listID ? 
+                    lists.map(list => list.id === listID ? 
                     {
                         ...list, tasks: list.tasks.filter(task => task.id !== id)
                     }
                         : list
-                )))
-            }).catch(e => {
-                console.log(`%c${e}`, 'color: red;' );
-            })
+                )
+            ))
+        
     }
+    
+
+
+    
     
     return (
         
