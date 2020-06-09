@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import TextArea from 'react-textarea-autosize'
 import { Card, Button } from '@material-ui/core';
 import styled from "styled-components";
-import { ListContext } from '../ListContext'
+import { TaskTextContext } from '../TaskTextContext'
 
 const Container = styled.div`
     width: 284px;
@@ -22,16 +22,16 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const CreateTaskForm = ({handleAddTask, listID}) => {
-
-    const [text, setText] = useState('')
-    const [lists, setLists] = useContext(ListContext)
+const CreateTaskForm = ({ handleAddTask, listID }) => {
+    
+    const [taskText, setTaskText] = useContext(TaskTextContext)
+    // const [text, setText] = useState('')
 
     /// if this fucks up switch it all to title instead of text // i think it shouldn't matter though. 
     const [formOpen, setFormOpen] = useState(false)
 
     const handleChange = (event) => {
-        setText(event.target.value)
+        setTaskText(event.target.value)
     }
 
     const openForm = () => {
@@ -69,7 +69,7 @@ const CreateTaskForm = ({handleAddTask, listID}) => {
                     <StyledTextArea
                         onChange={handleChange}
                         autoFocus
-                        value={text}
+                        value={taskText}
                         placeholder="Add Task..."
                         onBlur={closeForm}
                     />
@@ -77,8 +77,8 @@ const CreateTaskForm = ({handleAddTask, listID}) => {
                 </StyledCard>
                     <Button
                     onMouseDown={(e) => {
-                        handleAddTask(e, text, listID) 
-                        setText('')
+                        handleAddTask(e, taskText, listID) 
+                        setTaskText('')
                         closeForm()
                     }}
                         type='submit'

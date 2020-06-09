@@ -3,11 +3,16 @@ import TaskCard from './TaskCard'
 import LoginPage from './LoginPage'
 import { UserContext } from '../UserContext'
 import CreateTaskForm from './CreateTaskForm'
+import { TaskTextContext } from '../TaskTextContext'
 
 
-const ListCard = ({title, tasks, id, handleAddList, handleAddTask}) => {
+
+
+const ListCard = ({title, tasks, id, handleAddTask, handleEditTask}) => {
     
     const [currentUser] = useContext(UserContext)
+    const [taskText, setTaskText] = useContext(TaskTextContext)
+
     
     return (
         <>
@@ -15,13 +20,21 @@ const ListCard = ({title, tasks, id, handleAddList, handleAddTask}) => {
             
             {!currentUser ? <LoginPage /> :
             <>
-            <h4>{title}</h4>
-                {tasks.map(task => <TaskCard key={task.id} {...task} />)}
+                <h4>{title}</h4>
+                <>       
+                    {tasks.map(task => <TaskCard
+                        key={task.id}
+                        {...task} 
+                        listID={id}
+                        handleEditTask={handleEditTask}
+                    />)}
+                </> 
                 <CreateTaskForm
                     listID={id}
                     handleAddTask={handleAddTask}
                 />
-        </>
+
+            </>
             }
         </div>
         </>
