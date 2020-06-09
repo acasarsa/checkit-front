@@ -4,6 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import TextArea from 'react-textarea-autosize'
 import Button from '@material-ui/core/Button';
 import styled from "styled-components";
@@ -27,7 +28,7 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText}) => {
+const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText, handleDeleteTask}) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
     const [isEditing, setIsEditing] = useState(false)
@@ -52,7 +53,7 @@ const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText}) =>
     const renderTaskCard = () => {
 
         return (
-            <Card style={styles.cardContainter} >
+            <Card style={styles.cardContainer} >
 
                 <CardContent style={{textAlign: 'center'}} >
                     <Typography gutterBottom style={{ fontSize: 18 }}
@@ -61,6 +62,9 @@ const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText}) =>
                             <EditIcon style={{ fontSize: 16 }} />
                         </IconButton>
                             
+                        <IconButton onClick={() => handleDeleteTask(listID, id)} >
+                            <DeleteIcon style={{ fontSize: 16 }} />
+                        </IconButton>
                     </Typography>
                 </CardContent>
 
@@ -111,7 +115,7 @@ const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText}) =>
 }
 
 const styles = {
-    cardContainter: {
+    cardContainer: {
         marginBottom: 8,
         backgroundColor: 'lightblue',
     }

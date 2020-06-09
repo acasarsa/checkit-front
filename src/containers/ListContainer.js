@@ -100,7 +100,8 @@ const ListContainer = () => {
             .then(updatedTask => {
                 console.log('updatedTask', updatedTask)
 
-                setLists(lists.map(list => list.id === listID ?
+                setLists(
+                    lists.map(list => list.id === listID ?
                     {
                         ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task)
                     }
@@ -110,6 +111,27 @@ const ListContainer = () => {
     }
 
 
+    const handleDeleteTask = (listID, id) => {
+        const options = {
+            method: 'DELETE'
+        }
+        
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
+            .then(r => r.json())
+            .catch(e => {
+                console.log(e);
+            }
+                
+                // setLists(
+                //     lists.map(lists.map(list => list.id === listID ? 
+                //     {
+                //         ...list, tasks: list.tasks.filter(task => task.id !== id)
+                //     }
+                //         : list
+                // )))
+            )
+    }
+    
 
     
     
@@ -129,6 +151,7 @@ const ListContainer = () => {
                             handleEditTask={handleEditTask}
                             taskText={taskText}
                             setTaskText={setTaskText}
+                            handleDeleteTask={handleDeleteTask}
                             
                         />)} 
                 {/* </TaskTextProvider> */}
