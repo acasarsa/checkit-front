@@ -40,13 +40,13 @@ const DeleteButton = styled(Icon)`
 
 
 const ListCard = (props) => {
-    const { listID, title, tasks, id, listIndex, handleAddTask, handleEditTask, taskText, setTaskText, created_at, handleDeleteTask, deleteList} = props
+    const { list, listID, title, tasks, id, listIndex, taskIndex, handleAddTask, handleEditTask, taskText, setTaskText, order, handleDeleteTask, deleteList} = props
     const [currentUser] = useContext(UserContext) // use for edit form later
     console.log(tasks) 
     
 
 
-    let sortedTasks = tasks.sort((a, b) => (a.created_at > b.created_at) ? 1 : -1)
+    // let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
     
     return (
         
@@ -68,10 +68,10 @@ const ListCard = (props) => {
                                     </DeleteButton>
                                 </div>
                                 <div {...provided.droppableProps} ref={provided.innerRef} >
-                                    {sortedTasks.map((task, index) => <TaskCard
+                                    {tasks.map((task, index) => <TaskCard
                                         key={task.id}
                                         {...task} 
-                                        index={index}
+                                        taskIndex={index}
                                         listID={listID}
                                         taskText={taskText}
                                         handleEditTask={handleEditTask}
@@ -82,6 +82,7 @@ const ListCard = (props) => {
                                     {provided.placeholder}
                                     <CreateTaskForm
                                         listID={id}
+                                        initialTaskIndex={list.tasks.length}
                                         handleAddTask={handleAddTask}
                                         taskText={taskText}
                                         setTaskText={setTaskText}

@@ -24,12 +24,25 @@ const ListContainer = () => {
     const [taskText, setTaskText] = useState('')
     const [sourceIndex, setSourceIndex] = useState('')
     const [destIndex, setDestIndex] = useState('')
+    const [sourceID, setSourceID] = useState('')
+    const [destID, setDestID] = useState('')
+    const [newOrderIndex, setOrderIndex] = useState(null)
+    const [orderedLists, setListOrder] = useState([])
+    const [orderedTasks, setTaskOrder] = useState([])
 
     const fetchCurrentUserLists = () => {
-    fetch(`${url}/users/${currentUser.id}/lists`)
-        .then(r => r.json())
-        .then(lists => setLists(lists))
+        fetch(`${url}/users/${currentUser.id}/lists`)
+            .then(r => r.json())
+            .then(lists => {
+                setLists(lists)
+                setListOrder(() => {
+                    lists.sort((a, b) => (a.id > b.id) ? 1 : -1)
+                })
+        })
     }
+    
+    // app opens, checks to see what the order value is for each list
+    // sorts the lists by order
 
     useEffect(() => {
         fetchCurrentUserLists()
@@ -41,7 +54,7 @@ const ListContainer = () => {
 
     // need an on submit to pass down and pass in the title, and currentUser from context 
 
-    const handleAddList = (e, title) => {
+    const handleAddList = (e, title, initialIndex) => {
         e.preventDefault()
 
         let options = {
@@ -50,19 +63,19 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({title, user_id: currentUser.id})
+            body: JSON.stringify({ title, user_id: currentUser.id, order: initialIndex})
         }
 
         fetch(`${url}/users/${currentUser.id}/lists/`, options)
             .then(r => r.json())
             .then(newList => {
-                console.log(newList)
+                console.log('newList', newList)
                 setLists([ ...lists, newList ])
             })
         
     }
 
-    const handleAddTask = (e, text, listID) => {
+    const handleAddTask = (e, text, listID, index) => {
         // get text and listID pass up 
         e.preventDefault()
 
@@ -72,7 +85,7 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({text, list_id: listID})
+            body: JSON.stringify({text, list_id: listID, order: index})
         }
 
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks`, options)
@@ -166,6 +179,7 @@ const ListContainer = () => {
         // const newRowOrder = Array.from(row.)
         // lists.splice
         
+        const newListOrder = [...lists]
     }
     
     // const onDragStart = (e) => {
@@ -191,6 +205,7 @@ const ListContainer = () => {
                             >
                         {lists.map((list, index) => 
                             <ListCard key={list.id}
+                                list={list}
                                 {...list}
                                 listIndex={index}
                                 listID={list.id}
@@ -201,12 +216,13 @@ const ListContainer = () => {
                                 handleDeleteTask={handleDeleteTask}
                                 deleteList={deleteList}
                             />)} 
+                                    {console.log("orderedLists",orderedLists)}
                             {provided.placeholder}
-                        <CreateListForm handleAddList={handleAddList} />
+                            <CreateListForm handleAddList={handleAddList} initialIndex={lists.length} />
                     </FlexContainer>
                         )}
                         </Droppable>
-                        {console.log("lists", lists)}
+                        {console.log("currentuser", currentUser)}
             </>
             }
         </DragDropContext>

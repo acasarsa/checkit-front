@@ -22,7 +22,7 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const CreateTaskForm = ({ handleAddTask, listID, setTaskText, taskText }) => {
+const CreateTaskForm = ({ handleAddTask, listID, setTaskText, taskText, initialTaskIndex }) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
     // const [text, setText] = useState('')
@@ -77,7 +77,7 @@ const CreateTaskForm = ({ handleAddTask, listID, setTaskText, taskText }) => {
                 </StyledCard>
                     <Button
                     onMouseDown={(e) => {
-                        handleAddTask(e, taskText, listID) 
+                        handleAddTask(e, taskText, listID, initialTaskIndex) 
                         setTaskText('')
                         closeForm()
                     }}

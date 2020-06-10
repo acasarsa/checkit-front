@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import TextArea from 'react-textarea-autosize'
 import { Card, Button } from '@material-ui/core';
 import styled from "styled-components";
+import { UserContext } from '../UserContext'
 
 const Container = styled.div`
     width: 284px;
@@ -21,7 +22,8 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const CreateListForm = ({handleAddList}) => {
+const CreateListForm = ({ handleAddList, initialIndex }) => {
+    const [currentUser] = useContext(UserContext)
 
 
     const [title, setTitle] = useState('')
@@ -66,7 +68,7 @@ const CreateListForm = ({handleAddList}) => {
                 </StyledCard>
                     <Button
                     onMouseDown={(e) => {
-                        handleAddList(e, title) 
+                        handleAddList(e, title, initialIndex) 
                         setTitle('')
                         closeForm()
                     }}
@@ -74,6 +76,7 @@ const CreateListForm = ({handleAddList}) => {
                         style={{backgroundColor: 'lightgreen'}}
                     >Add List
                     </Button>
+                {console.log(currentUser)}
             </Container>
         )
     }
