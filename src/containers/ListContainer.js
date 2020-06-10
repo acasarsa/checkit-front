@@ -162,6 +162,7 @@ const ListContainer = () => {
         const options = {
             method: 'DELETE'
         }
+        
         fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
             .then(() => {
                 setLists(
@@ -199,6 +200,9 @@ const ListContainer = () => {
     // const onDragStart = (e) => {
         
     // }
+
+    // so i have an index for each card that exists already on the page. 
+    // i need to 
     
     
     return (
@@ -209,8 +213,6 @@ const ListContainer = () => {
             {!currentUser ? <LoginPage /> :
             <>
                 
-            
-    
             <Droppable droppableId="all-lists" direction="horizontal" type="list">
                 {(provided) => (
                     <FlexContainer
@@ -229,7 +231,9 @@ const ListContainer = () => {
                                 setTaskText={setTaskText}
                                 handleDeleteTask={handleDeleteTask}
                                 deleteList={deleteList}
+                                
                             />)} 
+                                    {console.log("list index", lists.map((list, index) => index))}
                             {provided.placeholder}
                             <CreateListForm handleAddList={handleAddList} initialIndex={lists.length} />
                     </FlexContainer>
