@@ -8,7 +8,17 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextArea from 'react-textarea-autosize'
 import Button from '@material-ui/core/Button';
 import styled from "styled-components";
+import { Draggable } from 'react-beautiful-dnd';
+import Icon from "@material-ui/core/Icon";
+
 // import { GiPin } from 'react-icons/gi'
+
+const CardContainer = styled.div`
+    margin: 0 0 8px 0;
+    position: relative;
+    max-width: 100%;
+    word-wrap: break-word;
+`;
 
 const Container = styled.div`
     width: 284px;
@@ -16,7 +26,7 @@ const Container = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-    min-height: 85px;
+    min-height: 185px;
     padding: 6px 8px 2px;
 `;
 
@@ -28,7 +38,25 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText, handleDeleteTask}) => {
+const DeleteButton = styled(Icon)`
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0.4;
+    &:hover {
+        opacity: 0.8;
+    }
+`;
+
+const EditButton = styled(Icon)`
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0.4;
+    &:hover {
+        opacity: 0.8;
+    }
+`;
+
+const TaskCard = ({ id, text, listID, index, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
     const [isEditing, setIsEditing] = useState(false)
@@ -52,26 +80,35 @@ const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText, han
     const renderTaskCard = () => {
 
         return (
-            <Card style={styles.cardContainer} >
-
-                <CardContent style={{textAlign: 'center'}} >
-                    <Typography gutterBottom style={{ fontSize: 18 }}
-                    >{text}
-                        <IconButton onClick={openEditForm} >
-                            <EditIcon style={{ fontSize: 16 }} />
-                        </IconButton>
-                            
-                        <IconButton onClick={() => handleDeleteTask(listID, id)} >
-                            <DeleteIcon style={{ fontSize: 16 }} />
-                        </IconButton>
-                    </Typography>
-                </CardContent>
-
-            </Card>
+            <Draggable draggableId={String(id)} index={index} > 
+                {provided => (
+                    <CardContainer
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                    > 
+                        <Card style={styles.cardContainer}
+                        >
+                            <CardContent style={{textAlign: 'center'}} >
+                                <Typography gutterBottom style={{ fontSize: 18 }}
+                                >{text}
+                                    <EditButton onClick={openEditForm} >
+                                        <EditIcon style={{ fontSize: 16 }} />
+                                    </EditButton>
+                                        
+                                    <DeleteButton onClick={() => handleDeleteTask(listID, id)} >
+                                        <DeleteIcon style={{ fontSize: 16 }} />
+                                    </DeleteButton>
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                </CardContainer>
+                )}
+            </Draggable>
         )
     }
     
-
+    
 
     const renderEditForm = () => {
 
@@ -102,8 +139,6 @@ const TaskCard = ({ text, listID, handleEditTask, id, taskText, setTaskText, han
         )
 
     }
-
-
 
 
     return !isEditing ? (

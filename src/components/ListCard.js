@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 import TaskCard from './TaskCard'
-import LoginPage from './LoginPage'
-import styled from 'styled-components';
 import { UserContext } from '../UserContext'
 import CreateTaskForm from './CreateTaskForm'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
+import styled from 'styled-components';
+import Icon from "@material-ui/core/Icon";
+
 
 const ListContainer = styled.div`
     background-color: #dfe3e6;
@@ -13,47 +14,80 @@ const ListContainer = styled.div`
     padding: 8px;
     height: 100%;
     margin: 0 8px 0 0;
+    
+`;
+
+const TitleContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+`;
+
+const DeleteButton = styled(Icon)`
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0.4;
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 
+
+
 const ListCard = (props) => {
-    const {listID, title, tasks, id, handleAddTask, handleEditTask, taskText, setTaskText, created_at, handleDeleteTask} = props
+    const { listID, title, tasks, id, listIndex, handleAddTask, handleEditTask, taskText, setTaskText, created_at, handleDeleteTask, deleteList} = props
     const [currentUser] = useContext(UserContext) // use for edit form later
-    console.log(tasks)
-    // const [taskText, setTaskText] = useContext(TaskTextContext)
+    console.log(tasks) 
+    
+
 
     let sortedTasks = tasks.sort((a, b) => (a.created_at > b.created_at) ? 1 : -1)
     
     return (
-            <Draggable draggableId={String(listID)} >
+        
+        <Draggable draggableId={String(listID)} index={listIndex} >
+            {/* {sortedTasks.map(task => )} */}
                 {provided => (
                     <ListContainer
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        // ref={provided.innerRef}
-                    >
-                        <Droppable droppableId={String(listID)} type="card">
+                        ref={provided.innerRef}
+                >
+                        <Droppable droppableId={String(listID)} type="card" >
                             {provided => (
-                                <>
-                                <h4>{title}</h4>
-                                {sortedTasks.map(task => <TaskCard
-                                    key={task.id}
-                                    {...task} 
-                                    listID={listID}
-                                    handleEditTask={handleEditTask}
-                                    taskText={taskText}
-                                    setTaskText={setTaskText}
-                                    handleDeleteTask={handleDeleteTask}
-                                />)}
-                                
-                                <CreateTaskForm
-                                    listID={id}
-                                    handleAddTask={handleAddTask}
-                                    taskText={taskText}
-                                    setTaskText={setTaskText}
-                                />
-                                
-                                </>
+                            <>
+                                <div>
+                                    <h4>{title}</h4>
+                                    <DeleteButton onClick={() => deleteList(listID)}>
+                                        delete
+                                    </DeleteButton>
+                                </div>
+                                <div {...provided.droppableProps} ref={provided.innerRef} >
+                                    {sortedTasks.map((task, index) => <TaskCard
+                                        key={task.id}
+                                        {...task} 
+                                        index={index}
+                                        listID={listID}
+                                        taskText={taskText}
+                                        handleEditTask={handleEditTask}
+                                        setTaskText={setTaskText}
+                                        handleDeleteTask={handleDeleteTask}
+                                        />
+                                    )}
+                                    {provided.placeholder}
+                                    <CreateTaskForm
+                                        listID={id}
+                                        handleAddTask={handleAddTask}
+                                        taskText={taskText}
+                                        setTaskText={setTaskText}
+                                    />
+                                </div>
+                            </>
                             )}
                         </Droppable>
                     

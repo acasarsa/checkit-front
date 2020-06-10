@@ -3,7 +3,14 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import LoginPage from './components/LoginPage'
 import ListContainer from './containers/ListContainer'
 import { UserContext } from './UserContext'
-import { ListProvider} from './ListContext'
+import { ListProvider } from './ListContext'
+import TopPanelContainer from './containers/TopPanelContainer'
+import styled from 'styled-components'
+
+const MainDiv = styled.div`
+    
+
+`
 
 
 const App = () => {
@@ -16,8 +23,8 @@ const App = () => {
     
     return (
         
-            <div>
-                <h1>App</h1>
+        <MainDiv>
+
                 {!currentUser 
 
                 ?
@@ -26,16 +33,20 @@ const App = () => {
                 </Switch>
 
                 :
-
+                
+                <>
+                <TopPanelContainer />
                 <Switch>
+                    
                     <ListProvider>
-                        <Route path='/home' component={ListContainer} />
+                        <Route path='/home' component={ListContainer}  />
                     </ListProvider>
 
                     <Route exact path='/login' component={LoginPage} />
-                </Switch>
+                    </Switch>
+                </>
                 }
-            </div>
+        </MainDiv>
     )
     
 }
