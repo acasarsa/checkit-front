@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import TextArea from 'react-textarea-autosize'
 import { Card, Button } from '@material-ui/core';
 import styled from "styled-components";
-import { TaskTextContext } from '../TaskTextContext'
+
 
 const Container = styled.div`
     width: 284px;

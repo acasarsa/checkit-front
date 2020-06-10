@@ -17,12 +17,13 @@ const FlexContainer = styled.div `
 `
 const ListContainer = () => {
 
+    const [currentUser] = useContext(UserContext)
     const [lists, setLists] = useContext(ListContext)
     // u can delete this once you know how to do the fetch. you will need to do a dispatch
-    
-    const [currentUser] = useContext(UserContext)
 
     const [taskText, setTaskText] = useState('')
+    const [sourceIndex, setSourceIndex] = useState('')
+    const [destIndex, setDestIndex] = useState('')
 
     const fetchCurrentUserLists = () => {
     fetch(`${url}/users/${currentUser.id}/lists`)
@@ -130,48 +131,82 @@ const ListContainer = () => {
             })
     }
     
-    const onDragEnd = result => {
+    const deleteList = (listID) => {
+        const options = {
+            method: 'DELETE'
+        }
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
+            .then(() => {
+                setLists(
+                    lists.filter(list => list.id !== listID)
+                )
+            })
 
-        // reorder our column
     }
+
+    
+    const onDragEnd = (result) => {
+        console.log('result', result)
+        // reorder our column
+        const { destination, source, draggableId, type } = result
+        console.log("destination.dropID", destination.droppableId)
+        
+        if (!destination) {
+            return
+        }
+        
+        if (
+            destination.droppableId === source.droppableId && 
+            destination.index === source.index
+        ) {
+            return
+        }
+        // adjust state of lists
+        // const row = lists
+        // const newRowOrder = Array.from(row.)
+        // lists.splice
+        
+    }
+    
+    // const onDragStart = (e) => {
+        
+    // }
     
     
     return (
         
         <>
-            <DragDropContext
-                onDragStart
-                onDragUpdate
-                onDragEnd
-            >
+            <DragDropContext onDragEnd={onDragEnd} >
+                
             {!currentUser ? <LoginPage /> :
             <>
-            <h1>WELCOME {currentUser.username.toUpperCase()}</h1>
-                <Droppable
-                    droppableId="all-lists"
-                    direction="horizontal" type="list"
-                        >
-                    {(provided) => (
-                        <FlexContainer
-                            {...provided.droppableProps}
-                        >
-                            {lists.map(list =>
-                                <ListCard key={list.id}
-                                    {...list}
-                                    listID={list.id}
-                                    handleAddTask={handleAddTask}
-                                    handleEditTask={handleEditTask}
-                                    taskText={taskText}
-                                    setTaskText={setTaskText}
-                                    handleDeleteTask={handleDeleteTask}
-                                />)} 
-
-                            <CreateListForm
-                                handleAddList={handleAddList}
-                            />
-                        </FlexContainer>
-                    )}
-            </Droppable>
+                
+            
+    
+            <Droppable droppableId="all-lists" direction="horizontal" type="list">
+                {(provided) => (
+                    <FlexContainer
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                            >
+                        {lists.map((list, index) => 
+                            <ListCard key={list.id}
+                                {...list}
+                                listIndex={index}
+                                listID={list.id}
+                                handleAddTask={handleAddTask}
+                                handleEditTask={handleEditTask}
+                                taskText={taskText}
+                                setTaskText={setTaskText}
+                                handleDeleteTask={handleDeleteTask}
+                                deleteList={deleteList}
+                            />)} 
+                            {provided.placeholder}
+                        <CreateListForm handleAddList={handleAddList} />
+                    </FlexContainer>
+                        )}
+                        </Droppable>
+                        {console.log("lists", lists)}
             </>
             }
         </DragDropContext>
