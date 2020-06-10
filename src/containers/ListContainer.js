@@ -6,6 +6,7 @@ import { UserContext } from '../UserContext'
 import { url } from '../requests'
 import { connect } from 'react-redux'
 import { ListContext } from '../ListContext'
+import { ListOrderContext } from '../ListOrderContext'
 import CreateListForm from '../components/CreateListForm';
 import { DragDropContext } from 'react-beautiful-dnd'
 import { Droppable } from 'react-beautiful-dnd'
@@ -19,6 +20,7 @@ const ListContainer = () => {
 
     const [currentUser] = useContext(UserContext)
     const [lists, setLists] = useContext(ListContext)
+    // const [orderedLists, setListOrder] = useContext(ListOrderContext)
     // u can delete this once you know how to do the fetch. you will need to do a dispatch
 
     const [taskText, setTaskText] = useState('')
@@ -27,26 +29,38 @@ const ListContainer = () => {
     const [sourceID, setSourceID] = useState('')
     const [destID, setDestID] = useState('')
     const [newOrderIndex, setOrderIndex] = useState(null)
-    const [orderedLists, setListOrder] = useState([])
+    
     const [orderedTasks, setTaskOrder] = useState([])
 
+    /// i put the sort inside of the ListContext's initial value and that seems to work when i update the order on the back end it will render the lists in that order. 
+    /// i think i still will need to fix the json that comes out of lists since that's how i'm dealing with tasks. and i have looked but still can't figure out how to edit the include: [:tasks] part of the render
+    // next step is to figure out how to 
     const fetchCurrentUserLists = () => {
         fetch(`${url}/users/${currentUser.id}/lists`)
             .then(r => r.json())
             .then(lists => {
                 setLists(lists)
-                setListOrder(() => {
-                    lists.sort((a, b) => (a.id > b.id) ? 1 : -1)
-                })
-        })
+                // setOrderedLists()
+                console.log("lists", lists)
+            }) 
+        //     .then(setOrderedLists())
+        // console.log("Ordered Lists", orderedLists)
     }
     
-    // app opens, checks to see what the order value is for each list
-    // sorts the lists by order
-
     useEffect(() => {
         fetchCurrentUserLists()
     }, [])
+    
+    // const setOrderedLists = () => {
+    //     setListOrder(() => {
+    //         let newOrder = [...lists]
+    //         newOrder.sort((a, b) => (a.order > b.order) ? 1 : -1)
+    //     })
+    //     setListOrder([...lists])
+    // }
+    // // app opens, checks to see what the order value is for each list
+    // sorts the lists by order
+
 
 //////////////////////////////////////////////////////////////////
 ////// this crud can go into createCard once redux is working ////
@@ -162,7 +176,7 @@ const ListContainer = () => {
         console.log('result', result)
         // reorder our column
         const { destination, source, draggableId, type } = result
-        console.log("destination.dropID", destination.droppableId)
+        // console.log("destination.dropID", destination.droppableId)
         
         if (!destination) {
             return
@@ -179,7 +193,7 @@ const ListContainer = () => {
         // const newRowOrder = Array.from(row.)
         // lists.splice
         
-        const newListOrder = [...lists]
+        
     }
     
     // const onDragStart = (e) => {
@@ -216,13 +230,12 @@ const ListContainer = () => {
                                 handleDeleteTask={handleDeleteTask}
                                 deleteList={deleteList}
                             />)} 
-                                    {console.log("orderedLists",orderedLists)}
                             {provided.placeholder}
                             <CreateListForm handleAddList={handleAddList} initialIndex={lists.length} />
                     </FlexContainer>
                         )}
-                        </Droppable>
-                        {console.log("currentuser", currentUser)}
+            </Droppable>
+                        
             </>
             }
         </DragDropContext>
