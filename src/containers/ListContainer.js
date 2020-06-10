@@ -7,9 +7,11 @@ import { url } from '../requests'
 import { connect } from 'react-redux'
 import { ListContext } from '../ListContext'
 import CreateListForm from '../components/CreateListForm';
-import { TaskTextProvider} from '../TaskTextContext'
+import { DragDropContext } from 'react-beautiful-dnd'
+import { Droppable } from 'react-beautiful-dnd'
+
     
-const GridContainer = styled.div ` 
+const FlexContainer = styled.div ` 
     display: flex;
     flex-direction: row;
 `
@@ -117,47 +119,62 @@ const ListContainer = () => {
         }
         
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
-            .then(r => r.json())
             .then(() => {
                 setLists(
-                    lists.map(lists.map(list => list.id === listID ? 
+                    lists.map(list => list.id === listID ? 
                     {
                         ...list, tasks: list.tasks.filter(task => task.id !== id)
                     }
                         : list
-                )))
-            }).catch(e => {
-                console.log(`%c${e}`, 'color: red;' );
+                ))
             })
     }
+    
+    const onDragEnd = result => {
+
+        // reorder our column
+    }
+    
     
     return (
         
         <>
-        <div>
+            <DragDropContext
+                onDragStart
+                onDragUpdate
+                onDragEnd
+            >
             {!currentUser ? <LoginPage /> :
             <>
             <h1>WELCOME {currentUser.username.toUpperCase()}</h1>
-            <GridContainer>
-                {/* <TaskTextProvider> */}
-                    {lists.map(list =>
-                        <ListCard key={list.id}
-                            {...list}
-                            handleAddTask={handleAddTask}
-                            handleEditTask={handleEditTask}
-                            taskText={taskText}
-                            setTaskText={setTaskText}
-                            handleDeleteTask={handleDeleteTask}
-                            
-                        />)} 
-                {/* </TaskTextProvider> */}
-                    <CreateListForm
-                        handleAddList={handleAddList}
-                    />
-            </GridContainer>
+                <Droppable
+                    droppableId="all-lists"
+                    direction="horizontal" type="list"
+                        >
+                    {(provided) => (
+                        <FlexContainer
+                            {...provided.droppableProps}
+                        >
+                            {lists.map(list =>
+                                <ListCard key={list.id}
+                                    {...list}
+                                    listID={list.id}
+                                    handleAddTask={handleAddTask}
+                                    handleEditTask={handleEditTask}
+                                    taskText={taskText}
+                                    setTaskText={setTaskText}
+                                    handleDeleteTask={handleDeleteTask}
+                                />)} 
+
+                            <CreateListForm
+                                handleAddList={handleAddList}
+                            />
+                        </FlexContainer>
+                    )}
+            </Droppable>
             </>
             }
-        </div>
+        </DragDropContext>
         </>
     )
 }
