@@ -17,31 +17,67 @@ const FlexContainer = styled.div `
 `
 const ListContainer = () => {
 
+    // const [sourceIndex, setSourceIndex] = useState('')
+    // const [destIndex, setDestIndex] = useState('')
+    // const [sourceID, setSourceID] = useState('')
+    // const [destID, setDestID] = useState('')
+    // const [newOrderIndex, setOrderIndex] = useState(null)
     const [currentUser] = useContext(UserContext)
     const [lists, setLists] = useContext(ListContext)
-    // u can delete this once you know how to do the fetch. you will need to do a dispatch
-
     const [taskText, setTaskText] = useState('')
-    const [sourceIndex, setSourceIndex] = useState('')
-    const [destIndex, setDestIndex] = useState('')
-
+    
+    
+    /// i put the sort inside of the ListContext's initial value and that seems to work when i update the order on the back end it will render the lists in that order. 
+    /// i think i still will need to fix the json that comes out of lists since that's how i'm dealing with tasks. and i have looked but still can't figure out how to edit the include: [:tasks] part of the render
+    // next step is to figure out how to 
     const fetchCurrentUserLists = () => {
-    fetch(`${url}/users/${currentUser.id}/lists`)
-        .then(r => r.json())
-        .then(lists => setLists(lists))
+        fetch(`${url}/users/${currentUser.id}/lists`)
+            .then(r => r.json())
+            .then(lists => {
+                console.log("1st lists order", lists.map(list => list.order))
+                // setOrderToIndex(lists)
+                setLists(lists)
+        })
     }
 
+    const setOrderToIndex = (lists) => {
+        let updatedLists = lists.map((list, index) =>
+            list.order !== index ? {...list, order: index} : list)
+        let sortedLists = updatedLists.sort((a, b) => (a.order > b.order) ? 1 : -1)
+        
+        setLists(sortedLists)
+        // {...list, tasks: [...list.tasks, newTask] }
+        // the list index are null when added but they get indexes on refresh,
+        // could i set the lists to a state and then update the state. but would it keep the order correctly? i can't tell
+        // i feel like it would not. 
+    }
+    
     useEffect(() => {
         fetchCurrentUserLists()
     }, [])
+    
+    const deleteList = (listID) => {
+        const options = {
+            method: 'DELETE'
+        }
 
-//////////////////////////////////////////////////////////////////
-////// this crud can go into createCard once redux is working ////
-//////////////////////////////////////////////////////////////////
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
+            .then(r => r.json())
+            .then(setLists)
+    }
 
-    // need an on submit to pass down and pass in the title, and currentUser from context 
+    const handleDeleteTask = (listID, id) => {
+        const options = {
+            method: 'DELETE'
+        }
+        // json return should be updatedTasks 
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
+            .then(r => r.json())
+            .then(updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list)))
+    
+    }
 
-    const handleAddList = (e, title) => {
+    const handleAddList = (e, title, order) => {
         e.preventDefault()
 
         let options = {
@@ -50,19 +86,19 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({title, user_id: currentUser.id})
+            body: JSON.stringify({ title, user_id: currentUser.id, order})
         }
 
         fetch(`${url}/users/${currentUser.id}/lists/`, options)
             .then(r => r.json())
             .then(newList => {
-                console.log(newList)
+                console.log('newList', newList)
                 setLists([ ...lists, newList ])
             })
         
     }
 
-    const handleAddTask = (e, text, listID) => {
+    const handleAddTask = (e, text, listID, order) => {
         // get text and listID pass up 
         e.preventDefault()
 
@@ -72,7 +108,7 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({text, list_id: listID})
+            body: JSON.stringify({text, list_id: listID, order})
         }
 
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks`, options)
@@ -114,42 +150,16 @@ const ListContainer = () => {
     }
 
 
-    const handleDeleteTask = (listID, id) => {
-        const options = {
-            method: 'DELETE'
-        }
-        
-        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
-            .then(() => {
-                setLists(
-                    lists.map(list => list.id === listID ? 
-                    {
-                        ...list, tasks: list.tasks.filter(task => task.id !== id)
-                    }
-                        : list
-                ))
-            })
-    }
+
     
-    const deleteList = (listID) => {
-        const options = {
-            method: 'DELETE'
-        }
-        fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
-            .then(() => {
-                setLists(
-                    lists.filter(list => list.id !== listID)
-                )
-            })
 
-    }
-
+// change on back end 
     
     const onDragEnd = (result) => {
         console.log('result', result)
         // reorder our column
         const { destination, source, draggableId, type } = result
-        console.log("destination.dropID", destination.droppableId)
+        // console.log("destination.dropID", destination.droppableId)
         
         if (!destination) {
             return
@@ -166,33 +176,44 @@ const ListContainer = () => {
         // const newRowOrder = Array.from(row.)
         // lists.splice
         
+    
     }
     
     // const onDragStart = (e) => {
         
     // }
+
+    // so i have an index for each card that exists already on the page. 
+    // i need to 
     
+    // source.droppableId 
+    // source.index 
+    
+    // destination.droppableId
+    // destination.index
+    
+    // i'd like to be able to grab the 
+    
+    let sortedLists = lists.sort((a, b) => (a.order > b.order) ? 1 : -1)
     
     return (
         
         <>
-            <DragDropContext onDragEnd={onDragEnd} >
+        <DragDropContext onDragEnd={onDragEnd} >
                 
             {!currentUser ? <LoginPage /> :
             <>
                 
-            
-    
             <Droppable droppableId="all-lists" direction="horizontal" type="list">
                 {(provided) => (
                     <FlexContainer
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                             >
-                        {lists.map((list, index) => 
+                        {sortedLists.map((list) => 
                             <ListCard key={list.id}
+                                list={list}
                                 {...list}
-                                listIndex={index}
                                 listID={list.id}
                                 handleAddTask={handleAddTask}
                                 handleEditTask={handleEditTask}
@@ -200,13 +221,16 @@ const ListContainer = () => {
                                 setTaskText={setTaskText}
                                 handleDeleteTask={handleDeleteTask}
                                 deleteList={deleteList}
+                                
                             />)} 
+                                    {console.log("lists", lists)}
+                                    {console.log("2nd lists order", lists.map(list => list.order))}
                             {provided.placeholder}
-                        <CreateListForm handleAddList={handleAddList} />
+                            <CreateListForm handleAddList={handleAddList}  />
                     </FlexContainer>
                         )}
-                        </Droppable>
-                        {console.log("lists", lists)}
+            </Droppable>
+                        
             </>
             }
         </DragDropContext>

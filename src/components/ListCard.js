@@ -40,17 +40,14 @@ const DeleteButton = styled(Icon)`
 
 
 const ListCard = (props) => {
-    const { listID, title, tasks, id, listIndex, handleAddTask, handleEditTask, taskText, setTaskText, created_at, handleDeleteTask, deleteList} = props
+    const { listID, title, tasks, order, id, taskText, handleAddTask, handleEditTask,  setTaskText,  handleDeleteTask, deleteList} = props
     const [currentUser] = useContext(UserContext) // use for edit form later
-    console.log(tasks) 
-    
 
 
-    let sortedTasks = tasks.sort((a, b) => (a.created_at > b.created_at) ? 1 : -1)
-    
+    let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1 )
     return (
         
-        <Draggable draggableId={String(listID)} index={listIndex} >
+        <Draggable draggableId={String(listID)} index={order} >
             {/* {sortedTasks.map(task => )} */}
                 {provided => (
                     <ListContainer
@@ -68,20 +65,23 @@ const ListCard = (props) => {
                                     </DeleteButton>
                                 </div>
                                 <div {...provided.droppableProps} ref={provided.innerRef} >
-                                    {sortedTasks.map((task, index) => <TaskCard
+                                    
+                                    {sortedTasks.map((task) => 
+                                    <TaskCard
                                         key={task.id}
                                         {...task} 
-                                        index={index}
                                         listID={listID}
                                         taskText={taskText}
                                         handleEditTask={handleEditTask}
                                         setTaskText={setTaskText}
                                         handleDeleteTask={handleDeleteTask}
                                         />
-                                    )}
+                                        
+                                    ) }
                                     {provided.placeholder}
                                     <CreateTaskForm
                                         listID={id}
+                                        tasks={tasks}
                                         handleAddTask={handleAddTask}
                                         taskText={taskText}
                                         setTaskText={setTaskText}

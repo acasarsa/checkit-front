@@ -12,3 +12,5 @@ export const ListProvider = (props) => {
         </ListContext.Provider>
     )
 }
+
+// lists.sort((a, b) => (a.order > b.order) ? 1 : -1)

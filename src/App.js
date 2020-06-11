@@ -4,6 +4,7 @@ import LoginPage from './components/LoginPage'
 import ListContainer from './containers/ListContainer'
 import { UserContext } from './UserContext'
 import { ListProvider } from './ListContext'
+import { ListOrderProvider } from './ListOrderContext'
 import TopPanelContainer from './containers/TopPanelContainer'
 import styled from 'styled-components'
 
@@ -39,7 +40,7 @@ const App = () => {
                 <Switch>
                     
                     <ListProvider>
-                        <Route path='/home' component={ListContainer}  />
+                            <Route path='/home' component={ListContainer}  />    
                     </ListProvider>
 
                     <Route exact path='/login' component={LoginPage} />

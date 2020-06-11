@@ -56,7 +56,7 @@ const EditButton = styled(Icon)`
     }
 `;
 
-const TaskCard = ({ id, text, listID, index, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
+const TaskCard = ({ id, text, order, listID, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
     const [isEditing, setIsEditing] = useState(false)
@@ -80,7 +80,7 @@ const TaskCard = ({ id, text, listID, index, handleEditTask, taskText, setTaskTe
     const renderTaskCard = () => {
 
         return (
-            <Draggable draggableId={String(id)} index={index} > 
+            <Draggable draggableId={String(id)} index={order} > 
                 {provided => (
                     <CardContainer
                         {...provided.draggableProps}

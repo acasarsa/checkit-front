@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import TextArea from 'react-textarea-autosize'
 import { Card, Button } from '@material-ui/core';
 import styled from "styled-components";
+import { UserContext } from '../UserContext'
+import { ListContext } from '../ListContext'
 
 const Container = styled.div`
     width: 284px;
@@ -21,8 +23,9 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const CreateListForm = ({handleAddList}) => {
-
+const CreateListForm = ({ handleAddList }) => {
+    const [currentUser] = useContext(UserContext)
+    const [lists, setLists] = useContext(ListContext)
 
     const [title, setTitle] = useState('')
     /// if this fucks up switch it all to title instead of text // i think it shouldn't matter though. 
@@ -50,6 +53,8 @@ const CreateListForm = ({handleAddList}) => {
 
     }
 
+    const newOrder = lists.length
+    
     const renderListForm = () => {
         return (
             <Container>
@@ -66,7 +71,7 @@ const CreateListForm = ({handleAddList}) => {
                 </StyledCard>
                     <Button
                     onMouseDown={(e) => {
-                        handleAddList(e, title) 
+                        handleAddList(e, title, newOrder ) 
                         setTitle('')
                         closeForm()
                     }}
@@ -74,6 +79,7 @@ const CreateListForm = ({handleAddList}) => {
                         style={{backgroundColor: 'lightgreen'}}
                     >Add List
                     </Button>
+                {console.log(currentUser)}
             </Container>
         )
     }
