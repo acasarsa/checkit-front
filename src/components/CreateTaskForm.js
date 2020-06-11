@@ -22,7 +22,7 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const CreateTaskForm = ({ handleAddTask, listID, setTaskText, taskText, initialTaskIndex }) => {
+const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText }) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
     // const [text, setText] = useState('')
@@ -60,6 +60,7 @@ const CreateTaskForm = ({ handleAddTask, listID, setTaskText, taskText, initialT
     // useEffect(() => {
     //     renderForm()
     // }, [])
+    const newOrder = tasks.length
 
     const renderForm = () => {
         return (
@@ -77,7 +78,7 @@ const CreateTaskForm = ({ handleAddTask, listID, setTaskText, taskText, initialT
                 </StyledCard>
                     <Button
                     onMouseDown={(e) => {
-                        handleAddTask(e, taskText, listID, initialTaskIndex) 
+                        handleAddTask(e, taskText, listID, newOrder ) 
                         setTaskText('')
                         closeForm()
                     }}

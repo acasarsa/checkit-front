@@ -53,7 +53,7 @@ const CreateListForm = ({ handleAddList }) => {
 
     }
 
-    const newOrder = lists.length + 1
+    const newOrder = lists.length
     
     const renderListForm = () => {
         return (

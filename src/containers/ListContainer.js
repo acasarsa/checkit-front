@@ -65,13 +65,17 @@ const ListContainer = () => {
             .then(r => r.json())
             .then(setLists)
     }
-    // tasks: [list.tasks.map((task, idx) => task.order !== idx ? { ...task, order: idx } : task)]
 
-//////////////////////////////////////////////////////////////////
-////// this crud can go into createCard once redux is working ////
-//////////////////////////////////////////////////////////////////
-
-    // need an on submit to pass down and pass in the title, and currentUser from context 
+    const handleDeleteTask = (listID, id) => {
+        const options = {
+            method: 'DELETE'
+        }
+        // json return should be updatedTasks 
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
+            .then(r => r.json())
+            .then(updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list)))
+    
+    }
 
     const handleAddList = (e, title, order) => {
         e.preventDefault()
@@ -94,7 +98,7 @@ const ListContainer = () => {
         
     }
 
-    const handleAddTask = (e, text, listID, index) => {
+    const handleAddTask = (e, text, listID, order) => {
         // get text and listID pass up 
         e.preventDefault()
 
@@ -104,7 +108,7 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({text, list_id: listID, order: index})
+            body: JSON.stringify({text, list_id: listID, order})
         }
 
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks`, options)
@@ -146,22 +150,7 @@ const ListContainer = () => {
     }
 
 
-    const handleDeleteTask = (listID, id) => {
-        const options = {
-            method: 'DELETE'
-        }
-        
-        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
-            .then(() => {
-                setLists(
-                    lists.map(list => list.id === listID ? 
-                    {
-                        ...list, tasks: list.tasks.filter(task => task.id !== id)
-                    }
-                        : list
-                ))
-            })
-    }
+
     
 
 // change on back end 
@@ -221,11 +210,10 @@ const ListContainer = () => {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                             >
-                        {sortedLists.map((list, index) => 
+                        {sortedLists.map((list) => 
                             <ListCard key={list.id}
                                 list={list}
                                 {...list}
-                                listIndex={index}
                                 listID={list.id}
                                 handleAddTask={handleAddTask}
                                 handleEditTask={handleEditTask}

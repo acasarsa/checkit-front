@@ -40,14 +40,11 @@ const DeleteButton = styled(Icon)`
 
 
 const ListCard = (props) => {
-    const { list, listID, title, tasks, id, listIndex, taskIndex, handleAddTask, handleEditTask, taskText, setTaskText, order, handleDeleteTask, deleteList} = props
+    const { listID, title, tasks, order, id, taskText, handleAddTask, handleEditTask,  setTaskText,  handleDeleteTask, deleteList} = props
     const [currentUser] = useContext(UserContext) // use for edit form later
-    console.log(tasks) 
-    
 
 
-    // let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
-    
+    let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1 )
     return (
         
         <Draggable draggableId={String(listID)} index={order} >
@@ -68,12 +65,11 @@ const ListCard = (props) => {
                                     </DeleteButton>
                                 </div>
                                 <div {...provided.droppableProps} ref={provided.innerRef} >
-                                    {console.log("tasks", tasks)}
-                                    {tasks.map((task, index) => 
+                                    
+                                    {sortedTasks.map((task) => 
                                     <TaskCard
                                         key={task.id}
                                         {...task} 
-                                        taskIndex={index}
                                         listID={listID}
                                         taskText={taskText}
                                         handleEditTask={handleEditTask}
@@ -85,8 +81,7 @@ const ListCard = (props) => {
                                     {provided.placeholder}
                                     <CreateTaskForm
                                         listID={id}
-                                        // initialTaskIndex={list.tasks.length}
-                                        
+                                        tasks={tasks}
                                         handleAddTask={handleAddTask}
                                         taskText={taskText}
                                         setTaskText={setTaskText}
