@@ -50,7 +50,7 @@ const ListCard = (props) => {
     
     return (
         
-        <Draggable draggableId={String(listID)} index={listIndex} >
+        <Draggable draggableId={String(listID)} index={order} >
             {/* {sortedTasks.map(task => )} */}
                 {provided => (
                     <ListContainer
@@ -68,7 +68,9 @@ const ListCard = (props) => {
                                     </DeleteButton>
                                 </div>
                                 <div {...provided.droppableProps} ref={provided.innerRef} >
-                                    {tasks.map((task, index) => <TaskCard
+                                    {console.log("tasks", tasks)}
+                                    {tasks.map((task, index) => 
+                                    <TaskCard
                                         key={task.id}
                                         {...task} 
                                         taskIndex={index}
@@ -78,11 +80,13 @@ const ListCard = (props) => {
                                         setTaskText={setTaskText}
                                         handleDeleteTask={handleDeleteTask}
                                         />
-                                    )}
+                                        
+                                    ) }
                                     {provided.placeholder}
                                     <CreateTaskForm
                                         listID={id}
-                                        initialTaskIndex={list.tasks.length}
+                                        // initialTaskIndex={list.tasks.length}
+                                        
                                         handleAddTask={handleAddTask}
                                         taskText={taskText}
                                         setTaskText={setTaskText}

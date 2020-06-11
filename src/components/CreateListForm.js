@@ -3,6 +3,7 @@ import TextArea from 'react-textarea-autosize'
 import { Card, Button } from '@material-ui/core';
 import styled from "styled-components";
 import { UserContext } from '../UserContext'
+import { ListContext } from '../ListContext'
 
 const Container = styled.div`
     width: 284px;
@@ -22,9 +23,9 @@ const StyledTextArea = styled(TextArea)`
     border: none;
 `;
 
-const CreateListForm = ({ handleAddList, initialIndex }) => {
+const CreateListForm = ({ handleAddList }) => {
     const [currentUser] = useContext(UserContext)
-
+    const [lists, setLists] = useContext(ListContext)
 
     const [title, setTitle] = useState('')
     /// if this fucks up switch it all to title instead of text // i think it shouldn't matter though. 
@@ -52,6 +53,8 @@ const CreateListForm = ({ handleAddList, initialIndex }) => {
 
     }
 
+    const newOrder = lists.length + 1
+    
     const renderListForm = () => {
         return (
             <Container>
@@ -68,7 +71,7 @@ const CreateListForm = ({ handleAddList, initialIndex }) => {
                 </StyledCard>
                     <Button
                     onMouseDown={(e) => {
-                        handleAddList(e, title, initialIndex) 
+                        handleAddList(e, title, newOrder ) 
                         setTitle('')
                         closeForm()
                     }}
