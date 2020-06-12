@@ -165,23 +165,19 @@ const ListContainer = () => {
             console.log("source",source.droppableId)
             console.log(destination.droppableId);
             let endList = lists.find(list => list.id === parseInt(destination.droppableId))
-            console.log("endList", endList)
-            
-            // let tasks = endList.tasks
-            // let newTaskOrder = tasks.splice(source.index, 0) 
-            // console.log("source.index", source.index)
-            // console.log(endList)
-            // console.log(destination.index)
-            // newTaskOrder.splice(destination.index, 1, ...newTaskOrder)
-            // why isn't this working? 
-            // console.log(currentList)
 
-            // console.log("newTaskOrder", newTaskOrder)
-            // newTaskOrder.splice(destination.index, 0, ...newTaskOrder)
+    
+            let tasks = endList.tasks
+            let newTaskOrder = tasks.splice(source.index, 1) 
+            tasks.splice(destination.index, 0, ...newTaskOrder)
+            console.log("newTaskOrder", newTaskOrder)
+            console.log("endList", endList)
             // console.log("currentList.tasks",currentList.tasks)
         }
         
-        
+            // console.log("source.index", source.index)
+            // console.log(endList)
+            // console.log(destination.index)
         // adjust state of lists
         // const row = lists
         // const newRowOrder = Array.from(row.)
