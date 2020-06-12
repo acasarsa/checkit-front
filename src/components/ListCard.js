@@ -44,7 +44,9 @@ const ListCard = (props) => {
     const [currentUser] = useContext(UserContext) // use for edit form later
 
 
-    let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1 )
+    let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
+    console.log("sorted Tasks", sortedTasks)
+    // debugger
     return (
         
         <Draggable draggableId={String(listID)} index={order} >
@@ -77,7 +79,8 @@ const ListCard = (props) => {
                                     handleDeleteTask={handleDeleteTask}
                                     />
                                     
-                                ) }
+                                    )}
+                                    {console.log("rendered task orders ", sortedTasks.map(task => task.order))}
                                 {provided.placeholder}
                                 <CreateTaskForm
                                     listID={id}

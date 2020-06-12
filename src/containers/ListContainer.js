@@ -34,9 +34,7 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists`)
             .then(r => r.json())
             .then(lists => {
-                console.log("1st lists order", lists.map(list => list.order))
-                // setOrderToIndex(lists)
-                setLists(lists)
+                setLists(lists.sort())
         })
     }
 
@@ -62,7 +60,6 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists/`, options)
             .then(r => r.json())
             .then(newList => {
-                console.log('newList', newList)
                 setLists([ ...lists, newList ])
             })
         
@@ -84,7 +81,6 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks`, options)
             .then(r => r.json())
             .then(newTask => {
-                console.log(newTask)
                 setLists( lists.map(list => list.id === listID ? {...list, tasks: [...list.tasks, newTask]} : list) )
             })
             
@@ -92,8 +88,6 @@ const ListContainer = () => {
     }
 
     const handleEditTask = (taskText, listID, id) => {
-        console.log('taskText', taskText)
-
 
         let options = {
         method: 'PATCH', 
@@ -142,7 +136,7 @@ const ListContainer = () => {
         console.log('result', result)
         // reorder our column
         const { destination, source, draggableId, type, droppableId } = result
-        // console.log("destination.dropID", destination.droppableId)
+ 
         
         if (!destination) {
             return
@@ -153,39 +147,33 @@ const ListContainer = () => {
         }
         
         if (type === 'list') {
-            let newListOrder = lists.splice(source.index, 1)
             let draggedListID = parseInt(draggableId)
+            let newListOrder = lists.splice(source.index, 1)
             lists.splice(destination.index, 0, ...newListOrder)
             console.log("lists after splice", lists)
-            updateOrderAfterDnd(destination.index, draggedListID )
+            updateListOrderAfterDnd( destination.index, draggedListID )
             
         }
         
         if (type === 'task') {
-            console.log("source",source.droppableId)
-            console.log(destination.droppableId);
-            let endList = lists.find(list => list.id === parseInt(destination.droppableId))
-
-    
-            let tasks = endList.tasks
+            let draggedTaskID = parseInt(draggableId)
+            let destination_list = lists.find(list => list.id === parseInt(destination.droppableId))
+            let listID = destination_list.id
+            let tasks = destination_list.tasks
+            
             let newTaskOrder = tasks.splice(source.index, 1) 
             tasks.splice(destination.index, 0, ...newTaskOrder)
-            console.log("newTaskOrder", newTaskOrder)
-            console.log("endList", endList)
-            // console.log("currentList.tasks",currentList.tasks)
+
+            console.log("task's list after splice", destination_list)
+            updateTaskOrderAfterDnd( destination.index, listID, draggedTaskID )
+            console.log("draggedTaskID", draggedTaskID)
         }
         
-            // console.log("source.index", source.index)
-            // console.log(endList)
-            // console.log(destination.index)
-        // adjust state of lists
-        // const row = lists
-        // const newRowOrder = Array.from(row.)
-        // lists.splice
+
     
     }
     
-    const updateOrderAfterDnd = (new_position, listID) => {
+    const updateListOrderAfterDnd = (new_position, listID) => {
 
         let options = {
             method: 'PATCH',
@@ -201,12 +189,32 @@ const ListContainer = () => {
             .then(setLists)
     }
     
-    // const onDragStart = (e) => {
+    const updateTaskOrderAfterDnd = (new_position, listID, taskID) => {
         
-    // }
+        let options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({ order: new_position })
+        }
+    
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${taskID}/update_order`, options)
+            .then(r => r.json())
+            .then(updatedTasks => {
+                console.log("Tasks object after dnd", updatedTasks)
+                // debugger
+                setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks.sort((a, b) => (a.order > b.order)? 1 : -1) } : list))
+                
+            }) 
+    }
+    
+    // setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list ))
+    // setLists(
+    //     lists.map(list => list.id === listID ? { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list))
 
-    // so i have an index for each card that exists already on the page. 
-    // i need to 
+
     
     // source.droppableId 
     // source.index 
@@ -245,8 +253,11 @@ const ListContainer = () => {
                                 deleteList={deleteList}
                                 
                             />)} 
-                                    {console.log("lists", lists)}
-                                    {console.log("2nd lists order", lists.map(list => list.order))}
+                                    {console.log("rendered sorted lists", sortedLists)}
+                                    {console.log("rendered lists", lists)}
+                                    {console.log("rendered lists order", sortedLists.map(list => list.order))}
+                                    {console.log("rendered tasks", sortedLists.map(list => list.tasks))}
+                                    
                             {provided.placeholder}
                             <CreateListForm handleAddList={handleAddList}  />
                     </FlexContainer>
