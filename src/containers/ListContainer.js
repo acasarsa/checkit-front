@@ -40,42 +40,12 @@ const ListContainer = () => {
         })
     }
 
-    const setOrderToIndex = (lists) => {
-        let updatedLists = lists.map((list, index) =>
-            list.order !== index ? {...list, order: index} : list)
-        let sortedLists = updatedLists.sort((a, b) => (a.order > b.order) ? 1 : -1)
-        
-        setLists(sortedLists)
-        // {...list, tasks: [...list.tasks, newTask] }
-        // the list index are null when added but they get indexes on refresh,
-        // could i set the lists to a state and then update the state. but would it keep the order correctly? i can't tell
-        // i feel like it would not. 
-    }
     
     useEffect(() => {
         fetchCurrentUserLists()
     }, [])
     
-    const deleteList = (listID) => {
-        const options = {
-            method: 'DELETE'
-        }
-
-        fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
-            .then(r => r.json())
-            .then(setLists)
-    }
-
-    const handleDeleteTask = (listID, id) => {
-        const options = {
-            method: 'DELETE'
-        }
-        // json return should be updatedTasks 
-        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
-            .then(r => r.json())
-            .then(updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list)))
     
-    }
 
     const handleAddList = (e, title, order) => {
         e.preventDefault()
@@ -137,19 +107,32 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
             .then(r => r.json())
             .then(updatedTask => {
-                console.log('updatedTask', updatedTask)
-
                 setLists(
                     lists.map(list => list.id === listID ?
-                    {
-                        ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task)
-                    }
-                        : list
-                ))
+                        { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)
+                )
             })
     }
 
+    const deleteList = (listID) => {
+        const options = {
+            method: 'DELETE'
+        }
+        
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
+            .then(r => r.json())
+            .then(setLists)
+    }
 
+    const handleDeleteTask = (listID, id) => {
+        const options = {
+            method: 'DELETE'
+        }
+
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
+            .then(r => r.json())
+            .then(updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list)))
+    }
 
     
 
@@ -158,25 +141,64 @@ const ListContainer = () => {
     const onDragEnd = (result) => {
         console.log('result', result)
         // reorder our column
-        const { destination, source, draggableId, type } = result
+        const { destination, source, draggableId, type, droppableId } = result
         // console.log("destination.dropID", destination.droppableId)
         
         if (!destination) {
             return
         }
         
-        if (
-            destination.droppableId === source.droppableId && 
-            destination.index === source.index
-        ) {
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
             return
         }
+        
+        if (type === 'list') {
+            let newListOrder = lists.splice(source.index, 1)
+            let draggedListID = parseInt(draggableId)
+            lists.splice(destination.index, 0, ...newListOrder)
+            console.log("lists after splice", lists)
+            updateOrderAfterDnd(destination.index, draggedListID )
+            
+        }
+        
+        if (type === 'task') {
+            console.log("source",source.droppableId)
+            console.log(destination.droppableId);
+            let endList = lists.find(list => list.id === parseInt(destination.droppableId))
+
+    
+            let tasks = endList.tasks
+            let newTaskOrder = tasks.splice(source.index, 1) 
+            tasks.splice(destination.index, 0, ...newTaskOrder)
+            console.log("newTaskOrder", newTaskOrder)
+            console.log("endList", endList)
+            // console.log("currentList.tasks",currentList.tasks)
+        }
+        
+            // console.log("source.index", source.index)
+            // console.log(endList)
+            // console.log(destination.index)
         // adjust state of lists
         // const row = lists
         // const newRowOrder = Array.from(row.)
         // lists.splice
-        
     
+    }
+    
+    const updateOrderAfterDnd = (new_position, listID) => {
+
+        let options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({order: new_position})
+        }
+
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/update_order`, options)
+            .then(r => r.json())
+            .then(setLists)
     }
     
     // const onDragStart = (e) => {
@@ -212,7 +234,7 @@ const ListContainer = () => {
                             >
                         {sortedLists.map((list) => 
                             <ListCard key={list.id}
-                                list={list}
+                                // list={list}
                                 {...list}
                                 listID={list.id}
                                 handleAddTask={handleAddTask}

@@ -48,45 +48,45 @@ const ListCard = (props) => {
     return (
         
         <Draggable draggableId={String(listID)} index={order} >
-            {/* {sortedTasks.map(task => )} */}
                 {provided => (
                     <ListContainer
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                >
-                        <Droppable droppableId={String(listID)} type="card" >
+                        
+                    ref={provided.innerRef}
+                    >
+                        <div {...provided.dragHandleProps}>
+                            <h4 >{title}</h4>
+                            <DeleteButton onClick={() => deleteList(listID)}>
+                                delete
+                            </DeleteButton>
+                        </div>
+                        <Droppable droppableId={String(listID)} type="task" >
                             {provided => (
                             <>
-                                <div>
-                                    <h4>{title}</h4>
-                                    <DeleteButton onClick={() => deleteList(listID)}>
-                                        delete
-                                    </DeleteButton>
-                                </div>
-                                <div {...provided.droppableProps} ref={provided.innerRef} >
-                                    
-                                    {sortedTasks.map((task) => 
+                            <div {...provided.droppableProps} ref={provided.innerRef} >
+                                
+                                {sortedTasks.map((task) => 
                                     <TaskCard
-                                        key={task.id}
-                                        {...task} 
-                                        listID={listID}
-                                        taskText={taskText}
-                                        handleEditTask={handleEditTask}
-                                        setTaskText={setTaskText}
-                                        handleDeleteTask={handleDeleteTask}
-                                        />
-                                        
-                                    ) }
-                                    {provided.placeholder}
-                                    <CreateTaskForm
-                                        listID={id}
-                                        tasks={tasks}
-                                        handleAddTask={handleAddTask}
-                                        taskText={taskText}
-                                        setTaskText={setTaskText}
+                                        // may need to pass down task={task}
+                                    key={task.id}
+                                    {...task} 
+                                    listID={listID}
+                                    taskText={taskText}
+                                    handleEditTask={handleEditTask}
+                                    setTaskText={setTaskText}
+                                    handleDeleteTask={handleDeleteTask}
                                     />
-                                </div>
+                                    
+                                ) }
+                                {provided.placeholder}
+                                <CreateTaskForm
+                                    listID={id}
+                                    tasks={tasks}
+                                    handleAddTask={handleAddTask}
+                                    taskText={taskText}
+                                    setTaskText={setTaskText}
+                                />
+                            </div>
                             </>
                             )}
                         </Droppable>
