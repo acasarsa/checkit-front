@@ -205,8 +205,8 @@ const ListContainer = () => {
             .then(updatedTasks => {
                 console.log("Tasks object after dnd", updatedTasks)
                 // debugger
-                setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks.sort((a, b) => (a.order > b.order)? 1 : -1) } : list))
-                
+                setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
+                // ** take out sort for previous way
             }) 
     }
     
