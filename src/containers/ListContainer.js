@@ -34,7 +34,7 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists`)
             .then(r => r.json())
             .then(lists => {
-                setLists(lists.sort())
+                setLists(lists)
         })
     }
 
@@ -136,7 +136,7 @@ const ListContainer = () => {
         console.log('result', result)
         // reorder our column
         const { destination, source, draggableId, type, droppableId } = result
- 
+
         
         if (!destination) {
             return
@@ -163,13 +163,24 @@ const ListContainer = () => {
             
             let newTaskOrder = tasks.splice(source.index, 1) 
             tasks.splice(destination.index, 0, ...newTaskOrder)
-
-            console.log("task's list after splice", destination_list)
+            console.log("reorder", tasks)
+            // let ordered_tasks = tasks.map(task => {
+            //     return 
+            // })
+            
+            // setLists(lists.map(list => list.id === listID ? { ...list, tasks: tasks } : list))
             updateTaskOrderAfterDnd( destination.index, listID, draggedTaskID )
+                // .each_with_index { | t, i | t.update(order: i) }
+            console.log("task's list after splice", destination_list)
             console.log("draggedTaskID", draggedTaskID)
+            console.log("order object", tasks.map(task => {
+                return {order: task.order, text: task.text}
+            }));
+            
         }
         
 
+        // console.log(all the tasks and their current postion)
     
     }
     
@@ -203,9 +214,10 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${taskID}/update_order`, options)
             .then(r => r.json())
             .then(updatedTasks => {
-                console.log("Tasks object after dnd", updatedTasks)
-                // debugger
+                // console.log("Tasks object after dnd", updatedTasks)
+                // let sorted = updatedTasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
                 setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
+                console.log("tasks after set list dnd", lists.find(list => list.id === listID).tasks)
                 // ** take out sort for previous way
             }) 
     }
@@ -244,6 +256,7 @@ const ListContainer = () => {
                             <ListCard key={list.id}
                                 // list={list}
                                 {...list}
+                                // tasks={list.tasks}
                                 listID={list.id}
                                 handleAddTask={handleAddTask}
                                 handleEditTask={handleEditTask}
@@ -253,10 +266,10 @@ const ListContainer = () => {
                                 deleteList={deleteList}
                                 
                             />)} 
-                                    {console.log("rendered sorted lists", sortedLists)}
+                                    {console.log("rendered sorted lists", lists)}
                                     {console.log("rendered lists", lists)}
-                                    {console.log("rendered lists order", sortedLists.map(list => list.order))}
-                                    {console.log("rendered tasks", sortedLists.map(list => list.tasks))}
+                                    {console.log("rendered lists order", lists.map(list => list.order))}
+                                    {console.log("rendered tasks", lists.map(list => list.tasks))}
                                     
                             {provided.placeholder}
                             <CreateListForm handleAddList={handleAddList}  />
