@@ -178,12 +178,52 @@ const ListContainer = () => {
             
             if (start !== finish) {
                 console.log("draggedTaskID", draggedTaskID)
-                let startTask = tasks.splice(startPosition, 1)
-                moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)
-                tasks.splice(newPosition, 0, ...startTask)
+                console.log("startID", startID)
+                console.log("start list", start)
+                // let startTask = tasks.splice(startPosition, 1)
+                // // moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)
+                // tasks.splice(newPosition, 0, ...startTask)
+                // let startTask = tasks.splice(startPosition, 1)
+                setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.filter(task => task.id !== draggedTaskID) } : list))
+                // this worked to remove the list. you can just remove it an add it somewhere else and still just update the order on the back like before. 
+                setLists(...lists, lists.find(list => list.id === startID ? { ...list, tasks: list.tasks.map((task, index) => task.order = index) } : list))
+                // something is just off a bit the index thing worked i think !
+                
+                // just splice it in at index new_position this maybe will work you would just splice! tasks array sounds good to me. 
+                console.log("finsih List after setList runs", (lists.find(list => list.id === finishID)).tasks)
+                // 1. do the set index thing correctly ^^
+                // 2. then set the state again where the new list is updated. 
+                // 3. do the set index thing 
+                
+                
+                // setLists(...lists, lists.find(list => list === start ? list.tasks : tasks.filter(task => task.id !== draggedTaskID)  ))
+                // list => list.id === listID ? { ...list, tasks: updatedTasks } : list
+                
+                // if (!lists.find(list => list.id === parseInt(source.droppableId)).tasks.include(tasks.find(task => task.id === draggedTaskID))) {
+                    console.log("starting List after setList runs", (lists.find(list => list.id === startID)).tasks)
+                // }
+                // setLists(...lists, lists.find(list => list.id === startID ? list.tasks: tasks.map((task, index) => task.order = index) ) )
+                // moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)
+                // tasks.splice(newPosition, 0, ...startTask)
 
             }
             
+            // handleDelete = (id) => {
+            //     const options = {
+            //         method: 'DELETE'
+            //     }
+            //     fetch(`http://localhost:3000/endpoint/id`, options)
+            //         .then(r => r.json())
+            //         .then(this.setState({
+            //             array: this.state.array.filter((item) => item.id !== id)
+            //             }))
+            //         .catch((error) => {
+            //             console.error('Error:', error);
+            //         });
+            
+            // }
+    
+
             // if list.id === startID then do the .then from a destroy
             // if list.id === finishID then do the update 
             
@@ -226,8 +266,9 @@ const ListContainer = () => {
                 let startTasks = reorderedData[0]
                 let finishTasks = reorderedData[1]
                 
+                setLists(lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list))
+                
                 setLists( lists.map(list => list.id === startID ? { ...list, tasks: startTasks} : list ))
-                setLists( lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list ))
             })
     }
     // updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
@@ -277,6 +318,9 @@ const ListContainer = () => {
             }) 
     }
     
+    if (!lists) {
+        console.log("lists undefined", lists)
+    } 
     
     let sortedLists = lists.sort((a, b) => (a.order > b.order) ? 1 : -1)
     
