@@ -157,7 +157,7 @@ const ListContainer = () => {
         
         if (type === 'task') {
             let draggedTaskID = parseInt(draggableId) // used in endpoint
-            
+            console.log("draggedTaskID", draggedTaskID)
             let start = lists.find(list => list.id === parseInt(source.droppableId))
             let finish = lists.find(list => list.id === parseInt(destination.droppableId))
             
@@ -177,8 +177,9 @@ const ListContainer = () => {
             } 
             
             if (start !== finish) {
+                console.log("draggedTaskID", draggedTaskID)
                 let startTask = tasks.splice(startPosition, 1)
-                moveTaskToDifList(startID, finishID, draggedTaskID)
+                moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)
                 tasks.splice(newPosition, 0, ...startTask)
 
             }
@@ -219,11 +220,18 @@ const ListContainer = () => {
             body: JSON.stringify({ list_id: finishID, order: newPosition })
         }
 
-        fetch(`${url}/users/${currentUser.id}/lists/${startID}/tasks/${id}`, options)
+        fetch(`${url}/users/${currentUser.id}/lists/${startID}/tasks/${id}/update_task_list_id`, options)
             .then(r => r.json())
-            
+            .then(reorderedData => {
+                let startTasks = reorderedData[0]
+                let finishTasks = reorderedData[1]
+                
+                setLists( lists.map(list => list.id === startID ? { ...list, tasks: startTasks} : list ))
+                setLists( lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list ))
+            })
     }
-    // .then(updatedTask => setLists(lists.map(list => list.id === finishID ? { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)))
+    // updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
+    // setLists(lists.map(list => list.id === finishID ? { ...list, tasks: updatedTasks } : list))
     // can i make a route that goes to the current listID on the back: 
     // i want to return the old list array reordered and the new list array reordered 
     // render json: start_list, include: [:tasks], end_list, include: [:tasks] 
