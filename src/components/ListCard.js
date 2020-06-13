@@ -46,10 +46,9 @@ const ListCard = (props) => {
     const [lists, setLists] = useContext(ListContext) 
 
     let tasks = (lists.find(list => list.id === listID).tasks)
-        console.log( "unsorted tasks",tasks)
+        
     let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
-    console.log("...", lists.find(list => list.id === listID).tasks)
-    console.log("sorted tasks", sortedTasks)
+
     
     // let current_list = lists.find(listID)
     // console.log("current list found", current_list)
@@ -86,7 +85,6 @@ const ListCard = (props) => {
                                 
                                 {sortedTasks.map((task) => 
                                     <TaskCard
-                                        // may need to pass down task={task}
                                     key={task.id}
                                     {...task} 
                                     listID={listID}
@@ -97,7 +95,6 @@ const ListCard = (props) => {
                                     />
                                     
                                     )}
-                                    {/* {console.log("rendered task orders ", sortedTasks.map(task => task.order))} */}
                                 {provided.placeholder}
                                 <CreateTaskForm
                                     listID={id}

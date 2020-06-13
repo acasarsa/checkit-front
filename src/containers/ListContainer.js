@@ -161,21 +161,43 @@ const ListContainer = () => {
             let start = lists.find(list => list.id === parseInt(source.droppableId))
             let finish = lists.find(list => list.id === parseInt(destination.droppableId))
             
-            let startID = start.id // used in endpoint
+            let startID = start.id // used in endpoint 
             let finishID = finish.id        
             
             let tasks = finish.tasks
             let newPosition = destination.index
             let startPosition = source.index
             
-            let splicedTask = tasks.splice(startPosition, 1) 
-            // let draggedTask = { ...splicedTask, list_id: destination.index }
+
+            if (start === finish) {
+
+                let startTask = tasks.splice(startPosition, 1) 
+                tasks.splice(newPosition, 0, ...startTask)
+                updateTaskOrderAfterDnd(newPosition, finishID, draggedTaskID)
+            } 
+            
+            if (start !== finish) {
+                let startTask = tasks.splice(startPosition, 1)
+                moveTaskToDifList(startID, finishID, draggedTaskID)
+                tasks.splice(newPosition, 0, ...startTask)
+
+            }
+            
+            // if list.id === startID then do the .then from a destroy
+            // if list.id === finishID then do the update 
+            
+            // 1. splice out the start task from start list 2. update the order value 
+            // delete startTask from start 
+            // either combine into one step with custom route or perform a few fetches at once... we'll see. could be async issues with doing a delete then an add or patch. 
+            // custom route would be 
+            // ${url}/users/${currentUser.id}/lists/${startID}/tasks/${taskID}/change_list
+            
+            // console.log("reorder", tasks)
+            // let draggedTask = { ...startTask, list_id: destination.index }
             
             // tasks.splice(destination.index, 0, ...draggedTask)
-            tasks.splice(newPosition, 0, ...splicedTask)
-            // console.log("reorder", tasks)
-
-            updateTaskOrderAfterDnd(startID, newPosition, finishID, draggedTaskID )
+            
+            
                 // .each_with_index { | t, i | t.update(order: i) }
             // console.log("task's list after splice", finish)
             // console.log("draggedTaskID", draggedTaskID)
@@ -184,11 +206,32 @@ const ListContainer = () => {
             // }));
             
         }
-        
-
-        // console.log(all the tasks and their current postion)
-    
     }
+    
+    const moveTaskToDifList = (startID, finishID, newPosition, id) => {
+        
+        let options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({ list_id: finishID, order: newPosition })
+        }
+
+        fetch(`${url}/users/${currentUser.id}/lists/${startID}/tasks/${id}`, options)
+            .then(r => r.json())
+            
+    }
+    // .then(updatedTask => setLists(lists.map(list => list.id === finishID ? { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)))
+    // can i make a route that goes to the current listID on the back: 
+    // i want to return the old list array reordered and the new list array reordered 
+    // render json: start_list, include: [:tasks], end_list, include: [:tasks] 
+    // i will first save the task to a var update it's list_id find the old list's tasks sort them then reset their order to index 
+    // take task out of list 1 for good. => update list_id means that you need to update the list state of list 1 and list 2 
+    // on back if you change the list_id it's going to just remove it from the list but it doesn't trigger the destroy action . 
+    // if save it on front. then delete it on back and then try to update that lists id i won't be able to get there, if i update the id first 
+    // setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
     
     const updateListOrderAfterDnd = (newPosition, listID) => {
 
@@ -206,7 +249,7 @@ const ListContainer = () => {
             .then(setLists)
     }
     
-    const updateTaskOrderAfterDnd = (startID, newPosition, finishID, taskID) => {
+    const updateTaskOrderAfterDnd = (newPosition, finishID, taskID) => {
         
         let options = {
             method: 'PATCH',
@@ -214,33 +257,18 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({ order: newPosition, list_id: finishID})
+            body: JSON.stringify({ order: newPosition})
         }
     
-        fetch(`${url}/users/${currentUser.id}/lists/${startID}/tasks/${taskID}/update_order`, options)
+        fetch(`${url}/users/${currentUser.id}/lists/${finishID}/tasks/${taskID}/update_order`, options)
             .then(r => r.json())
             .then(updatedTasks => {
-                // console.log("Tasks object after dnd", updatedTasks)
-                // let sorted = updatedTasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
+
                 setLists(lists.map(list => list.id === finishID ? { ...list, tasks: updatedTasks } : list))
-                console.log("tasks after set list dnd", lists.find(list => list.id === finishID).tasks)
-                // ** take out sort for previous way
+
             }) 
     }
     
-    // setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list ))
-    // setLists(
-    //     lists.map(list => list.id === listID ? { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list))
-
-
-    
-    // source.droppableId 
-    // source.index 
-    
-    // destination.droppableId
-    // destination.index
-    
-    // i'd like to be able to grab the 
     
     let sortedLists = lists.sort((a, b) => (a.order > b.order) ? 1 : -1)
     
@@ -272,10 +300,7 @@ const ListContainer = () => {
                                 deleteList={deleteList}
                                 
                             />)} 
-                                    {console.log("rendered sorted lists", lists)}
-                                    {console.log("rendered lists", lists)}
-                                    {console.log("rendered lists order", lists.map(list => list.order))}
-                                    {console.log("rendered tasks", lists.map(list => list.tasks))}
+                                    {console.log("rendered sorted lists", sortedLists)}
                                     
                             {provided.placeholder}
                             <CreateListForm handleAddList={handleAddList}  />
