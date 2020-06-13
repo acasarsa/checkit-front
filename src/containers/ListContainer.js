@@ -158,18 +158,27 @@ const ListContainer = () => {
         if (type === 'task') {
             let draggedTaskID = parseInt(draggableId)
             let destination_list = lists.find(list => list.id === parseInt(destination.droppableId))
-            let listID = destination_list.id
+            let destinationID = destination_list.id
+        
+            let sourceList = lists.find(list => list.id === parseInt(source.droppableId))
+            let sourceID = sourceList.id
+            
             let tasks = destination_list.tasks
             
-            let newTaskOrder = tasks.splice(source.index, 1) 
-            tasks.splice(destination.index, 0, ...newTaskOrder)
+            
+            let splicedTask = tasks.splice(source.index, 1) 
+            // let draggedTask = { ...splicedTask, list_id: destination.index }
+            
+            
+            // tasks.splice(destination.index, 0, ...draggedTask)
+            tasks.splice(destination.index, 0, ...splicedTask)
             console.log("reorder", tasks)
             // let ordered_tasks = tasks.map(task => {
             //     return 
             // })
             
             // setLists(lists.map(list => list.id === listID ? { ...list, tasks: tasks } : list))
-            updateTaskOrderAfterDnd( destination.index, listID, draggedTaskID )
+            updateTaskOrderAfterDnd(sourceID, destination.index, destinationID, draggedTaskID )
                 // .each_with_index { | t, i | t.update(order: i) }
             console.log("task's list after splice", destination_list)
             console.log("draggedTaskID", draggedTaskID)
@@ -200,7 +209,7 @@ const ListContainer = () => {
             .then(setLists)
     }
     
-    const updateTaskOrderAfterDnd = (new_position, listID, taskID) => {
+    const updateTaskOrderAfterDnd = (sourceID, new_position, destinationID, taskID) => {
         
         let options = {
             method: 'PATCH',
@@ -208,16 +217,16 @@ const ListContainer = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({ order: new_position })
+            body: JSON.stringify({ order: new_position, list_id: destinationID})
         }
     
-        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${taskID}/update_order`, options)
+        fetch(`${url}/users/${currentUser.id}/lists/${sourceID}/tasks/${taskID}/update_order`, options)
             .then(r => r.json())
             .then(updatedTasks => {
                 // console.log("Tasks object after dnd", updatedTasks)
                 // let sorted = updatedTasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
-                setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
-                console.log("tasks after set list dnd", lists.find(list => list.id === listID).tasks)
+                setLists(lists.map(list => list.id === destinationID ? { ...list, tasks: updatedTasks } : list))
+                console.log("tasks after set list dnd", lists.find(list => list.id === destinationID).tasks)
                 // ** take out sort for previous way
             }) 
     }
