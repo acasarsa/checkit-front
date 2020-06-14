@@ -64,6 +64,22 @@ const ListContainer = () => {
             })
         
     }
+    
+    const handleEditList = (titleText, listID) => {
+
+        let options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({ title: titleText, user_id: currentUser.id })
+        }
+    
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}`, options)
+            .then(r => r.json())
+            .then( updatedList => setLists( lists.map(list => list.id === listID ? updatedList : list )))
+    }
 
     const handleAddTask = (e, text, listID, order) => {
         // get text and listID pass up 
@@ -387,7 +403,7 @@ const ListContainer = () => {
     // let amountChecked = checkedOffTasks.count
     // if (list.tasks.length === amountChecked ) { then do x } 
     /// basically a custom listener 
-    let sortedLists = lists.sort((a, b) => (a.order > b.order) ? 1 : -1)
+    // let sortedLists = lists.sort((a, b) => (a.order > b.order) ? 1 : -1)
     
     return (
         
@@ -403,7 +419,7 @@ const ListContainer = () => {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                             >
-                        {sortedLists.map((list, index) => 
+                        {lists.map((list, index) => 
                             <ListCard key={list.id}
                                 // list={list}
                                 {...list}
@@ -415,9 +431,10 @@ const ListContainer = () => {
                                 setTaskText={setTaskText}
                                 handleDeleteTask={handleDeleteTask}
                                 deleteList={deleteList}
+                                handleEditList={handleEditList}
                                 
                             />)} 
-                                    {console.log("rendered sorted lists", sortedLists)}
+                                    {console.log("rendered sorted lists", lists)}
                                     
                             {provided.placeholder}
                             <CreateListForm handleAddList={handleAddList}  />

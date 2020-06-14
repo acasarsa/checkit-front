@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import TaskCard from './TaskCard'
 import { UserContext } from '../UserContext'
 import { ListContext } from '../ListContext'
@@ -6,6 +6,8 @@ import CreateTaskForm from './CreateTaskForm'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components';
 import Icon from "@material-ui/core/Icon";
+import Button from '@material-ui/core/Button';
+
 
 
 const ListContainer = styled.div`
@@ -36,19 +38,74 @@ const DeleteButton = styled(Icon)`
         opacity: 0.8;
     }
 `;
-
+const StyledInput = styled.input`
+    width: 100%;
+    border: none;
+    outline-color: blue;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    padding: 5px;
+`;
 
 
 
 const ListCard = (props) => {
-    const { listID, title, order, id, taskText, handleAddTask, handleEditTask,  setTaskText,  handleDeleteTask, deleteList} = props
+    const { listID, title, order, id, taskText, handleAddTask, handleEditTask, setTaskText, handleDeleteTask, deleteList, handleEditList } = props
     const [currentUser] = useContext(UserContext) // use for edit form later
     const [lists, setLists] = useContext(ListContext) 
 
     let tasks = (lists.find(list => list.id === listID).tasks)
         
     let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
+    const [titleText, setTitle ] = useState('')
+    const [isEditingTitle, setTitleEditing] = useState(false)
 
+    const openEditForm = (e) => {
+        // let current_list = lists.find(list => list.id === listID)
+        // setLists(...lists, { ...current_list, titleText })
+        setTitle(title)
+        setTitleEditing(!isEditingTitle)
+        
+    }
+    
+    const closeEditForm = () => {
+        setTitleEditing(false)
+    }
+    
+    const handleChange = (event) => {
+        
+        setTitle(event.target.value)
+    }
+    
+    const renderEditInput = () => {
+        return (
+            <form >
+                <StyledInput
+                    type="text"
+                    value={titleText}
+                    onChange={handleChange}
+                    autoFocus
+                    onFocus={handleFocus}
+                    onBlur={closeEditForm}
+                />
+                <Button
+                    onMouseDown={() => {
+                        handleEditList(titleText, listID)
+                        setTitle('')
+                        closeEditForm()
+                    }} 
+                    type='submit'
+                    style={{ backgroundColor: 'lightGreen' }}
+                    
+                >Save
+                </Button>
+            </form>
+        );
+    };
+    
+    const handleFocus = e => {
+        e.target.select();
+    };
     
     // let current_list = lists.find(listID)
     // console.log("current list found", current_list)
@@ -63,7 +120,7 @@ const ListCard = (props) => {
     // let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
     // console.log("sorted Tasks", sortedTasks)
     // debugger
-    return (
+    return  (
         
         <Draggable draggableId={String(listID)} index={order} >
                 {provided => (
@@ -72,12 +129,18 @@ const ListCard = (props) => {
                         
                     ref={provided.innerRef}
                     >
-                        <div {...provided.dragHandleProps}>
-                            <h4 >{title}</h4>
+                    <div {...provided.dragHandleProps}>
+                        { isEditingTitle ? (
+                            renderEditInput()
+                        ) : (
+                        <div>
+                        <h4 onDoubleClick={openEditForm}>{title}</h4>
                             <DeleteButton onClick={() => deleteList(listID)}>
-                                delete
+                                    delete
                             </DeleteButton>
                         </div>
+                        )}
+                    </div>
                         <Droppable droppableId={String(listID)} type="task" >
                             {provided => (
                             <>
@@ -113,7 +176,7 @@ const ListCard = (props) => {
                 )}
         </Draggable>
         
-    )
+    ) 
 }
 
 
