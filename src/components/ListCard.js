@@ -83,7 +83,7 @@ const ListCard = (props) => {
                             <>
                             <div {...provided.droppableProps} ref={provided.innerRef} >
                                 
-                                {sortedTasks.map((task) => 
+                                {tasks.map((task, index) => 
                                     <TaskCard
                                     key={task.id}
                                     {...task} 
@@ -98,7 +98,8 @@ const ListCard = (props) => {
                                 {provided.placeholder}
                                 <CreateTaskForm
                                     listID={id}
-                                    tasks={sortedTasks}
+                                    // tasks={sortedTasks}
+                                    tasks={tasks}
                                     handleAddTask={handleAddTask}
                                     taskText={taskText}
                                     setTaskText={setTaskText}

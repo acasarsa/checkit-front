@@ -131,6 +131,21 @@ const ListContainer = () => {
     
 
 // change on back end 
+    // const onDragStart = (result) => {
+    
+    //     const { destination, source, draggableId, type, droppableId } = result
+        
+    //     if (type === "task") {
+    //         let draggedTaskID = parseInt(draggableId)
+    //         let start = lists.find(list => list.id === parseInt(source.droppableId))
+    //         console.log("drag started")
+    //         console.log("start: draggedTaskID", draggedTaskID)
+            
+    //         setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.filter(task => task.id !== draggedTaskID) } : list)) 
+            
+            
+    //     }
+    // }
     
     const onDragEnd = (result) => {
         console.log('result', result)
@@ -180,27 +195,58 @@ const ListContainer = () => {
                 console.log("draggedTaskID", draggedTaskID)
                 console.log("startID", startID)
                 console.log("start list", start)
-                // let startTask = tasks.splice(startPosition, 1)
-                // // moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)
-                // tasks.splice(newPosition, 0, ...startTask)
-                // let startTask = tasks.splice(startPosition, 1)
-                setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.filter(task => task.id !== draggedTaskID) } : list))
+                let dragged_task = start.tasks.find(task => task.id === draggedTaskID)
+                console.log("destination index", destination.index)
+                let startTask = tasks.splice(startPosition, 1)
+                // startTask = { ...startTask, list_id: finishID }
+                // console.log("1st what am i? array?", startTask)
+                tasks.splice(newPosition, 0, ...startTask)
+                moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)  
+                // current set up leaves a copy of the moved task 
+                // setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.filter(task => task.id !== draggedTaskID)} : list), lists.map(list => list === finish ? { ...list, tasks: list.tasks.splice(newPosition, 0, ...dragged_task) } : list))
+                // setLists(lists.map(list => list === start ? { ...list, tasks: [...tasks, list.tasks.splice(startPosition, 1)] } : list), lists.map(list => list === finish ? { ...list, tasks: list.tasks.splice(newPosition, 0, dragged_task) } : list))
+                
+                // find start list and end list within all lists 
+                // start.tasks lists/${startID}/${endID}
+                // {start, finish}
+                
+                // moveTaskToDifList()
+                // setLists(lists.map(list => list === finish ? { ...list, tasks: list.tasks.splice(newPosition, 0, dragged_task) } : list))
+                // let whatIsThis = tasks.splice(newPosition, 0, ...startTask)
+                // let updatedStart = [...start.tasks.splice(startPosition, 1)]
+                // let updatedFinish = [...finish.tasks.splice(newPosition, 0, { ...startTask, list_id: finishID })]
+                // setLists(lists.map(list => list.id === startID ? updatedStart : list))
+            
+                // setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks } : list),
+
+                // a. this removes the task from the fist list successfully 
+                // setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.filter(task => task.id !== draggedTaskID) } : list))
+                
+                
+                // 1. this removes from 1st list but deletes the entire task list of the finish list. no errors though! 
+                // setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.map(task => task.id === draggedTaskID ? {...task, list_id: finishID, order: newPosition} : task) } : list))
+                // setLists(lists.map(list => list === finish ? { ...lists, tasks: list.tasks, }))
+                // setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.filter(task => task.id !== draggedTaskID) } : list),
+                    
+                //     lists.map(list => list === finish ? { ...list, tasks: [...list.tasks.splice(newPosition, 0, {...startTask, list_id: finishID})] } : list ))
+                    // lists.map(list => list === finish ? { ...list, tasks: [...list.tasks, ...list.tasks.splice(newPosition, 0, ...startTask)] } : list ))
                 // this worked to remove the list. you can just remove it an add it somewhere else and still just update the order on the back like before. 
-                setLists(...lists, lists.find(list => list.id === startID ? { ...list, tasks: list.tasks.map((task, index) => task.order = index) } : list))
+                // setLists(...lists, lists.find(list => list.id === startID ? { ...list, tasks: list.tasks.map((task, index) => task.order = index) } : list))
                 // something is just off a bit the index thing worked i think !
                 
+                
                 // just splice it in at index new_position this maybe will work you would just splice! tasks array sounds good to me. 
+                console.log("starting List after setList runs", (lists.find(list => list.id === startID)).tasks)
                 console.log("finsih List after setList runs", (lists.find(list => list.id === finishID)).tasks)
                 // 1. do the set index thing correctly ^^
                 // 2. then set the state again where the new list is updated. 
                 // 3. do the set index thing 
                 
-                
+                // console.log("what am i? array?", startTask)
                 // setLists(...lists, lists.find(list => list === start ? list.tasks : tasks.filter(task => task.id !== draggedTaskID)  ))
                 // list => list.id === listID ? { ...list, tasks: updatedTasks } : list
                 
                 // if (!lists.find(list => list.id === parseInt(source.droppableId)).tasks.include(tasks.find(task => task.id === draggedTaskID))) {
-                    console.log("starting List after setList runs", (lists.find(list => list.id === startID)).tasks)
                 // }
                 // setLists(...lists, lists.find(list => list.id === startID ? list.tasks: tasks.map((task, index) => task.order = index) ) )
                 // moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)
@@ -265,12 +311,28 @@ const ListContainer = () => {
             .then(reorderedData => {
                 let startTasks = reorderedData[0]
                 let finishTasks = reorderedData[1]
+                console.log("reordered Data",reorderedData)
+                setLists(lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list), lists.map(list => list.id === startID ? { ...list, tasks: startTasks } : list) )
                 
-                setLists(lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list))
+                // setLists( lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list))
                 
-                setLists( lists.map(list => list.id === startID ? { ...list, tasks: startTasks} : list ))
             })
+        
+        // current issue june 14 12:44 pm the lists appear update but the start list gets back the task after it moves. 
     }
+    // const moveTaskToDifList = () => {
+    
+    //     let options = {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Accept: 'application/json'
+    //         },
+    //         body: JSON.stringify({ list_id: finishID, order: newPosition })
+    //     }
+    // }
+    
+    
     // updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
     // setLists(lists.map(list => list.id === finishID ? { ...list, tasks: updatedTasks } : list))
     // can i make a route that goes to the current listID on the back: 
@@ -321,13 +383,16 @@ const ListContainer = () => {
     if (!lists) {
         console.log("lists undefined", lists)
     } 
-    
+    // let checkedOffTasks = tasks.select(task => task.isDone === True)
+    // let amountChecked = checkedOffTasks.count
+    // if (list.tasks.length === amountChecked ) { then do x } 
+    /// basically a custom listener 
     let sortedLists = lists.sort((a, b) => (a.order > b.order) ? 1 : -1)
     
     return (
         
         <>
-        <DragDropContext onDragEnd={onDragEnd} >
+            <DragDropContext onDragEnd={onDragEnd} >
                 
             {!currentUser ? <LoginPage /> :
             <>
@@ -338,7 +403,7 @@ const ListContainer = () => {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                             >
-                        {sortedLists.map((list) => 
+                        {sortedLists.map((list, index) => 
                             <ListCard key={list.id}
                                 // list={list}
                                 {...list}
