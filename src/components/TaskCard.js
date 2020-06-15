@@ -1,17 +1,26 @@
-import React, { useState, useContext, useEffect } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton'
-import EditIcon from '@material-ui/icons/Edit';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
+import { ListContext } from '../ListContext';
+import { UserContext } from '../UserContext'
+import { Card, CardContent, Typography, Checkbox, Button, Icon} from '@material-ui/core';
+import EditIcon  from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextArea from 'react-textarea-autosize'
-import Button from '@material-ui/core/Button';
 import styled from "styled-components";
 import { Draggable } from 'react-beautiful-dnd';
-import Icon from "@material-ui/core/Icon";
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import birdYay from '../images/bird-yay.gif'
+import fireworks from '../images/fireworks.gif'
+import { url } from '../requests'
+
 
 // import { GiPin } from 'react-icons/gi'
+
+const checkEventImage = styled.img`
+    opacity: 0;
+
+`
 
 const CardContainer = styled.div`
     margin: 0 0 8px 0;
@@ -56,12 +65,70 @@ const EditButton = styled(Icon)`
     }
 `;
 
-const TaskCard = ({ id, text, order, listID, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
+const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
     const [isEditing, setIsEditing] = useState(false)
     // const [editedText, setEditedText] = useState(text)
+    const [lists, setLists] = useContext(ListContext)
+    const [currentUser] = useContext(UserContext)
+    
+    const [checked, setChecked] = useState(isDone)
+    
+    // console.log("isDone", isDone)
+    // console.log("checked", checked)
+    
+    // const handleCheckChange = () => {
+    //     setChecked(!isDone)
+    // }
 
+    
+    const handleCheckChange = (event) => {
+        //
+        
+        // console.log('i ran')
+        handleCheckBox()
+        
+        
+    }
+    
+    // const callBack = useCallback(
+    //     () => {
+    //         handleCheckChange(event)
+    //     },
+    //     handleCheckBox()
+    // )
+    
+    // useEffect(() => {
+    //     // do i run a prevState callback? of prevState !== checked 
+    //     handleCheckBox()
+    // }, [checked] )
+    
+    
+    const handleCheckBox = () => {
+        // console.log(("checked value", id), (":", checked))
+        
+        let options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({ isDone: !checked, list_id: listID })
+        }
+
+        fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
+            .then(r => r.json())
+            .then(updatedTask => {
+                setLists(
+                    lists.map(list => list.id === listID ?
+                        { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)
+                )
+                setChecked(updatedTask.isDone)
+            })
+    }
+    
+    
     const openEditForm = (e) => {
         setTaskText(text)
         setIsEditing(!isEditing)
@@ -75,6 +142,11 @@ const TaskCard = ({ id, text, order, listID, handleEditTask, taskText, setTaskTe
     const handleChange = (event) => {
         setTaskText(event.target.value)
     }
+    
+    // const checkedEvent = () => {
+
+    
+    // }
 
 
     const renderTaskCard = () => {
@@ -87,8 +159,10 @@ const TaskCard = ({ id, text, order, listID, handleEditTask, taskText, setTaskTe
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                     > 
-                        <Card style={styles.cardContainer}
+                        <Card style={styles.cardContainer} 
+
                         >
+                            
                             <CardContent style={{textAlign: 'center'}} >
                                 <Typography gutterBottom style={{ fontSize: 18 }}
                                 >{text}
@@ -101,6 +175,20 @@ const TaskCard = ({ id, text, order, listID, handleEditTask, taskText, setTaskTe
                                     </DeleteButton>
                                 </Typography>
                             </CardContent>
+                            
+                            <FormControlLabel
+                                control={
+                            
+                                    <Checkbox
+                                        color='secondary'
+                                        checked={checked}
+                                        onChange={handleCheckChange}
+                                        // onMouseDown={handleCheckBox}
+                                        // onClick={checkedEvent}
+                                    />
+                                    
+                                } 
+                            />
                         </Card>
                 </CardContainer>
                 )}
@@ -152,6 +240,7 @@ const styles = {
     cardContainer: {
         marginBottom: 8,
         backgroundColor: 'lightblue',
+        
     }
 }
 

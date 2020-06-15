@@ -7,13 +7,15 @@ import { url } from '../requests'
 import { connect } from 'react-redux'
 import { ListContext } from '../ListContext'
 import CreateListForm from '../components/CreateListForm';
-import { DragDropContext } from 'react-beautiful-dnd'
-import { Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+
 
     
 const FlexContainer = styled.div ` 
     display: flex;
     flex-direction: row;
+    
+    background-image: './images/background.jpg';
 `
 const ListContainer = () => {
 
@@ -30,6 +32,17 @@ const ListContainer = () => {
     /// i put the sort inside of the ListContext's initial value and that seems to work when i update the order on the back end it will render the lists in that order. 
     /// i think i still will need to fix the json that comes out of lists since that's how i'm dealing with tasks. and i have looked but still can't figure out how to edit the include: [:tasks] part of the render
     // next step is to figure out how to 
+    
+    // const [notes, setNotes] = useState('')
+
+    // const fetchNotes = () => {
+
+    //     fetch(`${url}/users/${currentUser.id}/notes`)
+    //         .then(r => r.json())
+    //         .then(setNotes)
+    // }
+    
+    
     const fetchCurrentUserLists = () => {
         fetch(`${url}/users/${currentUser.id}/lists`)
             .then(r => r.json())
@@ -213,12 +226,12 @@ const ListContainer = () => {
                 console.log("start list", start)
                 let dragged_task = start.tasks.find(task => task.id === draggedTaskID)
                 console.log("destination index", destination.index)
-                let startTask = tasks.splice(startPosition, 1)
+                // let startTask = tasks.splice(startPosition, 1)
                 // startTask = { ...startTask, list_id: finishID }
-                // console.log("1st what am i? array?", startTask)
-                tasks.splice(newPosition, 0, ...startTask)
+                // tasks.splice(newPosition, 0, ...startTask)
                 moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)  
                 // current set up leaves a copy of the moved task 
+                
                 // setLists(lists.map(list => list === start ? { ...list, tasks: list.tasks.filter(task => task.id !== draggedTaskID)} : list), lists.map(list => list === finish ? { ...list, tasks: list.tasks.splice(newPosition, 0, ...dragged_task) } : list))
                 // setLists(lists.map(list => list === start ? { ...list, tasks: [...tasks, list.tasks.splice(startPosition, 1)] } : list), lists.map(list => list === finish ? { ...list, tasks: list.tasks.splice(newPosition, 0, dragged_task) } : list))
                 
@@ -226,7 +239,6 @@ const ListContainer = () => {
                 // start.tasks lists/${startID}/${endID}
                 // {start, finish}
                 
-                // moveTaskToDifList()
                 // setLists(lists.map(list => list === finish ? { ...list, tasks: list.tasks.splice(newPosition, 0, dragged_task) } : list))
                 // let whatIsThis = tasks.splice(newPosition, 0, ...startTask)
                 // let updatedStart = [...start.tasks.splice(startPosition, 1)]
@@ -327,8 +339,10 @@ const ListContainer = () => {
             .then(reorderedData => {
                 let startTasks = reorderedData[0]
                 let finishTasks = reorderedData[1]
-                console.log("reordered Data",reorderedData)
-                setLists(lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list), lists.map(list => list.id === startID ? { ...list, tasks: startTasks } : list) )
+                console.log("reordered Data", reorderedData)
+                let listChanges = lists.map(list => list.id === startID ? { ...list, tasks: startTasks } : list.id === finishID ? { ...list, tasks: finishTasks } : list )
+                console.log(listChanges)
+                setLists(listChanges )
                 
                 // setLists( lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list))
                 

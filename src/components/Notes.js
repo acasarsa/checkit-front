@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../UserContext'
 import TextArea from 'react-textarea-autosize'
 import styled from "styled-components";
+import {url} from '../requests'
 
 
 const StyledTextArea = styled(TextArea)`
+
+
     resize: none;
     width: 300px;
     min-height: 50px;
@@ -17,17 +21,43 @@ const StyledTextArea = styled(TextArea)`
 
 
 
-const Notes = () => {
+const Notes = ({notes}) => {
+    
+    const [currentUser] = useContext(UserContext)
+    // const [notes, setNotes] = useState('')
+    
+    // const fetchNotes = () => {
+    
+    //     fetch(`${url}/users/${currentUser.id}/notes`)
+    //         .then(r => r.json())
+    //         .then( setNotes )
+    // }
+    
+    // useEffect(() => {
+    //     fetchNotes()
+    // }, [])
+    
+    const editNotes = () => {
+
+        fetch(`${url}/users/${currentUser.id}/notes/${notes.id}`)
+            
+        
+        
+    }
+    console.log("notes", notes)
+    console.log("notes", notes.text)
     return (
             <form >
-                <h4>Notes:</h4>
+            <h4>Notes:</h4>
                 <StyledTextArea
                     // onChange={handleChange}
                     
-                    // value={taskText}
-                    placeholder="Add Notes..."
+                value={notes.text}
+                placeholder="Add Notes...">{notes.text}
+            
+            </StyledTextArea>
 
-                />
+        
             </form>
                 
     )
