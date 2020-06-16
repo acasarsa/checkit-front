@@ -8,9 +8,7 @@ import TopPanelContainer from './containers/TopPanelContainer'
 import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
 import { url } from './requests'
-import background from './images/background.jpg'
-
-
+import { keyframes } from "styled-components";
 import running from './images/running.gif'
 
 // const GlobalStyle = createGlobalStyle`
@@ -19,85 +17,95 @@ import running from './images/running.gif'
 //     }
 // `
 
-const GlobalStyle = createGlobalStyle`
-    body {
-        color: green;
-        background-color: 'paleredviolet';
-        ${'' /* background-image: background */}
-    }
-`
+
 
 
 const MainDiv = styled.div`
-
+    color: green;
 
 `
 
+const leftWalk = keyframes`
+    from {
+        right: -50%;
+    }
+    to {
+        right: 105%;
+    }
+    
+`;
+
+// on click pause button will set opacity to 0 
 
 const BackgroundAnimation = styled.div`
     position: absolute;
-    bottom: 10px;
-    left: 50%;
-    opacity: ${props => props.currentUser ? 1 : 0 }
-
+    bottom: 2px;
+    animation: ${leftWalk} 16s linear infinite;
+    opacity: ${props => props.currentUser ? 1 : 0}
 `
 
 const App = () => {
 
     // get the value of the username from the login form 
     // do a post with that value 
-
     const [currentUser] = useContext(UserContext)
-    const [notes, setNotes] = useState('')
+    console.log(currentUser)
+    // const [notes, setNotes] = useState('')
 
-    const fetchNotes = () => {
-
-        fetch(`${url}/users/${currentUser.id}/notes`)
-            .then(r => r.json())
-            .then(setNotes)
-    }
-
-    useEffect(() => {
-        fetchNotes()
-    }, [])
     
+    // const fetchNotes = () => {
+
+    //     fetch(`${url}/users/1/notes`)
+    //         .then(r => r.json())
+    //         .then(setNotes)
+    // }
+
+    // useEffect(() => {
+    //     if (currentUser) {
+        
+    //     fetchNotes()
+    //     }
+    // }, [])
+
+
     return (
         <>
-        <GlobalStyle  />
-        <MainDiv currentUser={currentUser} >
-                {!currentUser 
-                
-                ?
-                <Switch>
-                    <Route component={LoginPage} />
-                </Switch>
+            {/* <GlobalStyle /> */}
+            <MainDiv currentUser={currentUser} >
+                {!currentUser
 
-                :
-                
-                <>
-                    <TopPanelContainer notes={notes[0]} />
-                <Switch>
-                    
-                    <ListProvider>
-                        <Route path='/home' component={ListContainer}  />    
-                    </ListProvider>
-
-                    <Route exact path='/login' component={LoginPage} />
+                    ?
+                    <Switch>
+                        <Route component={LoginPage} />
                     </Switch>
-                </>
-            
-            }
-                    <BackgroundAnimation currentUser={currentUser} >
-                        <img src={running} alt=""/>
-                    </BackgroundAnimation>
+
+                    :
+
+                    <>
+                        <TopPanelContainer  />
+                        <Switch>
+
+                            <ListProvider>
+                                <Route path='/home' component={ListContainer} />
+                            </ListProvider>
+
+                            <Route exact path='/login' component={LoginPage} />
+                        </Switch>
+                    </>
+
+                }
+                <BackgroundAnimation currentUser={currentUser} >
+                    <img src={running} alt="" />
+                </BackgroundAnimation>
             </MainDiv>
         </>
     )
-    
+
 }
 
 
 export default withRouter(App);
+
 
 
 // index route for lists 

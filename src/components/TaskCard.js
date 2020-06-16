@@ -13,13 +13,19 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import birdYay from '../images/bird-yay.gif'
 import fireworks from '../images/fireworks.gif'
 import { url } from '../requests'
-
-
+import css from '../CSS/main.css'
+// style = { styles.cardContainer } backgroundColor = { checked? 'violet': 'lightblue' }
 // import { GiPin } from 'react-icons/gi'
 
-const checkEventImage = styled.img`
-    opacity: 0;
+// const styles = {
+//     cardContainer: {
+//         marginBottom: 8,
+//         backgroundColor: 'lightblue',
 
+//     }
+// }
+const StyledCheckBox = styled(Checkbox)` 
+    margin-left: 20px;
 `
 
 const CardContainer = styled.div`
@@ -65,6 +71,18 @@ const EditButton = styled(Icon)`
     }
 `;
 
+const Fireworks = styled.div` 
+    background-image: url('../images/fireworks.gif');
+    opacity: ${props => props.fireworks ? 1 : 0 };
+`
+
+const StyledTaskCard = styled(Card)`  
+    background-color: ${props => props.checked ? 'violet' : 'lightblue'};
+    margin-bottom: 8;
+
+    
+
+`
 const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
@@ -75,13 +93,6 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
     
     const [checked, setChecked] = useState(isDone)
     
-    // console.log("isDone", isDone)
-    // console.log("checked", checked)
-    
-    // const handleCheckChange = () => {
-    //     setChecked(!isDone)
-    // }
-
     
     const handleCheckChange = (event) => {
         //
@@ -92,17 +103,6 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
         
     }
     
-    // const callBack = useCallback(
-    //     () => {
-    //         handleCheckChange(event)
-    //     },
-    //     handleCheckBox()
-    // )
-    
-    // useEffect(() => {
-    //     // do i run a prevState callback? of prevState !== checked 
-    //     handleCheckBox()
-    // }, [checked] )
     
     
     const handleCheckBox = () => {
@@ -125,6 +125,9 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)
                 )
                 setChecked(updatedTask.isDone)
+                if (updatedTask.isDone) {
+                    
+                }
             })
     }
     
@@ -143,11 +146,22 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
         setTaskText(event.target.value)
     }
     
-    // const checkedEvent = () => {
+    const isDoneEvent = (e) => {
+        console.log("hit", e.target)
+        if (checked === false) {
+            let l = lists.find(list => list.id === listID)
+            let task = l.tasks.find(task => task.id === id)
+            // let targetTask = e.target
+            console.log("i wasn't checked", checked, "on", e.target.parentNode.parentNode.parentNode.parentNode.style)
+            
+        } else {
+            console.log("i was checked", checked)
+        }
+        console.log("after i clicked", e.target.checked)
+        // e.target.checked
+    }
 
     
-    // }
-
 
     const renderTaskCard = () => {
 
@@ -159,9 +173,10 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                     > 
-                        <Card style={styles.cardContainer} 
+                        <StyledTaskCard className={isDone ? "is-done" : "card" } 
 
                         >
+                            
                             
                             <CardContent style={{textAlign: 'center'}} >
                                 <Typography gutterBottom style={{ fontSize: 18 }}
@@ -179,17 +194,18 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                             <FormControlLabel
                                 control={
                             
-                                    <Checkbox
+                                    <StyledCheckBox
                                         color='secondary'
                                         checked={checked}
                                         onChange={handleCheckChange}
+                                        onClick={isDoneEvent}
                                         // onMouseDown={handleCheckBox}
                                         // onClick={checkedEvent}
                                     />
                                     
                                 } 
                             />
-                        </Card>
+                        </StyledTaskCard>
                 </CardContainer>
                 )}
             </Draggable>
@@ -239,7 +255,8 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
 const styles = {
     cardContainer: {
         marginBottom: 8,
-        backgroundColor: 'lightblue',
+        // backgroundColor: isDone? 'violet': 'lightblue' 
+        // backgroundColor: 'lightblue',
         
     }
 }

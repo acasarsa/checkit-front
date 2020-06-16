@@ -3,7 +3,7 @@ import LoginPage from '../components/LoginPage'
 import { UserContext } from '../UserContext'
 import TopPanel from '../components/TopPanel'
 
-const TopPanelContainer = ({notes}) => {
+const TopPanelContainer = () => {
     const [currentUser] = useContext(UserContext)
 
     return (
@@ -11,7 +11,7 @@ const TopPanelContainer = ({notes}) => {
             {!currentUser ? <LoginPage /> :
                 
                     <div>
-                    <TopPanel notes={notes}/> 
+                        <TopPanel /> 
                     </div>
                 
                 }

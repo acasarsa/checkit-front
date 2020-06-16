@@ -11,9 +11,10 @@ const StyledTopPanel = styled.div`
     width: 100%;
     height: auto;
     size: cover;
-    margin: 0, 0, 0, 0;
     margin-bottom: 10px;
+    padding-inline-start: 20px;
     border: none;
+    
     
 `
 const FlexContainer = styled.div` 
@@ -22,7 +23,7 @@ const FlexContainer = styled.div`
 
 `
 
-const TopPanel = ({notes}) => {
+const TopPanel = () => {
     const [currentUser] = useContext(UserContext)
     
 
@@ -31,7 +32,7 @@ const TopPanel = ({notes}) => {
         <StyledTopPanel>
             <h5>WELCOME {currentUser.username.toUpperCase()}</h5>
             
-                <Notes notes={notes}/>
+                <Notes />
                 <ThisWeek />
             
         </StyledTopPanel>
