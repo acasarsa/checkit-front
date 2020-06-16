@@ -23,16 +23,16 @@ const FlexContainer = styled.div`
 
 `
 
-const TopPanel = () => {
+const TopPanel = ({note, setNotes}) => {
     const [currentUser] = useContext(UserContext)
-    
+    console.log("note id in top panel", note.id)
 
 
     return (
         <StyledTopPanel>
             <h5>WELCOME {currentUser.username.toUpperCase()}</h5>
             
-                <Notes />
+            <Notes note={note} setNotes={setNotes}/>
                 <ThisWeek />
             
         </StyledTopPanel>

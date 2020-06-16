@@ -50,21 +50,22 @@ const App = () => {
     // do a post with that value 
     const [currentUser] = useContext(UserContext)
     console.log(currentUser)
-    // const [notes, setNotes] = useState('')
+    // const [note, setNotes] = useState('')
 
     
     // const fetchNotes = () => {
 
-    //     fetch(`${url}/users/1/notes`)
+    //     fetch(`${url}/users/${currentUser.id}/notes`)
     //         .then(r => r.json())
     //         .then(setNotes)
     // }
 
     // useEffect(() => {
-    //     if (currentUser) {
         
-    //     fetchNotes()
+    //     if (currentUser) {
+    //         fetchNotes()
     //     }
+        
     // }, [])
 
 
@@ -106,7 +107,7 @@ const App = () => {
 
 export default withRouter(App);
 
-
+// note = { note } setNotes = { setNotes }
 
 // index route for lists 
 // just want users lists 

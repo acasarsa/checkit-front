@@ -20,42 +20,64 @@ const StyledTextArea = styled(TextArea)`
     margin-bottom: 10px;
 `;
 
+const StyledDiv = styled.div`  
+    margin-left: 10px;
+    
+
+`
 
 
 
-const Notes = () => {
+const Notes = ({note, setNotes}) => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
-    console.log("note", currentUser.note)
+    // console.log("note", currentUser.note.id)
     
-    const [note, setNotes] = useState('')
-    console.log("notes from state", note)
     
-    const fetchNotes = () => {
-
-        fetch(`${url}/users/${currentUser.id}/notes`)
-            .then(r => r.json())
-            .then(setNotes)
-    }
-    
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            fetchNotes()
-        }, 100);
-        return () => clearTimeout(timer);
-    }, []);
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         fetchNotes()
+    //     }, 100);
+    //     return () => clearTimeout(timer);
+    // }, []);
 
     // useEffect(() => {
     //     fetchNotes()
     // }, [])
     
+    // const editNotes = () => {
+
+    //     let options = {
+    //         method: 'PATCH', 
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Accept: 'application/json'
+    //         },
+    //         body: JSON.stringify({text: note.text, user_id: currentUser.id})
+    //     }
+    //     fetch(`${url}/users/${currentUser.id}/notes/${note.id}`, options)
+    //         .then(r => r.json())
+    //         .then(setNotes )
+        
+        
+    // }
     const editNotes = () => {
 
-        fetch(`${url}/users/${currentUser.id}/notes/${note.id}`)
+        let options = {
+            method: 'PATCH', 
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({text: currentUser.note.text, user_id: currentUser.id})
+        }
+        fetch(`${url}/users/${currentUser.id}/notes/${currentUser.note.id}`, options)
             .then(r => r.json())
-            .then(setNotes )
+            .then(updatedNote => setCurrentUser( {...currentUser, note: updatedNote }))
         
         
     }
+
+    
     const handleChange = (event) => {
         setNotes( event.target.value)
     }
@@ -91,7 +113,7 @@ const Notes = () => {
     
     
     return (
-        <styledDiv>
+        <StyledDiv>
             <form >
                 <h4 >Notes:</h4>
                 <StyledTextArea
@@ -107,15 +129,11 @@ const Notes = () => {
 
             
             </form>
-        </styledDiv>
+        </StyledDiv>
                 
     )
 }
 
-const styledDiv = styled.div`  
-    margin-left: 10px;
-    
 
-`
 
 export default Notes
