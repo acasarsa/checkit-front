@@ -1,10 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import TaskCard from './TaskCard'
 import { UserContext } from '../UserContext'
+import { ListContext } from '../ListContext'
 import CreateTaskForm from './CreateTaskForm'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components';
 import Icon from "@material-ui/core/Icon";
+import Button from '@material-ui/core/Button';
+
 
 
 const ListContainer = styled.div`
@@ -35,17 +38,89 @@ const DeleteButton = styled(Icon)`
         opacity: 0.8;
     }
 `;
-
+const StyledInput = styled.input`
+    width: 100%;
+    border: none;
+    outline-color: blue;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    padding: 5px;
+`;
 
 
 
 const ListCard = (props) => {
-    const { listID, title, tasks, order, id, taskText, handleAddTask, handleEditTask,  setTaskText,  handleDeleteTask, deleteList} = props
+    const { listID, title, order, id, taskText, handleAddTask, handleEditTask, setTaskText, handleDeleteTask, deleteList, handleEditList } = props
     const [currentUser] = useContext(UserContext) // use for edit form later
+    const [lists, setLists] = useContext(ListContext) 
 
+    let tasks = (lists.find(list => list.id === listID).tasks)
+        
+    let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
+    const [titleText, setTitle ] = useState('')
+    const [isEditingTitle, setTitleEditing] = useState(false)
 
-    let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1 )
-    return (
+    const openEditForm = (e) => {
+        // let current_list = lists.find(list => list.id === listID)
+        // setLists(...lists, { ...current_list, titleText })
+        setTitle(title)
+        setTitleEditing(!isEditingTitle)
+        
+    }
+    
+    const closeEditForm = () => {
+        setTitleEditing(false)
+    }
+    
+    const handleChange = (event) => {
+        
+        setTitle(event.target.value)
+    }
+    
+    const renderEditInput = () => {
+        return (
+            <form >
+                <StyledInput
+                    type="text"
+                    value={titleText}
+                    onChange={handleChange}
+                    autoFocus
+                    onFocus={handleFocus}
+                    onBlur={closeEditForm}
+                />
+                <Button
+                    onMouseDown={() => {
+                        handleEditList(titleText, listID)
+                        setTitle('')
+                        closeEditForm()
+                    }} 
+                    type='submit'
+                    style={{ backgroundColor: 'lightGreen' }}
+                    
+                >Save
+                </Button>
+            </form>
+        );
+    };
+    
+    const handleFocus = e => {
+        e.target.select();
+    };
+    
+    // let current_list = lists.find(listID)
+    // console.log("current list found", current_list)
+    // console.log("current list tasks", current_list.tasks)
+    
+    // let tasks = lists.map(list => list.id === listID ? { ...list, tasks: [...list.tasks] } : list)
+    // let current_list = lists.find(list => list.listID)
+    // let tasks = current_list.tasks
+    // console.log("tasks", tasks)
+    // console.log("current_list", current_list)
+    // let tasks = current_list.tasks
+    // let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
+    // console.log("sorted Tasks", sortedTasks)
+    // debugger
+    return  (
         
         <Draggable draggableId={String(listID)} index={order} >
                 {provided => (
@@ -54,20 +129,25 @@ const ListCard = (props) => {
                         
                     ref={provided.innerRef}
                     >
-                        <div {...provided.dragHandleProps}>
-                            <h4 >{title}</h4>
+                    <div {...provided.dragHandleProps}>
+                        { isEditingTitle ? (
+                            renderEditInput()
+                        ) : (
+                        <div>
+                        <h4 onDoubleClick={openEditForm}>{title}</h4>
                             <DeleteButton onClick={() => deleteList(listID)}>
-                                delete
+                                    delete
                             </DeleteButton>
                         </div>
+                        )}
+                    </div>
                         <Droppable droppableId={String(listID)} type="task" >
                             {provided => (
                             <>
                             <div {...provided.droppableProps} ref={provided.innerRef} >
                                 
-                                {sortedTasks.map((task) => 
+                                {tasks.map((task, index) => 
                                     <TaskCard
-                                        // may need to pass down task={task}
                                     key={task.id}
                                     {...task} 
                                     listID={listID}
@@ -77,10 +157,11 @@ const ListCard = (props) => {
                                     handleDeleteTask={handleDeleteTask}
                                     />
                                     
-                                ) }
+                                    )}
                                 {provided.placeholder}
                                 <CreateTaskForm
                                     listID={id}
+                                    // tasks={sortedTasks}
                                     tasks={tasks}
                                     handleAddTask={handleAddTask}
                                     taskText={taskText}
@@ -95,7 +176,7 @@ const ListCard = (props) => {
                 )}
         </Draggable>
         
-    )
+    ) 
 }
 
 

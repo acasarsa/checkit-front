@@ -10,24 +10,29 @@ const StyledTopPanel = styled.div`
     opacity: 0.9;
     width: 100%;
     height: auto;
-    margin-top: 0;
+    size: cover;
     margin-bottom: 10px;
+    padding-inline-start: 20px;
+    border: none;
+    
+    
 `
 const FlexContainer = styled.div` 
     display: flex;
     flex-direction: row;
+
 `
 
-const TopPanel = () => {
+const TopPanel = ({note, setNotes}) => {
     const [currentUser] = useContext(UserContext)
-    
+    console.log("note id in top panel", note.id)
 
 
     return (
         <StyledTopPanel>
             <h5>WELCOME {currentUser.username.toUpperCase()}</h5>
             
-                <Notes />
+            <Notes note={note} setNotes={setNotes}/>
                 <ThisWeek />
             
         </StyledTopPanel>

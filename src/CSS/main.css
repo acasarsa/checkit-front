@@ -1,0 +1,22 @@
+html {
+    background-image: url('../images/day-hearts.jpg');
+    font-family: 'Roboto','Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h4 {
+    color: rgb(250, 101, 126)
+}
+
+
+.is-done {
+    margin-bottom: 8;
+    background-color: orchid;
+    background-image: url('../images/fireworks.gif');
+    
+}
+
+.card {
+    margin-bottom: 8;
+    background-color: lightskyblue;
+
+}

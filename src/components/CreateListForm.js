@@ -79,7 +79,7 @@ const CreateListForm = ({ handleAddList }) => {
                         style={{backgroundColor: 'lightgreen'}}
                     >Add List
                     </Button>
-                {console.log(currentUser)}
+
             </Container>
         )
     }
