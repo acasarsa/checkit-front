@@ -43,15 +43,42 @@ const LoginForm = ({ findOrCreateUser }) => {
         <StyledContainer>
             <h1>Login</h1>
                 <form  onSubmit={(event) => findOrCreateUser(event, username)} >
-                    <label>Username:</label>
-                        <input
+                    {/* <label>Username:</label> */}
+                    
+                        <TextField
                             onChange={handleLogin}
                             type="text"
                             name="username"
                             value={username}
                             placeholder="Enter Username"
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            autoFocus
                         />
-                        <button >Login</button>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                    >Login
+                    </Button>
                 </form>
             
         </StyledContainer>
