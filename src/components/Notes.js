@@ -11,19 +11,24 @@ const StyledTextArea = styled(TextArea)`
 
     resize: none;
     width: 300px;
-    min-height: 50px;
+    min-height: 90px;
     max-height: 90px;
     overflow: hidden;
     outline: none;
     border: none;
-    margin-left: 10px;
+    margin-left:0px;
     margin-bottom: 10px;
+    margin-top: 2px;
 `;
 
 const StyledDiv = styled.div`  
     margin-left: 10px;
     
 
+`
+const NotesTitle = styled.h4`  
+    margin-bottom: 10px;
+    color: rgb(250, 101, 126);
 `
 
 
@@ -61,7 +66,7 @@ const Notes = ({note, setNotes}) => {
         
     // }
     const editNotes = () => {
-
+        console.log("currentUser.note.text", currentUser.note.text)
         let options = {
             method: 'PATCH', 
             headers: {
@@ -72,14 +77,17 @@ const Notes = ({note, setNotes}) => {
         }
         fetch(`${url}/users/${currentUser.id}/notes/${currentUser.note.id}`, options)
             .then(r => r.json())
-            .then(updatedNote => setCurrentUser( {...currentUser, note: updatedNote }))
+            .then(updatedNote => {
+                console.log('updatedNote', updatedNote)
+                setCurrentUser({ ...currentUser, note: updatedNote })
+            })
         
         
     }
 
     
     const handleChange = (event) => {
-        setNotes( event.target.value)
+        setCurrentUser({ ...currentUser, note: event.target.value })
     }
     // const editNotes = () => {
 
@@ -115,14 +123,14 @@ const Notes = ({note, setNotes}) => {
     return (
         <StyledDiv>
             <form >
-                <h4 >Notes:</h4>
+                <NotesTitle >Notes:</NotesTitle>
                 <StyledTextArea
                         // onChange={handleChange}
                     onChange={handleChange}
-                    value={note.text}
+                    value={currentUser.note.text}
                     placeholder="Add Notes..."
                     onBlur={editNotes}
-                >{note.text}
+                >{currentUser.note.text}
                     
                 
                 </StyledTextArea>

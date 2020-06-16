@@ -10,6 +10,7 @@ import { createGlobalStyle } from 'styled-components'
 import { url } from './requests'
 import { keyframes } from "styled-components";
 import running from './images/running.gif'
+import SignIn from './components/SignInForm';
 
 // const GlobalStyle = createGlobalStyle`
 //     body {
@@ -73,11 +74,14 @@ const App = () => {
         <>
             {/* <GlobalStyle /> */}
             <MainDiv currentUser={currentUser} >
+                {/* <Route path='/signin' component={SignIn} /> */}
                 {!currentUser
 
                     ?
                     <Switch>
                         <Route component={LoginPage} />
+                        {/* <Route component={SignIn} /> */}
+                        
                     </Switch>
 
                     :

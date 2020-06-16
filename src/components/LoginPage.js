@@ -37,12 +37,14 @@ const LoginPage = (props) => {
 
     
     return (
+        <center>
         <div>
             <LoginForm
                 findOrCreateUser={findOrCreateUser}
                 
                 />
         </div>
+        </center>
     )
 }
 

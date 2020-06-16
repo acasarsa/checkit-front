@@ -142,9 +142,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)
                 )
                 setChecked(updatedTask.isDone)
-                if (updatedTask.isDone) {
-                    
-                }
+
             })
     }
     
@@ -197,7 +195,8 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                             
                             
                             <CardContent style={{textAlign: 'center'}} >
-                                <Typography gutterBottom style={{ fontSize: 18 }}
+                                <Typography gutterBottom style={{ fontSize: 22, fontFamily: 'Crafty Girls', color: 'green'}}
+                                    
                                 >{text}
                                     <EditButton onClick={openEditForm} >
                                         <EditIcon style={{ fontSize: 16 }} />

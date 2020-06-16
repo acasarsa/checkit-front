@@ -1,10 +1,11 @@
 html {
     background-image: url('../images/day-hearts.jpg');
-    font-family: 'Roboto','Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Comfortaa';
 }
 
 h4 {
-    color: rgb(250, 101, 126)
+    color: rgb(250, 101, 126);
+    font-size: 25px;
 }
 
 

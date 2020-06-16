@@ -14,13 +14,24 @@ const StyledTopPanel = styled.div`
     margin-bottom: 10px;
     padding-inline-start: 20px;
     border: none;
-    
+    position: relative;
+
+
     
 `
 const FlexContainer = styled.div` 
     display: flex;
     flex-direction: row;
 
+`
+
+const StyledLogoText = styled.div` 
+    font-family: 'Comfortaa';
+    font-size: 30px;
+    color: 'green';
+    position:absolute;
+    top:40%;
+    right:50px;
 `
 
 const TopPanel = ({note, setNotes}) => {
@@ -30,11 +41,13 @@ const TopPanel = ({note, setNotes}) => {
 
     return (
         <StyledTopPanel>
-            <h5>WELCOME {currentUser.username.toUpperCase()}</h5>
+            <h3>WELCOME {currentUser.username.toUpperCase()}</h3>
             
             <Notes note={note} setNotes={setNotes}/>
                 <ThisWeek />
-            
+            <StyledLogoText>
+                CheckIt
+            </StyledLogoText>
         </StyledTopPanel>
     )
 }
