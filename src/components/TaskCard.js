@@ -13,7 +13,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import birdYay from '../images/bird-yay.gif'
 import fireworks from '../images/fireworks.gif'
 import { url } from '../requests'
-import css from '../CSS/main.css'
+// import css from '../CSS/main.css'
+import Confetti from 'react-dom-confetti';
+
 // style = { styles.cardContainer } backgroundColor = { checked? 'violet': 'lightblue' }
 // import { GiPin } from 'react-icons/gi'
 
@@ -83,6 +85,21 @@ const StyledTaskCard = styled(Card)`
     
 
 `
+
+const config = {
+    angle: 90,
+    spread: 45,
+    startVelocity: 45,
+    elementCount: "200",
+    dragFriction: 0.1,
+    duration: 3000,
+    stagger: 0,
+    width: "10px",
+    height: "10px",
+    colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
+};
+
+
 const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
     
     // const [taskText, setTaskText] = useContext(TaskTextContext)
@@ -154,6 +171,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
             // let targetTask = e.target
             console.log("i wasn't checked", checked, "on", e.target.parentNode.parentNode.parentNode.parentNode.style)
             
+            
         } else {
             console.log("i was checked", checked)
         }
@@ -173,7 +191,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                     > 
-                        <StyledTaskCard className={isDone ? "is-done" : "card" } 
+                        <StyledTaskCard  
 
                         >
                             
@@ -206,6 +224,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                                 } 
                             />
                         </StyledTaskCard>
+                        <Confetti active={checked} config={config} />
                 </CardContainer>
                 )}
             </Draggable>
