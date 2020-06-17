@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import Notes from './Notes'
 import ThisWeek from './ThisWeek'
@@ -6,6 +6,7 @@ import { UserContext } from '../UserContext'
 import Typography from '@material-ui/core/Typography';
 import { Box } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
+import { ListContext } from '../ListContext'
 
 
 const titleize = require('titleize');
@@ -67,6 +68,14 @@ const Col = styled.div`
     align-items: ${(props) => props.itemAlign};
 
 `
+const StyledText = styled.li` 
+    color: rgb(250, 101, 126);
+    font-size: 25px;
+    margin: 10px;
+
+
+
+`
 // const TaskCountCol = styled.div` 
 
 
@@ -86,10 +95,26 @@ const useStyles = makeStyles((theme) => ({
 const TopPanel = ({ noteText, setNotes, editNotes }) => {
     const classes = useStyles();
 
-    const [currentUser] = useContext(UserContext)
+    const [currentUser, setCurrentUser] = useContext(UserContext)
+    // const [taskCount, setTaskCount] = useState(currentUser.tasks.length)
+    // const [tasksLeft, setTasksLeft] = useState((currentUser.tasks.filter(task => task.isDone == false)).length)
+    // need to add this into task card actually. which should be fine since u have the currentUser. and here u just display it off the current user. 
+    // const [lists, setLists] = useContext(ListContext)
+    // console.log("taskCount", taskCount)
+    // console.log("taskCount", tasksLeft)
 
+    // const taskCounter = () => {
+    //     let tasks = currentUser.tasks
+    //     let totalTasks = tasks.length
+        
+    //     let tasksLeft = (tasks.filter(task => task.isDone == false)).length
+    
+        
+    // }
 
-
+    let tasks = currentUser.tasks
+    let totalTasks = tasks.length
+    let tasksLeft = (tasks.filter(task => task.isDone == false)).length
     
     return (
         <Row>
@@ -101,9 +126,15 @@ const TopPanel = ({ noteText, setNotes, editNotes }) => {
                 <Notes note={noteText} setNotes={setNotes} editNotes={editNotes} />
             </Col>
             
-            <Col size={2} backgroundColor={'pink'} textAlign={'right'} >
-                
-                <h3>TEST TEST</h3>
+            <Col size={2} textAlign={'right'} >
+                <ul style={{ listStyleType: 'none'}}>
+                    <StyledText >
+                        Total Tasks: {currentUser.tasks.length} 
+                    </StyledText>
+                    <StyledText >
+                        Tasks Remaining: {(currentUser.tasks.filter(task => task.isDone == false)).length} 
+                    </StyledText>
+                </ul>
             </Col>
             
             
