@@ -40,7 +40,7 @@ const NotesTitle = styled.h4`
 
 const Notes = ({note, setNotes}) => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
-    // console.log("note", currentUser.note.id)
+    console.log("note", note.id)
     
     
     // useEffect(() => {
@@ -70,8 +70,11 @@ const Notes = ({note, setNotes}) => {
         
         
     // }
-    const editNotes = () => {
-        console.log("currentUser.note.text", currentUser.note.text)
+    const editNotes = (event) => {
+        event.preventDefault()
+        console.log("note in edit", note.id)
+        console.log("currentUser.note", currentUser.note)
+        console.log("currentUser", currentUser)
         let options = {
             method: 'PATCH', 
             headers: {
@@ -134,12 +137,12 @@ const Notes = ({note, setNotes}) => {
                     onChange={handleChange}
                     value={currentUser.note.text}
                     placeholder="Add Notes..."
-                    onBlur={editNotes}
+                    // onBlur={editNotes}
                 >{currentUser.note.text}
                     
                 
                 </StyledTextArea>
-
+                <button onClick={editNotes} > Save </button>
             
             </form>
         </StyledDiv>
