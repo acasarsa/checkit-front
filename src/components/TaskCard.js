@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { ListContext } from '../ListContext';
 import { UserContext } from '../UserContext'
-import { Card, CardContent, Typography, Checkbox, Button, Icon} from '@material-ui/core';
+import { Card, CardContent, Typography, Checkbox, Button, Icon, makeStyles} from '@material-ui/core';
 import EditIcon  from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextArea from 'react-textarea-autosize'
@@ -16,6 +16,7 @@ import { url } from '../requests'
 // import css from '../CSS/main.css'
 import Confetti from 'react-dom-confetti';
 
+
 // style = { styles.cardContainer } backgroundColor = { checked? 'violet': 'lightblue' }
 // import { GiPin } from 'react-icons/gi'
 
@@ -26,25 +27,37 @@ import Confetti from 'react-dom-confetti';
 
 //     }
 // }
-const StyledCheckBox = styled(Checkbox)` 
-    margin-left: 20px;
-`
+// const StyledCheckBox = styled(Checkbox)` 
+//     padding-left: 20px;
+//     float: left;
+//     border-color: 'red';
+// `
+
+const useStyles = makeStyles((theme) => ({
+    checkbox: {
+    paddingLeft: '20px',
+    float: 'left',
+    borderColor: 'red',
+    }
+}))
 
 const CardContainer = styled.div`
     margin: 0 0 8px 0;
     position: relative;
     max-width: 100%;
     word-wrap: break-word;
+    
 `;
 
 const Container = styled.div`
     width: 284px;
     margin-bottom: 8px;
+    
 `;
 
 const StyledCard = styled(Card)`
     min-height: 185px;
-    padding: 6px 8px 2px;
+    padding: 6px 8px 2px 8px;
 `;
 
 const StyledTextArea = styled(TextArea)`
@@ -61,10 +74,14 @@ const DeleteButton = styled(Icon)`
     opacity: 0.4;
     &:hover {
         opacity: 0.8;
-    }
+    };
+    float: right;
+    margin-right: 10px;
+    color: inherit;
 `;
 
 const EditButton = styled(Icon)`
+    float: right;
     cursor: pointer;
     transition: opacity 0.3s ease-in-out;
     opacity: 0.4;
@@ -73,27 +90,24 @@ const EditButton = styled(Icon)`
     }
 `;
 
-const Fireworks = styled.div` 
-    background-image: url('../images/fireworks.gif');
-    opacity: ${props => props.fireworks ? 1 : 0 };
-`
+
 
 const StyledTaskCard = styled(Card)`  
     background-color: ${props => props.checked ? 'violet' : 'lightblue'};
     margin-bottom: 8;
-
+    
     
 
 `
 
 const config = {
     angle: 90,
-    spread: 45,
-    startVelocity: 45,
+    spread: 120,
+    startVelocity: 35,
     elementCount: "200",
     dragFriction: 0.1,
     duration: 3000,
-    stagger: 0,
+    stagger: 3,
     width: "10px",
     height: "10px",
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
@@ -102,9 +116,9 @@ const config = {
 
 const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, setTaskText, handleDeleteTask}) => {
     
-    // const [taskText, setTaskText] = useContext(TaskTextContext)
     const [isEditing, setIsEditing] = useState(false)
-    // const [editedText, setEditedText] = useState(text)
+    const classes = useStyles();
+
     const [lists, setLists] = useContext(ListContext)
     const [currentUser] = useContext(UserContext)
     
@@ -112,9 +126,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
     
     
     const handleCheckChange = (event) => {
-        //
-        
-        // console.log('i ran')
+
         handleCheckBox()
         
         
@@ -123,7 +135,6 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
     
     
     const handleCheckBox = () => {
-        // console.log(("checked value", id), (":", checked))
         
         let options = {
             method: 'PATCH',
@@ -142,9 +153,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)
                 )
                 setChecked(updatedTask.isDone)
-                if (updatedTask.isDone) {
-                    
-                }
+
             })
     }
     
@@ -197,22 +206,24 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                             
                             
                             <CardContent style={{textAlign: 'center'}} >
-                                <Typography gutterBottom style={{ fontSize: 18 }}
+                                <Typography gutterBottom style={{ fontSize: 22, fontFamily: 'Crafty Girls', color: '#FA7E65'}}
+                                    
                                 >{text}
                                     <EditButton onClick={openEditForm} >
                                         <EditIcon style={{ fontSize: 16 }} />
                                     </EditButton>
                                         
-                                    <DeleteButton onClick={() => handleDeleteTask(listID, id)} >
-                                        <DeleteIcon style={{ fontSize: 16 }} />
-                                    </DeleteButton>
                                 </Typography>
                             </CardContent>
                             
+                            <div>
+                            <DeleteButton onClick={() => handleDeleteTask(listID, id)} >
+                                <DeleteIcon style={{ fontSize: 18 }} />
+                            </DeleteButton>
                             <FormControlLabel
                                 control={
                             
-                                    <StyledCheckBox
+                                    <Checkbox className={classes.checkbox}
                                         color='secondary'
                                         checked={checked}
                                         onChange={handleCheckChange}
@@ -223,6 +234,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                                     
                                 } 
                             />
+                            </div>
                         </StyledTaskCard>
                         <Confetti active={checked} config={config} />
                 </CardContainer>

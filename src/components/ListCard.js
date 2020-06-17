@@ -11,10 +11,11 @@ import Button from '@material-ui/core/Button';
 
 
 const ListContainer = styled.div`
-    background-color: #dfe3e6;
-    border-radius: 3px;
+    ${'' /* background-color: paleturquoise; */}
+    background-image: linear-gradient(to top right, paleturquoise, palegreen);
+    border-radius: 12px;
     width: 300px;
-    padding: 8px;
+    padding: 0px 12px;
     height: 100%;
     margin: 0 8px 0 0;
     
@@ -49,8 +50,12 @@ const StyledInput = styled.input`
 
 
 
+
+
+
 const ListCard = (props) => {
     const { listID, title, order, id, taskText, handleAddTask, handleEditTask, setTaskText, handleDeleteTask, deleteList, handleEditList } = props
+    
     const [currentUser] = useContext(UserContext) // use for edit form later
     const [lists, setLists] = useContext(ListContext) 
 
@@ -88,7 +93,7 @@ const ListCard = (props) => {
                     onFocus={handleFocus}
                     onBlur={closeEditForm}
                 />
-                <Button
+                <Button 
                     onMouseDown={() => {
                         handleEditList(titleText, listID)
                         setTitle('')

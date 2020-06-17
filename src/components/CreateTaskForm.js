@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import TextArea from 'react-textarea-autosize'
-import { Card, Button } from '@material-ui/core';
+import { Card, Button, makeStyles } from '@material-ui/core';
 import styled from "styled-components";
+
 
 
 const Container = styled.div`
@@ -20,14 +21,26 @@ const StyledTextArea = styled(TextArea)`
     overflow: hidden;
     outline: none;
     border: none;
+    color: inherit;
+    font-family: inherit;
+    
 `;
+
+const useStyles = makeStyles((theme) => ({
+    addTask: {
+        backgroundColor: 'lightgreen',
+        marginBottom: '20px',
+        marginTop: '10px',
+        shadow: '5px',
+    }
+
+}))
+
+
 
 const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText }) => {
     
-    // const [taskText, setTaskText] = useContext(TaskTextContext)
-    // const [text, setText] = useState('')
-
-    /// if this fucks up switch it all to title instead of text // i think it shouldn't matter though. 
+    const classes = useStyles();
     const [formOpen, setFormOpen] = useState(false)
 
     const handleChange = (event) => {
@@ -42,6 +55,7 @@ const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText })
 
     const closeForm = () => {
         setFormOpen(false)
+        setTaskText('')
     }
 
     const renderOpenFormButton = () => {
@@ -49,9 +63,11 @@ const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText })
         /// inside the form itself you will have an onBlur that uses handleCloseForm
     
 
-        return <button onClick={openForm} >
-                Add Task
-            </button>
+        return <Button
+                    className={classes.addTask}
+                    onClick={openForm} >
+                    Add Task
+            </Button>
     
 
 
@@ -81,6 +97,7 @@ const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText })
                         handleAddTask(e, taskText, listID, newOrder ) 
                         setTaskText('')
                         closeForm()
+                        
                     }}
                         type='submit'
                         style={{backgroundColor: 'lightGreen'}}
