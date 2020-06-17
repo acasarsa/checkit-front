@@ -19,7 +19,7 @@ const StyledTopPanel = styled.div`
     height: auto;
     size: cover;
     margin-bottom: 10px;
-    padding-inline-start: 20px;
+    padding-inline-start: 20px; 
     border: none;
     position: relative;
     width: 100%;
@@ -71,3 +71,5 @@ const TopPanel = ({ note, setNotes }) => {
 }
 
 export default TopPanel
+
+// may want to make topPanel
