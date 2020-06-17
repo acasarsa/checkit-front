@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 
+const titleize = require('titleize');
+
 const StyledTopPanel = styled.div`
     overflow: hidden;
     background-image: linear-gradient(to top right, paleturquoise, palegreen);
@@ -57,7 +59,7 @@ const TopPanel = ({ note, setNotes }) => {
     return (
         <StyledTopPanel>
             <Typography className={classes.welcome} component='h3' variant="h5"
-            >WELCOME {currentUser.username.toUpperCase()}</Typography>
+            >Welcome {titleize(currentUser.username)}</Typography>
             
             <Notes note={note} setNotes={setNotes}/>
                 <ThisWeek />
