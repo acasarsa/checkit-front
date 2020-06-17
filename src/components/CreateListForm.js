@@ -95,7 +95,10 @@ const CreateListForm = ({ handleAddList }) => {
                         closeForm()
                     }}
                         type='submit'
-                        style={{backgroundColor: 'lightgreen'}}
+                    style={{
+                        backgroundColor: 'lightgreen',
+                        marginTop: '5px',
+                    }}
                     >Add List
                     </Button>
 

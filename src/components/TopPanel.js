@@ -4,6 +4,7 @@ import Notes from './Notes'
 import ThisWeek from './ThisWeek'
 import { UserContext } from '../UserContext'
 import Typography from '@material-ui/core/Typography';
+import { Box } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -41,6 +42,27 @@ const StyledLogoText = styled.div`
     top:40%;
     right:50px;
 `
+
+const Grid = styled.div` 
+
+
+`
+const Row = styled.div` 
+
+
+`
+const NotesColumn = styled.div` 
+
+
+`
+const TaskCountCol = styled.div` 
+
+
+`
+const LogoColumn = styled.div` 
+
+
+`
 const useStyles = makeStyles((theme) => ({
     welcome: {
         marginBottom: '4px',
@@ -49,11 +71,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TopPanel = ({ note, setNotes }) => {
+const TopPanel = ({ noteText, setNotes, editNotes }) => {
     const classes = useStyles();
 
     const [currentUser] = useContext(UserContext)
-    console.log("note id in top panel", note.id)
+
 
 
     return (
@@ -61,15 +83,46 @@ const TopPanel = ({ note, setNotes }) => {
             <Typography className={classes.welcome} component='h3' variant="h5"
             >Welcome {titleize(currentUser.username)}</Typography>
             
-            <Notes note={note} setNotes={setNotes}/>
+            <Notes noteText={noteText} setNotes={setNotes} editNotes={editNotes} />
                 <ThisWeek />
             <StyledLogoText>
                 CheckIt
             </StyledLogoText>
         </StyledTopPanel>
     )
+    
+    return (
+        <Grid>
+            <Row>
+                <NotesColumn>
+                    <Typography className={classes.welcome} component='h3' variant="h5"
+                    >Welcome {titleize(currentUser.username)}</Typography>
+
+                    <Notes note={noteText} setNotes={setNotes} editNotes={editNotes} />
+                </NotesColumn>
+                
+                <TaskCountCol>
+                
+                </TaskCountCol>
+                
+                
+                <LogoColumn>
+                    <StyledLogoText>
+                        CheckIt
+                    </StyledLogoText>
+                
+                </LogoColumn>
+
+                
+            
+            </Row>
+        </Grid>
+
+
+    )
 }
 
 export default TopPanel
 
 // may want to make topPanel
+

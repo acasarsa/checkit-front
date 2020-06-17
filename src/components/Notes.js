@@ -38,9 +38,9 @@ const NotesTitle = styled.h4`
 
 
 
-const Notes = ({note, setNotes}) => {
+const Notes = ({ noteText, setNotes, editNotes}) => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
-    // console.log("note", currentUser.note.id)
+    
     
     
     // useEffect(() => {
@@ -54,45 +54,34 @@ const Notes = ({note, setNotes}) => {
     //     fetchNotes()
     // }, [])
     
-    // const editNotes = () => {
 
+    // const editNotes = (event) => {
+    //     event.preventDefault()
+    //     console.log("note in edit", note.id)
+    //     console.log("currentUser.note", currentUser.note)
+    //     console.log("currentUser", currentUser)
     //     let options = {
     //         method: 'PATCH', 
     //         headers: {
     //             'Content-Type': 'application/json',
     //             Accept: 'application/json'
     //         },
-    //         body: JSON.stringify({text: note.text, user_id: currentUser.id})
+    //         body: JSON.stringify({text: currentUser.note.text, user_id: currentUser.id})
     //     }
-    //     fetch(`${url}/users/${currentUser.id}/notes/${note.id}`, options)
+    //     fetch(`${url}/users/${currentUser.id}/notes/${currentUser.note.id}`, options)
     //         .then(r => r.json())
-    //         .then(setNotes )
+    //         .then(updatedNote => {
+    //             console.log('updatedNote', updatedNote)
+    //             setCurrentUser({ ...currentUser, note: updatedNote })
+    //         })
         
         
     // }
-    const editNotes = () => {
-        console.log("currentUser.note.text", currentUser.note.text)
-        let options = {
-            method: 'PATCH', 
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json'
-            },
-            body: JSON.stringify({text: currentUser.note.text, user_id: currentUser.id})
-        }
-        fetch(`${url}/users/${currentUser.id}/notes/${currentUser.note.id}`, options)
-            .then(r => r.json())
-            .then(updatedNote => {
-                console.log('updatedNote', updatedNote)
-                setCurrentUser({ ...currentUser, note: updatedNote })
-            })
-        
-        
-    }
 
     
     const handleChange = (event) => {
-        setCurrentUser({ ...currentUser, note: event.target.value })
+        // setCurrentUser( ...currentUser, {...note, text: event.target.value} )
+        setNotes( event.target.value )
     }
     // const editNotes = () => {
 
@@ -132,14 +121,15 @@ const Notes = ({note, setNotes}) => {
                 <StyledTextArea
                         // onChange={handleChange}
                     onChange={handleChange}
-                    value={currentUser.note.text}
+                    value={noteText}
                     placeholder="Add Notes..."
-                    onBlur={editNotes}
-                >{currentUser.note.text}
+                    onMouseOut={(event) => editNotes(event, noteText, currentUser.note.id )}
+                >{noteText}
                     
                 
                 </StyledTextArea>
-
+                {console.log("note id: ", currentUser.note.id)}
+            
             
             </form>
         </StyledDiv>
