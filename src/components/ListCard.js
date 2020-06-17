@@ -11,7 +11,8 @@ import Button from '@material-ui/core/Button';
 
 
 const ListContainer = styled.div`
-    background-color: #dfe3e6;
+    ${'' /* background-color: paleturquoise; */}
+    background-image: linear-gradient(to top right, paleturquoise, palegreen);
     border-radius: 3px;
     width: 300px;
     padding: 8px;

@@ -88,12 +88,12 @@ const StyledTaskCard = styled(Card)`
 
 const config = {
     angle: 90,
-    spread: 45,
-    startVelocity: 45,
+    spread: 120,
+    startVelocity: 35,
     elementCount: "200",
     dragFriction: 0.1,
     duration: 3000,
-    stagger: 0,
+    stagger: 3,
     width: "10px",
     height: "10px",
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]

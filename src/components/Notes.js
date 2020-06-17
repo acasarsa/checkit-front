@@ -8,7 +8,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const StyledTextArea = styled(TextArea)`
 
-
+    box-sizing: border-box;
+    padding: 5px, 5px, 5px, 5px;
     resize: none;
     width: 300px;
     min-height: 90px;
@@ -19,6 +20,9 @@ const StyledTextArea = styled(TextArea)`
     margin-left:0px;
     margin-bottom: 10px;
     margin-top: 2px;
+    color: inherit;
+    font-family: inherit;
+    border-radius: 10px;
 `;
 
 const StyledDiv = styled.div`  
@@ -26,7 +30,8 @@ const StyledDiv = styled.div`
     
 
 `
-const NotesTitle = styled.h4`  
+const NotesTitle = styled.h4` 
+    margin-top: 10px;
     margin-bottom: 10px;
     color: rgb(250, 101, 126);
 `

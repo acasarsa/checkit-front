@@ -14,7 +14,7 @@ import css from './CSS/main.css'
 const store = createStore(reducer, applyMiddleware(thunk))
 // const store = createStore(rootReducer)
 const GlobalStyle = createGlobalStyle`
-    body {
+    html {
         color: green;
         background-image: background;
         

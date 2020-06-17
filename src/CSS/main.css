@@ -1,7 +1,11 @@
 html {
+    background-size: cover;
+    /* background: no-repeat center center cover; */
     background-image: url('../images/day-hearts.jpg');
     font-family: 'Comfortaa';
 }
+
+
 
 h4 {
     color: rgb(250, 101, 126);
