@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import TextArea from 'react-textarea-autosize'
-import { Card, Button } from '@material-ui/core';
+import { Card, Button, makeStyles } from '@material-ui/core';
 import styled from "styled-components";
 import { UserContext } from '../UserContext'
 import { ListContext } from '../ListContext'
@@ -21,9 +21,22 @@ const StyledTextArea = styled(TextArea)`
     overflow: hidden;
     outline: none;
     border: none;
+    color: inherit;
+    font-family: inherit;
 `;
 
+const useStyles = makeStyles((theme) => ({
+    addList: {
+        backgroundColor: 'lightgreen',
+        marginBottom: '20px',
+        marginTop: '10px',
+        shadow: '5px',
+    }
+
+}))
+
 const CreateListForm = ({ handleAddList }) => {
+    const classes = useStyles();
     const [currentUser] = useContext(UserContext)
     const [lists, setLists] = useContext(ListContext)
 
@@ -47,9 +60,11 @@ const CreateListForm = ({ handleAddList }) => {
     const renderOpenListButton = () => {
 // onClick should open the form and a textArea will appear. 
         /// inside the form itself you will have an onBlur that uses handleCloseForm
-        return <button onClick={openForm} >
+        return <Button
+                    className={classes.addList}
+                    onClick={openForm} >
                 Add List
-            </button>
+            </Button>
 
     }
 
