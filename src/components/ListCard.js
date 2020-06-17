@@ -100,7 +100,10 @@ const ListCard = (props) => {
                         closeEditForm()
                     }} 
                     type='submit'
-                    style={{ backgroundColor: 'lightGreen' }}
+                    style={{
+                        backgroundColor: 'lightGreen',
+                        marginTop: '5px'
+                    }}
                     
                 >Save
                 </Button>

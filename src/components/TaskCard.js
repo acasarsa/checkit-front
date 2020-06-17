@@ -206,7 +206,14 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                             
                             
                             <CardContent style={{textAlign: 'center'}} >
-                                <Typography gutterBottom style={{ fontSize: 22, fontFamily: 'Crafty Girls', color: '#FA7E65'}}
+                                <Typography
+                                    gutterBottom
+                                    onDoubleClick={openEditForm}
+                                    style={
+                                        {
+                                            fontSize: 22,
+                                            fontFamily: 'Crafty Girls', color: '#FA7E65'
+                                        }}
                                     
                                 >{text}
                                     <EditButton onClick={openEditForm} >
@@ -267,7 +274,11 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         closeEditForm()
                     }}
                         type='submit'
-                        style={{backgroundColor: 'lightGreen'}}
+                    style={{
+                        backgroundColor: 'lightGreen',
+                        marginTop: '5px'
+                    }}
+                    
                     >Save
                     </Button>
             </Container>
