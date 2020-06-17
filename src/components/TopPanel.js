@@ -71,11 +71,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TopPanel = ({ note, setNotes }) => {
+const TopPanel = ({ noteText, setNotes, editNotes }) => {
     const classes = useStyles();
 
     const [currentUser] = useContext(UserContext)
-    console.log("note id in top panel", note.id)
+
 
 
     return (
@@ -83,7 +83,7 @@ const TopPanel = ({ note, setNotes }) => {
             <Typography className={classes.welcome} component='h3' variant="h5"
             >Welcome {titleize(currentUser.username)}</Typography>
             
-            <Notes note={note} setNotes={setNotes}/>
+            <Notes noteText={noteText} setNotes={setNotes} editNotes={editNotes} />
                 <ThisWeek />
             <StyledLogoText>
                 CheckIt
@@ -98,7 +98,7 @@ const TopPanel = ({ note, setNotes }) => {
                     <Typography className={classes.welcome} component='h3' variant="h5"
                     >Welcome {titleize(currentUser.username)}</Typography>
 
-                    <Notes note={note} setNotes={setNotes} />
+                    <Notes note={noteText} setNotes={setNotes} editNotes={editNotes} />
                 </NotesColumn>
                 
                 <TaskCountCol>

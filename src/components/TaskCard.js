@@ -172,21 +172,21 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
         setTaskText(event.target.value)
     }
     
-    const isDoneEvent = (e) => {
-        console.log("hit", e.target)
-        if (checked === false) {
-            let l = lists.find(list => list.id === listID)
-            let task = l.tasks.find(task => task.id === id)
-            // let targetTask = e.target
-            console.log("i wasn't checked", checked, "on", e.target.parentNode.parentNode.parentNode.parentNode.style)
+    // const isDoneEvent = (e) => {
+    //     console.log("hit", e.target)
+    //     if (checked === false) {
+    //         let l = lists.find(list => list.id === listID)
+    //         let task = l.tasks.find(task => task.id === id)
+    //         // let targetTask = e.target
+    //         console.log("i wasn't checked", checked, "on", e.target.parentNode.parentNode.parentNode.parentNode.style)
             
             
-        } else {
-            console.log("i was checked", checked)
-        }
-        console.log("after i clicked", e.target.checked)
-        // e.target.checked
-    }
+    //     } else {
+    //         console.log("i was checked", checked)
+    //     }
+    //     console.log("after i clicked", e.target.checked)
+    //     // e.target.checked
+    // }
 
     
 
@@ -227,7 +227,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                                         color='secondary'
                                         checked={checked}
                                         onChange={handleCheckChange}
-                                        onClick={isDoneEvent}
+                                        // onClick={isDoneEvent}
                                         // onMouseDown={handleCheckBox}
                                         // onClick={checkedEvent}
                                     />
