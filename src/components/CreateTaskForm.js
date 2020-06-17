@@ -8,6 +8,7 @@ import styled from "styled-components";
 const Container = styled.div`
     width: 284px;
     margin-bottom: 8px;
+
 `;
 
 const StyledCard = styled(Card)`
@@ -31,9 +32,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'lightgreen',
         marginBottom: '20px',
         marginTop: '10px',
-        shadow: '5px',
-    }
-
+        shadow: '20px',
+        fontFamily: 'Comfortaa',
+        '&:hover': {
+            backgroundColor: '#FA7E65',
+            
+        },
+    },
 }))
 
 

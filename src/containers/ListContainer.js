@@ -340,9 +340,14 @@ const ListContainer = () => {
                 let startTasks = reorderedData[0]
                 let finishTasks = reorderedData[1]
                 console.log("reordered Data", reorderedData)
+                
                 let listChanges = lists.map(list => list.id === startID ? { ...list, tasks: startTasks } : list.id === finishID ? { ...list, tasks: finishTasks } : list )
                 console.log(listChanges)
-                setLists(listChanges )
+                
+                
+
+                
+                setLists(listChanges)
                 
                 // setLists( lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list))
                 

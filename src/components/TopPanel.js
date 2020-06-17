@@ -71,3 +71,5 @@ const TopPanel = ({ note, setNotes }) => {
 }
 
 export default TopPanel
+
+// may want to make topPanel

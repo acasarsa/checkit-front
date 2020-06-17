@@ -30,7 +30,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'lightgreen',
         marginBottom: '20px',
         marginTop: '10px',
-        shadow: '5px',
+        shadow: '20px',
+        fontFamily: 'Comfortaa',
+        '&:hover': {
+            backgroundColor: '#FA7E65'
+        },
     }
 
 }))

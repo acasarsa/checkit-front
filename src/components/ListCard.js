@@ -11,24 +11,23 @@ import Button from '@material-ui/core/Button';
 
 
 const ListContainer = styled.div`
-    ${'' /* background-color: paleturquoise; */}
     background-image: linear-gradient(to top right, paleturquoise, palegreen);
     border-radius: 12px;
     width: 300px;
     padding: 0px 12px;
     height: 100%;
-    margin: 0 8px 0 0;
-    
+    margin: 0 12px;
+    align-items: center;
 `;
 
 const TitleContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     cursor: pointer;
-    text-align: center;
+    color: rgb(250, 101, 126);
+    font-size: 25px;
+    padding: 20px ;
 `;
 
 const DeleteButton = styled(Icon)`
@@ -38,6 +37,7 @@ const DeleteButton = styled(Icon)`
     &:hover {
         opacity: 0.8;
     }
+    
 `;
 const StyledInput = styled.input`
     width: 100%;
@@ -139,7 +139,7 @@ const ListCard = (props) => {
                             renderEditInput()
                         ) : (
                         <div>
-                        <h4 onDoubleClick={openEditForm}>{title}</h4>
+                        <TitleContainer onDoubleClick={openEditForm}>{title}</TitleContainer>
                             <DeleteButton onClick={() => deleteList(listID)}>
                                     delete
                             </DeleteButton>
