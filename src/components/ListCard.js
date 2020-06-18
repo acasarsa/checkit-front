@@ -105,10 +105,6 @@ const ListCard = (props) => {
         setTitleEditing(false)
     }
     
-    const handleChange = (event) => {
-        
-        setTitle(event.target.value)
-    }
     
     // function noenter() {
     //     return !(window.event && window.event.keyCode == 13);
@@ -120,6 +116,19 @@ const ListCard = (props) => {
             return false;
         }
     }
+    
+    let cursor
+    
+    const handleChange = (event) => {
+        cursor = event.target.selectionStart
+        setTitle(event.target.value)
+        
+    }
+    
+    const handleFocus = e => {
+        e.target.selectionStart = cursor
+    };
+    
     
     const renderEditInput = () => {
         return (
@@ -150,9 +159,7 @@ const ListCard = (props) => {
         );
     };
     
-    const handleFocus = e => {
-        e.target.select();
-    };
+    
     
     // let current_list = lists.find(listID)
     // console.log("current list found", current_list)
