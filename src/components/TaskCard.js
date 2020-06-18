@@ -171,6 +171,11 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
         setTaskText(event.target.value)
     }
     
+    let cursor
+
+    const handleFocus = e => {
+        e.target.selectionStart = cursor
+    };
     // const isDoneEvent = (e) => {
     //     console.log("hit", e.target)
     //     if (checked === false) {
@@ -263,6 +268,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         autoFocus
                         value={titleize(taskText)}
                         onBlur={closeEditForm}
+                        onFocus={handleFocus}
                     />
                         {console.log(taskText)}
                     </form>
