@@ -128,14 +128,14 @@ const TopPanel = ({ noteText, setNotes, editNotes }) => {
             </Col>
             
             <Col size={2} textAlign={'right'} >
-                <ul style={{ listStyleType: 'none'}}>
+                {/* <ul style={{ listStyleType: 'none'}}>
                     <StyledText >
                         Total Tasks: {currentUser.tasks.length} 
                     </StyledText>
                     <StyledText >
                         Tasks Remaining: {(currentUser.tasks.filter(task => task.isDone == false)).length} 
                     </StyledText>
-                </ul>
+                </ul> */}
             </Col>
             
             
