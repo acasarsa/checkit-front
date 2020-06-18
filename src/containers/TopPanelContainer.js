@@ -3,10 +3,18 @@ import LoginPage from '../components/LoginPage'
 import { UserContext } from '../UserContext'
 import TopPanel from '../components/TopPanel'
 import { url } from '../requests'
+import styled from 'styled-components'
+
+
+const Grid = styled.div` 
+
+
+`
 
 const TopPanelContainer = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
     const [noteText, setNotes] = useState(currentUser.note.text)
+    console.log("noteText", noteText)
     // const fetchNotes = () => {
 
     //     fetch(`${url}/users/${currentUser.id}/notes`)
@@ -50,13 +58,13 @@ const TopPanelContainer = () => {
         <>
             {!currentUser ? <LoginPage /> :
                 
-                    <div>
-                    <TopPanel
-                        noteText={noteText}
-                        setNotes={setNotes}
-                        editNotes={editNotes} /> 
-                    {console.log('note in render', noteText)}
-                    </div>
+                    <Grid>
+                        <TopPanel
+                            noteText={noteText}
+                            setNotes={setNotes}
+                            editNotes={editNotes} /> 
+                        {console.log('note in render', noteText)}
+                    </Grid>
                 
                 }
         </>

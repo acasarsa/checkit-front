@@ -124,12 +124,11 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
     
     const [checked, setChecked] = useState(isDone)
     
+    const [tasksLeft, setTasksLeft] = useState((currentUser.tasks.filter(task => task.isDone == false)).length)
     
     const handleCheckChange = (event) => {
-
         handleCheckBox()
-        
-        
+
     }
     
     
@@ -153,7 +152,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)
                 )
                 setChecked(updatedTask.isDone)
-
+                setTasksLeft((currentUser.tasks.filter(task => task.isDone == false)).length)
             })
     }
     

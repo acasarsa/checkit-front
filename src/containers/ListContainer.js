@@ -27,7 +27,8 @@ const ListContainer = () => {
     const [currentUser] = useContext(UserContext)
     const [lists, setLists] = useContext(ListContext)
     const [taskText, setTaskText] = useState('')
-    
+    const [taskCount, setTaskCount] = useState(currentUser.tasks.length)
+
     
     /// i put the sort inside of the ListContext's initial value and that seems to work when i update the order on the back end it will render the lists in that order. 
     /// i think i still will need to fix the json that comes out of lists since that's how i'm dealing with tasks. and i have looked but still can't figure out how to edit the include: [:tasks] part of the render
@@ -110,7 +111,8 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks`, options)
             .then(r => r.json())
             .then(newTask => {
-                setLists( lists.map(list => list.id === listID ? {...list, tasks: [...list.tasks, newTask]} : list) )
+                setLists(lists.map(list => list.id === listID ? { ...list, tasks: [...list.tasks, newTask] } : list))
+                setTaskCount(currentUser.tasks.length)
             })
             
         
