@@ -143,6 +143,7 @@ const LoginForm = ({ findOrCreateUser }) => {
                             name="username"
                             autoComplete="username"
                             autoFocus
+                            
                         />
                         <TextField
                             variant="outlined"

@@ -6,6 +6,7 @@ import CreateTaskForm from './CreateTaskForm'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components';
 import { Icon, Button, makeStyles } from "@material-ui/core";
+import TextArea from 'react-textarea-autosize'
 
 
 
@@ -42,7 +43,15 @@ const DeleteButton = styled(Icon)`
 const StyledInput = styled.input`
     width: 100%;
     border: none;
-    outline-color: blue;
+    outline-color: rgb(250, 101, 126);
+    border-radius: 3px;
+    margin-bottom: 3px;
+    padding: 5px;
+`;
+const StyledTextArea = styled(TextArea)`
+    width: 100%;
+    border: none;
+    outline-color: rgb(250, 101, 126);
     border-radius: 3px;
     margin-bottom: 3px;
     padding: 5px;
@@ -115,7 +124,7 @@ const ListCard = (props) => {
     const renderEditInput = () => {
         return (
             <form onKeyDown={noEnter} >
-                <StyledInput
+                <StyledTextArea
                     type="text"
                     value={titleize(titleText)}
                     onChange={handleChange}
@@ -131,12 +140,7 @@ const ListCard = (props) => {
                         closeEditForm()
                     }} 
                     type='button'
-                    // style={{
-                    //     backgroundColor: 'green',
-                    //     opacity: '0.9',
-                    //     margin: '5px',
-                    //     color: 'white',
-                    // }}
+                
                     className={classes.saveList}
                     
                     

@@ -7,14 +7,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextArea from 'react-textarea-autosize'
 import styled from "styled-components";
 import { Draggable } from 'react-beautiful-dnd';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import birdYay from '../images/bird-yay.gif'
-import fireworks from '../images/fireworks.gif'
-import { url } from '../requests'
-// import css from '../CSS/main.css'
 import Confetti from 'react-dom-confetti';
+import { url } from '../requests'
+// import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+// import CheckBoxIcon from '@material-ui/icons/CheckBox';
+// import birdYay from '../images/bird-yay.gif'
+// import fireworks from '../images/fireworks.gif'
+// import css from '../CSS/main.css'
 
 const titleize = require('titleize');
 

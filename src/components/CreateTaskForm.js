@@ -100,6 +100,7 @@ const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText })
                         value={titleize(taskText)}
                         placeholder="Add Task..."
                         onBlur={closeForm}
+                        
                     />
                     </form>
                 </StyledCard>
