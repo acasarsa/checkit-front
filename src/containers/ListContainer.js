@@ -165,14 +165,12 @@ const ListContainer = () => {
             let draggedListID = parseInt(draggableId)
             let newListOrder = lists.splice(source.index, 1)
             lists.splice(destination.index, 0, ...newListOrder)
-            console.log("lists after splice", lists)
             updateListOrderAfterDnd( destination.index, draggedListID )
             
         }
         
         if (type === 'task') {
             let draggedTaskID = parseInt(draggableId) // used in endpoint
-            console.log("draggedTaskID", draggedTaskID)
             let start = lists.find(list => list.id === parseInt(source.droppableId))
             let finish = lists.find(list => list.id === parseInt(destination.droppableId))
             
@@ -192,16 +190,12 @@ const ListContainer = () => {
             } 
             
             if (start !== finish) {
-                console.log("draggedTaskID", draggedTaskID)
-                console.log("startID", startID)
-                console.log("start list", start)
+                
                 let dragged_task = start.tasks.find(task => task.id === draggedTaskID)
-                console.log("destination index", destination.index)
                 // let startTask = tasks.splice(startPosition, 1)
                 // startTask = { ...startTask, list_id: finishID }
                 // tasks.splice(newPosition, 0, ...startTask)
                 moveTaskToDifList(startID, finishID, newPosition, draggedTaskID)  
-                // current set up leaves a copy of the moved task 
                 
                 
 
@@ -228,35 +222,20 @@ const ListContainer = () => {
             .then(reorderedData => {
                 let startTasks = reorderedData[0]
                 let finishTasks = reorderedData[1]
-                console.log("reordered Data", reorderedData)
-                
-                let listChanges = lists.map(list => list.id === startID ? { ...list, tasks: startTasks } : list.id === finishID ? { ...list, tasks: finishTasks } : list )
-                console.log(listChanges)
-                
-                
 
+                let listChanges = lists.map(list => list.id === startID ? { ...list, tasks: startTasks } : list.id === finishID ? { ...list, tasks: finishTasks } : list )
+ 
                 
                 setLists(listChanges)
                 
-                // setLists( lists.map(list => list.id === finishID ? { ...list, tasks: finishTasks } : list))
+                
                 
             })
         
-        // current issue june 14 12:44 pm the lists appear update but the start list gets back the task after it moves. 
+    
     }
     
     
-    
-    // updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
-    // setLists(lists.map(list => list.id === finishID ? { ...list, tasks: updatedTasks } : list))
-    // can i make a route that goes to the current listID on the back: 
-    // i want to return the old list array reordered and the new list array reordered 
-    // render json: start_list, include: [:tasks], end_list, include: [:tasks] 
-    // i will first save the task to a var update it's list_id find the old list's tasks sort them then reset their order to index 
-    // take task out of list 1 for good. => update list_id means that you need to update the list state of list 1 and list 2 
-    // on back if you change the list_id it's going to just remove it from the list but it doesn't trigger the destroy action . 
-    // if save it on front. then delete it on back and then try to update that lists id i won't be able to get there, if i update the id first 
-    // setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
     
     const updateListOrderAfterDnd = (newPosition, listID) => {
 
@@ -293,10 +272,6 @@ const ListContainer = () => {
 
             }) 
     }
-    
-    if (!lists) {
-        console.log("lists undefined", lists)
-    } 
 
     
     return (

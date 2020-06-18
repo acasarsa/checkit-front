@@ -13,26 +13,9 @@ const Grid = styled.div`
 const TopPanelContainer = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
     const [noteText, setNotes] = useState(currentUser.note.text)
-    console.log("noteText", noteText)
-    // const fetchNotes = () => {
 
-    //     fetch(`${url}/users/${currentUser.id}/notes`)
-    //         .then(r => r.json())
-    //         .then(setNotes)
-    // }
-
-    // useEffect(() => {
-
-    //     if (currentUser) {
-    //         fetchNotes()
-    //     }
-
-    // }, [])
     const editNotes = (event, noteText, id) => {
         event.preventDefault()
-        console.log("note in edit", noteText)
-        console.log("currentUser.note", currentUser.note)
-        console.log("currentUser", currentUser)
 
         let options = {
             method: 'PATCH',
@@ -45,7 +28,6 @@ const TopPanelContainer = () => {
         fetch(`${url}/users/${currentUser.id}/notes/${id}`, options)
             .then(r => r.json())
             .then(updatedNote => {
-                console.log('updatedNote', updatedNote)
                 setCurrentUser({ ...currentUser, note: updatedNote })
             })
 
@@ -62,7 +44,6 @@ const TopPanelContainer = () => {
                             noteText={noteText}
                             setNotes={setNotes}
                             editNotes={editNotes} /> 
-                        {console.log('note in render', noteText)}
                     </Grid>
                 
                 }

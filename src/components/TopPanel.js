@@ -98,28 +98,9 @@ const useStyles = makeStyles((theme) => ({
 
 const TopPanel = ({ noteText, setNotes, editNotes }) => {
     const classes = useStyles();
-    console.log("note text in toppanel",noteText)
 
     const [currentUser, setCurrentUser] = useContext(UserContext)
-    // const [taskCount, setTaskCount] = useState(currentUser.tasks.length)
-    // const [tasksLeft, setTasksLeft] = useState((currentUser.tasks.filter(task => task.isDone == false)).length)
-    // need to add this into task card actually. which should be fine since u have the currentUser. and here u just display it off the current user. 
-    // const [lists, setLists] = useContext(ListContext)
-    // console.log("taskCount", taskCount)
-    // console.log("taskCount", tasksLeft)
-
-    // const taskCounter = () => {
-    //     let tasks = currentUser.tasks
-    //     let totalTasks = tasks.length
-        
-    //     let tasksLeft = (tasks.filter(task => task.isDone == false)).length
     
-        
-    // }
-
-    // let tasks = currentUser.tasks
-    // let totalTasks = tasks.length
-    // let tasksLeft = (tasks.filter(task => task.isDone == false)).length
     
     return (
         <Row>
@@ -132,14 +113,7 @@ const TopPanel = ({ noteText, setNotes, editNotes }) => {
             </Col>
             
             <Col size={2} textAlign={'right'} >
-                {/* <ul style={{ listStyleType: 'none'}}>
-                    <StyledText >
-                        Total Tasks: {currentUser.tasks.length} 
-                    </StyledText>
-                    <StyledText >
-                        Tasks Remaining: {(currentUser.tasks.filter(task => task.isDone == false)).length} 
-                    </StyledText>
-                </ul> */}
+        
             </Col>
             
             
@@ -158,5 +132,4 @@ const TopPanel = ({ noteText, setNotes, editNotes }) => {
 
 export default TopPanel
 
-// may want to make topPanel
 

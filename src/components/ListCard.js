@@ -160,20 +160,6 @@ const ListCard = (props) => {
     };
     
     
-    
-    // let current_list = lists.find(listID)
-    // console.log("current list found", current_list)
-    // console.log("current list tasks", current_list.tasks)
-    
-    // let tasks = lists.map(list => list.id === listID ? { ...list, tasks: [...list.tasks] } : list)
-    // let current_list = lists.find(list => list.listID)
-    // let tasks = current_list.tasks
-    // console.log("tasks", tasks)
-    // console.log("current_list", current_list)
-    // let tasks = current_list.tasks
-    // let sortedTasks = tasks.sort((a, b) => (a.order > b.order) ? 1 : -1)
-    // console.log("sorted Tasks", sortedTasks)
-    // debugger
     return  (
         
         <Draggable draggableId={String(listID)} index={order} >

@@ -270,7 +270,6 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         onBlur={closeEditForm}
                         onFocus={handleFocus}
                     />
-                        {console.log(taskText)}
                     </form>
                 </StyledCard>
                     <Button

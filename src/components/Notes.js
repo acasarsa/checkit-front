@@ -41,11 +41,10 @@ const NotesTitle = styled.h4`
 
 const Notes = ({ noteText, setNotes, editNotes}) => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
-    console.log('note text', noteText)
 
     
     const handleChange = (event) => {
-        // setCurrentUser( ...currentUser, {...note, text: event.target.value} )
+        
         setNotes( event.target.value )
     }
 
@@ -65,7 +64,6 @@ const Notes = ({ noteText, setNotes, editNotes}) => {
                     
                 
                 </StyledTextArea>
-                {console.log("note id: ", currentUser.note.id)}
             
             
             </form>
