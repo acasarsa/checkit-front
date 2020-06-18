@@ -111,7 +111,8 @@ const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText })
                         
                     }}
                         type='submit'
-                        style={{backgroundColor: 'lightGreen', marginTop: '5px', boxShadow: '10px'}}
+                    
+                    className={classes.addTask}
                     >Save Task
                     </Button>
             </Container>

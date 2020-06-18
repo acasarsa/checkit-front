@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: '#FA7E65',
             transform: 'translateY(-4px)',
         },
-        boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)',
         transition: 'all 0.3s ease 0s',
+        boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)',
     }
 }))
 
