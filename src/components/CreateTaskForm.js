@@ -36,10 +36,14 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Comfortaa',
         '&:hover': {
             backgroundColor: '#FA7E65',
-            
+            transform: 'translateY(-4px)',
         },
+        transition: 'all 0.3s ease 0s',
+        boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)'
     },
 }))
+
+const titleize = require('titleize');
 
 
 
@@ -93,7 +97,7 @@ const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText })
                     <StyledTextArea
                         onChange={handleChange}
                         autoFocus
-                        value={taskText}
+                        value={titleize(taskText)}
                         placeholder="Add Task..."
                         onBlur={closeForm}
                     />
@@ -107,8 +111,8 @@ const CreateTaskForm = ({ listID, taskText, tasks, handleAddTask, setTaskText })
                         
                     }}
                         type='submit'
-                        style={{backgroundColor: 'lightGreen'}}
-                    >Add Task
+                        style={{backgroundColor: 'lightGreen', marginTop: '5px', boxShadow: '10px'}}
+                    >Save Task
                     </Button>
             </Container>
         )

@@ -37,11 +37,11 @@ const FlexContainer = styled.div`
 
 const StyledLogoText = styled.div` 
     font-family: 'Comfortaa';
-    font-size: 30px;
+    font-size: 35px;
     color: 'green';
     position:absolute;
     top:40%;
-    right:50px;
+    right:60px;
 `
 
 
@@ -75,6 +75,10 @@ const StyledText = styled.li`
 
 
 
+`
+
+const Span = styled.span`  
+    color: 'red'
 `
 // const TaskCountCol = styled.div` 
 
@@ -141,7 +145,7 @@ const TopPanel = ({ noteText, setNotes, editNotes }) => {
             
             <Col size={1}>
                 <StyledLogoText>
-                    CheckIt
+                    CheckIt 
                 </StyledLogoText>
             
             </Col>

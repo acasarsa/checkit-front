@@ -33,11 +33,18 @@ const useStyles = makeStyles((theme) => ({
         shadow: '20px',
         fontFamily: 'Comfortaa',
         '&:hover': {
-            backgroundColor: '#FA7E65'
+            backgroundColor: '#FA7E65',
+            boxShadow: '0px 15px 20px rgba(46, 229, 157, 0.4)',
+            transform: 'translateY(-4px)',
         },
+        transition: 'all 0.3s ease 0s',
+        boxShadow: '0px 8px 15px rgba(0, 0.2, 0, 0.2)',
+        
     }
 
 }))
+
+const titleize = require('titleize');
 
 const CreateListForm = ({ handleAddList }) => {
     const classes = useStyles();
@@ -82,7 +89,7 @@ const CreateListForm = ({ handleAddList }) => {
                     <StyledTextArea
                         onChange={handleChange}
                         autoFocus
-                        value={title}
+                        value={titleize(title)}
                         placeholder="Add List..."
                         onBlur={closeForm}
                     />
@@ -99,7 +106,7 @@ const CreateListForm = ({ handleAddList }) => {
                         backgroundColor: 'lightgreen',
                         marginTop: '5px',
                     }}
-                    >Add List
+                    >Save List
                     </Button>
 
             </Container>

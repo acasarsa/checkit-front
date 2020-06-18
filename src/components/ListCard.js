@@ -5,8 +5,8 @@ import { ListContext } from '../ListContext'
 import CreateTaskForm from './CreateTaskForm'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components';
-import Icon from "@material-ui/core/Icon";
-import Button from '@material-ui/core/Button';
+import { Icon, Button, makeStyles } from "@material-ui/core";
+
 
 
 
@@ -48,6 +48,25 @@ const StyledInput = styled.input`
     padding: 5px;
 `;
 
+const useStyles = makeStyles((theme) => ({
+    saveList: {
+        backgroundColor: 'lightgreen',
+        marginBottom: '20px',
+        marginTop: '10px',
+        shadow: '20px',
+        fontFamily: 'Comfortaa',
+        '&:hover': {
+            backgroundColor: '#FA7E65',
+            transform: 'translateY(-4px)',
+        },
+        transition: 'all 0.3s ease 0s',
+        boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)'
+    }
+
+}))
+
+const titleize = require('titleize');
+
 
 
 
@@ -55,7 +74,7 @@ const StyledInput = styled.input`
 
 const ListCard = (props) => {
     const { listID, title, order, id, taskText, handleAddTask, handleEditTask, setTaskText, handleDeleteTask, deleteList, handleEditList } = props
-    
+    const classes = useStyles();
     const [currentUser] = useContext(UserContext) // use for edit form later
     const [lists, setLists] = useContext(ListContext) 
 
@@ -82,28 +101,44 @@ const ListCard = (props) => {
         setTitle(event.target.value)
     }
     
+    // function noenter() {
+    //     return !(window.event && window.event.keyCode == 13);
+    // }
+    const noEnter = (event) => {
+    
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    }
+    
     const renderEditInput = () => {
         return (
-            <form >
+            <form onKeyDown={noEnter} >
                 <StyledInput
                     type="text"
-                    value={titleText}
+                    value={titleize(titleText)}
                     onChange={handleChange}
                     autoFocus
                     onFocus={handleFocus}
                     onBlur={closeEditForm}
                 />
                 <Button 
+                    
                     onMouseDown={() => {
                         handleEditList(titleText, listID)
                         setTitle('')
                         closeEditForm()
                     }} 
-                    type='submit'
-                    style={{
-                        backgroundColor: 'lightGreen',
-                        marginTop: '5px'
-                    }}
+                    type='button'
+                    // style={{
+                    //     backgroundColor: 'green',
+                    //     opacity: '0.9',
+                    //     margin: '5px',
+                    //     color: 'white',
+                    // }}
+                    className={classes.saveList}
+                    
                     
                 >Save
                 </Button>
