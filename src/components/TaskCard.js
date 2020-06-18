@@ -7,37 +7,36 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextArea from 'react-textarea-autosize'
 import styled from "styled-components";
 import { Draggable } from 'react-beautiful-dnd';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import birdYay from '../images/bird-yay.gif'
-import fireworks from '../images/fireworks.gif'
-import { url } from '../requests'
-// import css from '../CSS/main.css'
 import Confetti from 'react-dom-confetti';
+import { url } from '../requests'
+// import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+// import CheckBoxIcon from '@material-ui/icons/CheckBox';
+// import birdYay from '../images/bird-yay.gif'
+// import fireworks from '../images/fireworks.gif'
+// import css from '../CSS/main.css'
 
+const titleize = require('titleize');
 
-// style = { styles.cardContainer } backgroundColor = { checked? 'violet': 'lightblue' }
-// import { GiPin } from 'react-icons/gi'
-
-// const styles = {
-//     cardContainer: {
-//         marginBottom: 8,
-//         backgroundColor: 'lightblue',
-
-//     }
-// }
-// const StyledCheckBox = styled(Checkbox)` 
-//     padding-left: 20px;
-//     float: left;
-//     border-color: 'red';
-// `
 
 const useStyles = makeStyles((theme) => ({
     checkbox: {
-    paddingLeft: '20px',
-    float: 'left',
-    borderColor: 'red',
+        paddingLeft: '20px',
+        float: 'left',
+        borderColor: 'red',
+    },
+    saveTask: {
+        backgroundColor: 'lightgreen',
+        marginBottom: '20px',
+        marginTop: '10px',
+        shadow: '20px',
+        fontFamily: 'Comfortaa',
+        '&:hover': {
+            backgroundColor: '#FA7E65',
+            transform: 'translateY(-4px)',
+        },
+        transition: 'all 0.3s ease 0s',
+        boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)',
     }
 }))
 
@@ -100,6 +99,7 @@ const StyledTaskCard = styled(Card)`
 
 `
 
+
 const config = {
     angle: 90,
     spread: 180,
@@ -118,7 +118,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
     
     const [isEditing, setIsEditing] = useState(false)
     const classes = useStyles();
-
+    
     const [lists, setLists] = useContext(ListContext)
     const [currentUser] = useContext(UserContext)
     
@@ -261,7 +261,7 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         type="text"
                         onChange={handleChange}
                         autoFocus
-                        value={taskText}
+                        value={titleize(taskText)}
                         onBlur={closeEditForm}
                     />
                         {console.log(taskText)}
@@ -273,10 +273,11 @@ const TaskCard = ({ id, text, order, isDone, listID, handleEditTask, taskText, s
                         closeEditForm()
                     }}
                         type='submit'
-                    style={{
-                        backgroundColor: 'lightGreen',
-                        marginTop: '5px'
-                    }}
+                    // style={{
+                    //     backgroundColor: 'lightGreen',
+                    //     marginTop: '5px'
+                    // }}
+                    className={classes.saveTask}
                     
                     >Save
                     </Button>

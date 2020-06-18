@@ -6,7 +6,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { BsCheckAll } from 'react-icons/bs';
+import { FaCheckDouble, FaBlackTie } from 'react-icons/fa';
+import { FiCheckSquare } from 'react-icons/fi';
+import title from '../CSS/title.css'
 
 
 
@@ -15,8 +18,8 @@ const StyledContainer = styled.div`
     ${'' /* background-color: cornsilk; */}
     ${'' /* max-width: fit-content;
     margin-top: 50%;
-    display: inline-block;
     margin: auto; */}
+    ${'' /* display: inline-block; */}
     width: 400px;
     padding: 70px 0;
     ${'' /* border: 3px solid green; */}
@@ -40,8 +43,12 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: 'transparent',
+        // backgroundColor: 'rgb(250, 101, 126)',
         alignItems: 'center',
+        fontSize: '30px',
+        // fontSize: '100px',
+        color: 'rgb(250, 101, 126)',
     },
     form: {
         width: '80%', // Fix IE 11 issue.
@@ -49,6 +56,17 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+        backgroundColor: 'lightgreen',
+        // backgroundColor: 'rgb(250, 101, 126)'
+        fontFamily: 'Comfortaa',
+        color: 'black',
+        '&:hover': {
+            backgroundColor: '#FA7E65',
+            boxShadow: '0px 15px 20px rgba(46, 229, 157, 0.4)',
+            transform: 'translateY(-4px)',
+        },
+        transition: 'all 0.3s ease 0s',
+        boxShadow: '0px 8px 15px rgba(0, 0.2, 0, 0.2)',
     },
 
 }))
@@ -61,16 +79,49 @@ const LoginForm = ({ findOrCreateUser }) => {
         setUsername(event.target.value)
     }
     
+    // circularText(" C h e c k  I t                    ", 100, 0);
+
+    // function circularText(txt, radius, classIndex) {
+    //     txt = txt.split(""),
+    //         classIndex = document.getElementsByClassName("circTxt")[classIndex];
+
+    //     var deg = 360 / txt.length,
+    //         origin = 0;
+
+    //     txt.forEach((ea) => {
+    //         ea = `<p style='height:${radius}px;position:absolute;transform:rotate(${origin}deg);transform-origin:0 100%'>${ea}</p>`;
+    //         classIndex.innerHTML += ea;
+    //         origin += deg;
+    //     });
+    // }
+    
     return (
         <>
             {/* <center> */}
         
             <StyledContainer>
+                <div >
+                    <h1 >
+                        <span className="1">C</span>
+                        <span className="2">h</span>
+                        <span className="3">e</span>
+                        <span className="4">c</span>
+                        <span className="5">k</span>
+                        {/* <span class="space">&nbsp;</span> */}
+                        <span className="6">I</span>
+                        <span className="7">t</span>
+                        <span className="7">!</span>
+                        
+                    </h1>
+                </div>
                 <div className={classes.paper}>
-                
+                    {/* <div style={{ textAlign: 'center'}}>
+                        <div className="circTxt" id="test">
+                        </div>
+                    </div> */}
                 
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                        <FiCheckSquare />
                 </Avatar>
                 <h1>Login</h1>
                 
@@ -92,6 +143,7 @@ const LoginForm = ({ findOrCreateUser }) => {
                             name="username"
                             autoComplete="username"
                             autoFocus
+                            
                         />
                         <TextField
                             variant="outlined"
