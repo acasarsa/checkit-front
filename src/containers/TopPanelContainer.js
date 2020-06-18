@@ -14,6 +14,7 @@ const Grid = styled.div`
 const TopPanelContainer = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
     const [noteText, setNotes] = useState(currentUser.note.text)
+    console.log("noteText", noteText)
     // const fetchNotes = () => {
 
     //     fetch(`${url}/users/${currentUser.id}/notes`)

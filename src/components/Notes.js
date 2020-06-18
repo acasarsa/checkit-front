@@ -40,76 +40,13 @@ const NotesTitle = styled.h4`
 
 const Notes = ({ noteText, setNotes, editNotes}) => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
-    
-    
-    
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         fetchNotes()
-    //     }, 100);
-    //     return () => clearTimeout(timer);
-    // }, []);
-
-    // useEffect(() => {
-    //     fetchNotes()
-    // }, [])
-    
-
-    // const editNotes = (event) => {
-    //     event.preventDefault()
-    //     console.log("note in edit", note.id)
-    //     console.log("currentUser.note", currentUser.note)
-    //     console.log("currentUser", currentUser)
-    //     let options = {
-    //         method: 'PATCH', 
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             Accept: 'application/json'
-    //         },
-    //         body: JSON.stringify({text: currentUser.note.text, user_id: currentUser.id})
-    //     }
-    //     fetch(`${url}/users/${currentUser.id}/notes/${currentUser.note.id}`, options)
-    //         .then(r => r.json())
-    //         .then(updatedNote => {
-    //             console.log('updatedNote', updatedNote)
-    //             setCurrentUser({ ...currentUser, note: updatedNote })
-    //         })
-        
-        
-    // }
+    console.log('note text', noteText)
 
     
     const handleChange = (event) => {
         // setCurrentUser( ...currentUser, {...note, text: event.target.value} )
         setNotes( event.target.value )
     }
-    // const editNotes = () => {
-
-    //     fetch(`${url}/users/${currentUser.id}/notes/1`)
-    //         .then(r => r.json())
-    //         .then(updatedNote => setCurrentUser({...currentUser, note: updatedNote}) )
-        
-        
-    // }
-    
-    // const handleChange = (event) => {
-    //     setCurrentUser({...currentUser, note: event.target.value})
-    // }
-    
-    // const delay = (function () {
-    //     let timer = 5000;
-    //     return function (callback, ms) {
-    //         clearTimeout(timer);
-    //         timer = setTimeout(callback, ms);
-    //     };
-    // })();
-    
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         editNotes()
-    //     }, 10000);
-    //     return () => clearTimeout(timer);
-    // }, []);
 
 
     
@@ -119,7 +56,6 @@ const Notes = ({ noteText, setNotes, editNotes}) => {
             <form >
                 <NotesTitle >Notes:</NotesTitle>
                 <StyledTextArea
-                        // onChange={handleChange}
                     onChange={handleChange}
                     value={noteText}
                     placeholder="Add Notes..."

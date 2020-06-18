@@ -94,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TopPanel = ({ noteText, setNotes, editNotes }) => {
     const classes = useStyles();
+    console.log("note text in toppanel",noteText)
 
     const [currentUser, setCurrentUser] = useContext(UserContext)
     // const [taskCount, setTaskCount] = useState(currentUser.tasks.length)
@@ -112,9 +113,9 @@ const TopPanel = ({ noteText, setNotes, editNotes }) => {
         
     // }
 
-    let tasks = currentUser.tasks
-    let totalTasks = tasks.length
-    let tasksLeft = (tasks.filter(task => task.isDone == false)).length
+    // let tasks = currentUser.tasks
+    // let totalTasks = tasks.length
+    // let tasksLeft = (tasks.filter(task => task.isDone == false)).length
     
     return (
         <Row>
@@ -123,7 +124,7 @@ const TopPanel = ({ noteText, setNotes, editNotes }) => {
                 >Welcome {titleize(currentUser.username)}
                 </Typography>
 
-                <Notes note={noteText} setNotes={setNotes} editNotes={editNotes} />
+                <Notes noteText={noteText} setNotes={setNotes} editNotes={editNotes} />
             </Col>
             
             <Col size={2} textAlign={'right'} >
