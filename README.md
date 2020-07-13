@@ -1,14 +1,18 @@
-# CheckIt
+# Arrays
 
-Final project from Flatiron school. 
+How Array grows -- 
 
-A drag and drop enabled task organizer for children. I chose this is as my project after noticing the struggles that children and parents have had dealing with at home schooling during the pandemic. One of the hardest issues for the children was staying on task and setting and completing goals. There is a confetti explosion whenever a task is checked off because I wanted to make a visual reward for when the kids complete a task. A little celebration so they will want to keep going.
+start with initialized container that has x spaces 
 
-For drag n drop I used [react-beautiful-dnd ](https://github.com/atlassian/react-beautiful-dnd)
+when array is full - to add more what do we do? we need to make something new. Copy array and add 1 to it. so that copies each thing in old array then adds one.$$(n + 1) * x$$    n = array length. this is not efficient!! 
 
-For the confetti explosion I used [react-dom-confetti](https://www.npmjs.com/package/react-dom-confetti)
+#### do this in an amortized constant amount of time:
 
-Styling was done with Material UI, Styled-components and vanilla css. 
+some operations will take much longer than others but the average amount of time each op takes will be a constant value. 
 
-On the backend I used Rails and a PostgreSQL database. The backend repo can be found [here](https://github.com/acasarsa/checkit-api).
+double the size of original array. copy array and double it.  first step of copying it is 2n + 1 step to double. then you have 2n single operation adds. others take a constant time and first step takes time proportional to step before. 
+
+
+
+
 
