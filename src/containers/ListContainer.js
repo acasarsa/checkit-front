@@ -117,6 +117,7 @@ const ListContainer = () => {
         fetch(`${url}/users/${currentUser.id}/lists/${listID}/tasks/${id}`, options)
             .then(r => r.json())
             .then(updatedTask => {
+                console.log("updated task",updatedTask)
                 setLists(
                     lists.map(list => list.id === listID ?
                         { ...list, tasks: list.tasks.map(task => task.id === id ? updatedTask : task) } : list)
