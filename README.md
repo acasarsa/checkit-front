@@ -3,6 +3,7 @@ With children stuck at home during the pandemic I created a web app that would h
 
 backend repo can be found here: https://github.com/acasarsa/checkit-client
 <br>
+<br>
 project demo: https://www.youtube.com/watch?v=FJEMCSVV7qE
 
 
