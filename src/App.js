@@ -49,7 +49,8 @@ const App = () => {
 
 
     const [currentUser] = useContext(UserContext)
-    console.log(currentUser)
+    console.log('currentUser',currentUser)
+    // console.log('notes', currentUser.note.text)
 
 
     return (

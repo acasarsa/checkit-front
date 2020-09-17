@@ -82,6 +82,7 @@ const titleize = require('titleize');
 
 
 const ListCard = (props) => {
+
     const { listID, title, order, id, taskText, handleAddTask, handleEditTask, setTaskText, handleDeleteTask, deleteList, handleEditList } = props
     const classes = useStyles();
     const [currentUser] = useContext(UserContext) // use for edit form later

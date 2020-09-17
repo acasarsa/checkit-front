@@ -1,6 +1,7 @@
 html {
     /* background: no-repeat center center cover; */
     background-image: url('../images/day-hearts.jpg');
+    background-color: #6ed202;
     background-size: cover;
     background-repeat: no-repeat;
     resize: both;
