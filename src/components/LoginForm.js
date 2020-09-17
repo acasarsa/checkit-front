@@ -79,21 +79,7 @@ const LoginForm = ({ findOrCreateUser }) => {
         setUsername(event.target.value)
     }
     
-    // circularText(" C h e c k  I t                    ", 100, 0);
 
-    // function circularText(txt, radius, classIndex) {
-    //     txt = txt.split(""),
-    //         classIndex = document.getElementsByClassName("circTxt")[classIndex];
-
-    //     var deg = 360 / txt.length,
-    //         origin = 0;
-
-    //     txt.forEach((ea) => {
-    //         ea = `<p style='height:${radius}px;position:absolute;transform:rotate(${origin}deg);transform-origin:0 100%'>${ea}</p>`;
-    //         classIndex.innerHTML += ea;
-    //         origin += deg;
-    //     });
-    // }
     
     return (
         <>

@@ -12,6 +12,7 @@ const Grid = styled.div`
 
 const TopPanelContainer = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext)
+    console.log('note',currentUser.note)
     const [noteText, setNotes] = useState(currentUser.note.text)
 
     const editNotes = (event, noteText, id) => {
