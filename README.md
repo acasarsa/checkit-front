@@ -10,3 +10,20 @@ backend repo can be found here: [https://github.com/acasarsa/checkit-api](https:
    
  project demo: [https://www.youtube.com/watch?v=FJEMCSVV7qE](https://www.youtube.com/watch?v=FJEMCSVV7qE)
 
+### Prerequisites
+
+1. Git
+2. Node: any 13.x version starting with v13.9.2 or greater
+3. Nvm: See [Nvm repo for installation instructions](https://github.com/nvm-sh/nvm/blob/master/README.md)
+4. A fork of the repo \(for any contributions\)
+5. A clone of the [CheckIt repo](https://github.com/acasarsa/checkit-front) on your local machine
+
+### Installation 
+
+1. `cd checkit-front` to go into the project root
+2. `npm install` to install the application's npm dependencies 
+
+Running locally
+
+
+
