@@ -23,7 +23,12 @@ backend repo can be found here: [https://github.com/acasarsa/checkit-api](https:
 1. `cd checkit-front` to go into the project root
 2. `npm install` to install the application's npm dependencies 
 
-Running locally
+### Running locally
+
+1. Run backend server found [here](https://github.com/acasarsa/checkit-api)
+2. `npm start` will automatically run the app on port 3000 but if it is in use it will open on a free port. 
+
+
 
 
 
