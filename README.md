@@ -4,7 +4,9 @@ This repo contains the source code and documentation for my capstone project at 
 
 ### Summary
 
-A drag and drop enabled task organizer for children built with React frontend and a RESTful Rails API connection to PostgreSQL database. With children stuck at home during the pandemic, I created a web app that would help them keep their days organized and productive.
+A drag-and-drop enabled task organizer for children built with React frontend and a RESTful Rails API connection to PostgreSQL database. With children stuck at home during the pandemic, I created a web app that would help them keep their days organized and productive.
+
+This project makes use of [React Context API](https://reactjs.org/docs/context.html) and [Hooks](https://reactjs.org/docs/hooks-intro.html) to manage state
 
 backend repo can be found here: [https://github.com/acasarsa/checkit-api](https://github.com/acasarsa/checkit-api)   
    
